@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "740984510123",
+    "project_id": "nova-shield",
+    "storage_bucket": "nova-shield.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740984510123:android:1fb6a1a781731a83d409ee",
+        "android_client_info": {
+          "package_name": "com.nova.android.shield"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "740984510123-kgt13eeeatogq441veb51f28l5uq24uu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGSJTxVpq0Gqyhq68TrUOwi-arI5yzPBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "740984510123-kgt13eeeatogq441veb51f28l5uq24uu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
