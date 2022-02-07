@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.ui.home.MainActivity;
+import com.nova.android.shield.ui.main.TabbedMainActivity;
 import com.nova.android.shield.utils.Constants;
 
 import static android.content.Intent.FLAG_RECEIVER_FOREGROUND;
@@ -43,7 +44,7 @@ public class ShieldService extends Service {
                 shieldStopForeground();
             }
             case Constants.SHIELD_APP_BACKGROUND: {
-                Intent clickIntent = new Intent(this, MainActivity.class);
+                Intent clickIntent = new Intent(this, TabbedMainActivity.class);
                 clickIntent.setAction(Constants.SHIELD_APP_FOREGROUND);
                 clickIntent.setFlags(FLAG_RECEIVER_FOREGROUND);
                 PendingIntent activity = PendingIntent.getActivity(this, 0, clickIntent, 0);

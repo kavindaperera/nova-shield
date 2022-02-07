@@ -75,9 +75,10 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="title_activity_bottom_navigation">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_friends">Friends</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_bottom_navigation_main">MainActivity</string>
     <string name="notification_settings">Notification Settings</string>
+    <string name="action_shield">Shield</string>
 
 </resources>

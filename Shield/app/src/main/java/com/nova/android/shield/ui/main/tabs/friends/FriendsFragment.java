@@ -1,4 +1,4 @@
-package com.nova.android.shield.ui.main.tabs.dashboard;
+package com.nova.android.shield.ui.main.tabs.friends;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,22 +14,30 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.nova.android.shield.R;
 
-public class DashboardFragment extends Fragment {
+public class FriendsFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private FriendsViewModel friendsViewModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        friendsViewModel = new ViewModelProvider(this).get(FriendsViewModel.class);
+
+        View root = inflater.inflate(R.layout.fragment_friends, container, false);
+
         final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+
+        friendsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
+
+
+
+
+
+
         return root;
     }
 }

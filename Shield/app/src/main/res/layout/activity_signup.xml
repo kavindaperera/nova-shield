@@ -4,8 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/signup_container"
+    android:background="@color/colorAccent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -25,7 +27,7 @@
             android:layout_marginRight="2dp"
             android:text="@string/sign_up_text"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
         <TextView
@@ -39,11 +41,12 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:text="@string/username_text"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"/>
         <EditText android:textSize="14sp"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/colorAccent"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimary"
             android:id="@+id/username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,6 +55,7 @@
             android:layout_marginRight="4dp"
             android:hint="@string/user_entry"
             android:maxLines="1"
+            android:shadowColor="@color/colorPrimaryDark"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -93,17 +97,17 @@
         <!--            app:layout_constraintLeft_toLeftOf="parent"-->
         <!--            app:layout_constraintRight_toRightOf="parent"-->
         <!--            app:layout_constraintTop_toBottomOf="@+id/register_button"/>-->
-        <ProgressBar
-            android:id="@+id/login_progress"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/termsLink"
-            style="?android:attr/progressBarStyleLarge"/>
+<!--        <ProgressBar-->
+<!--            android:id="@+id/login_progress"-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginRight="8dp"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/termsLink"-->
+<!--            style="?android:attr/progressBarStyleLarge"/>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

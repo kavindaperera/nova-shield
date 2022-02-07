@@ -12,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nova.android.shield.R;
 import com.nova.android.shield.auth.ShieldSession;
+import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.ui.home.MainActivity;
+import com.nova.android.shield.ui.main.TabbedMainActivity;
 
 import java.util.UUID;
 
@@ -22,6 +24,7 @@ import butterknife.OnClick;
 
 public class SignupActivity extends AppCompatActivity {
 
+    private static final String TAG = "[Nova]";
     @BindView(R.id.username)
     EditText mUserName;
     @BindView(R.id.register_button)
@@ -39,9 +42,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onStart();
 
         String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        username = (username != null || username.isEmpty()) ? username : Build.MANUFACTURER + " " + Build.MODEL;
-
-        this.mUserName.setText(username);
+        this.mUserName.setText((String)username);
         this.mUserName.setEnabled(true);
         this.mRegisterButton.setEnabled(true);
     }
@@ -54,7 +55,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void sendUserToMainActivity() {
-        startActivity(new Intent(SignupActivity.this, MainActivity.class));
+        startActivity(new Intent(SignupActivity.this, TabbedMainActivity.class));
         finish();
     }
 }

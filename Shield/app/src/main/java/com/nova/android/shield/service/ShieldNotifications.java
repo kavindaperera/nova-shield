@@ -18,6 +18,7 @@ import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldApp;
 import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.ui.home.MainActivity;
+import com.nova.android.shield.ui.main.TabbedMainActivity;
 import com.nova.android.shield.utils.Constants;
 
 public class ShieldNotifications extends FirebaseMessagingService {
@@ -32,7 +33,7 @@ public class ShieldNotifications extends FirebaseMessagingService {
 
         Log.e(TAG, "New notification: " + text);
 
-        Intent clickIntent = new Intent(this, MainActivity.class);
+        Intent clickIntent = new Intent(this, TabbedMainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, clickIntent, 0);
 
         Bitmap largeIcon = BitmapFactory.decodeResource(ShieldApp.getInstance().getResources(), ShieldConstants.drawable.shld_launcher);
