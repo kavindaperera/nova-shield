@@ -2,6 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nova.android.shield.ui.home.MainActivity">
+
+    <item
+        android:iconTint="@color/colorAccent"
+        android:id="@+id/action_shield"
+        android:orderInCategory="100"
+        android:title="@string/action_start_shield"
+        android:icon="@drawable/ic_baseline_play_circle_filled_24"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

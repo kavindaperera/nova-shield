@@ -2,13 +2,17 @@ package com.nova.android.shield.ui.main;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nova.android.shield.BuildConfig;
@@ -20,19 +24,15 @@ import com.nova.android.shield.ui.settings.SettingsActivity;
 import com.nova.android.shield.ui.splash.SplashActivity;
 import com.nova.android.shield.utils.Constants;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TabbedMainActivity extends AppCompatActivity {
+public class TabbedMainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private static final String TAG = "[Nova][TabbedMainActivity]";
 
     SharedPreferences sharedPreferences;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,9 @@ public class TabbedMainActivity extends AppCompatActivity {
             return;
         }
 
-        init(savedInstanceState);
+        this.sharedPreferences = getApplicationContext().getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
+
+        initUi(savedInstanceState);
 
     }
 
@@ -54,28 +56,23 @@ public class TabbedMainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void init(Bundle bundle) {
+    private void initUi(Bundle bundle) {
 
         setContentView(R.layout.activity_tabbed_main);
 
         ButterKnife.bind(this);
-        this.sharedPreferences = getApplicationContext().getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_friends, R.id.navigation_home, R.id.navigation_notifications)
-                .build();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_friends, R.id.navigation_home, R.id.navigation_notifications).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
 
     }
 
@@ -97,15 +94,19 @@ public class TabbedMainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+    public boolean onCreateOptionsMenu(Menu menu2) {
+        getMenuInflater().inflate(R.menu.menu_main, menu2);
+        setShieldMenuItem();
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if (id == R.id.action_shield) {
+            // TODO
+        }
 
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
@@ -117,8 +118,33 @@ public class TabbedMainActivity extends AppCompatActivity {
             sharedPreferences.edit().putString(Constants.PREFS_USERNAME, (String) null).apply();
             showSplashActivity();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    private void setShieldMenuItem(){
+        if (sharedPreferences.getBoolean(Constants.PREFS_SHIELDING_STATE, false) == true) {
+            toolbar.getMenu().findItem(R.id.action_shield).setIcon(R.drawable.ic_baseline_pause_circle_filled_24).setTitle(R.string.action_stop_shield);
+        } else {
+            toolbar.getMenu().findItem(R.id.action_shield).setIcon(R.drawable.ic_baseline_play_circle_filled_24).setTitle(R.string.action_start_shield);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if (s.equals(Constants.PREFS_SHIELDING_STATE)) {
+            setShieldMenuItem();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
 }
