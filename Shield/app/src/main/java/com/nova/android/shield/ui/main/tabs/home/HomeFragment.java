@@ -1,26 +1,19 @@
 package com.nova.android.shield.ui.main.tabs.home;
 
-import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nova.android.shield.R;
-import com.nova.android.shield.ui.settings.SettingsActivity;
-import com.nova.android.shield.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,8 +25,9 @@ public class HomeFragment extends Fragment {
 
     @BindView(R.id.shieldLoaderAnimation)
     ImageView shieldLoaderAnimation;
-    @BindView(R.id.shieldLoaderTextViewRetry)
-    Button shieldLoaderTextViewRetry;
+
+    @BindView(R.id.fabStartShielding)
+    FloatingActionButton fabStartShielding;
 
     private HomeViewModel homeViewModel;
 
@@ -57,7 +51,7 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    @OnClick(R.id.shieldLoaderTextViewRetry)
+    @OnClick(R.id.fabStartShielding)
     public void onShield() {
         if (!this.homeViewModel.isShielding()) {
             this.homeViewModel.setShielding(true);
@@ -71,7 +65,7 @@ public class HomeFragment extends Fragment {
 
     public void startAnimation() {
         this.shieldLoaderAnimation.setImageDrawable(null);
-        this.shieldLoaderTextViewRetry.setText(R.string.stop_shield_loader_text_retry);
+        this.fabStartShielding.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_baseline_pause_24));
         this.shieldLoaderAnimation.setBackground(getDrawable(getContext(), R.drawable.shield_animation_avatar_1));
         ((AnimationDrawable) this.shieldLoaderAnimation.getBackground()).start();
     }
@@ -79,7 +73,7 @@ public class HomeFragment extends Fragment {
 
     public void stopAnimation() {
         if (true) {
-            this.shieldLoaderTextViewRetry.setText(R.string.shield_loader_text_retry);
+            this.fabStartShielding.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_baseline_play_arrow_24));
             this.shieldLoaderAnimation.setImageDrawable(getDrawable(getContext(), R.drawable.il_shieldanim_avatar_1));
             this.shieldLoaderAnimation.setBackground(null);
         }

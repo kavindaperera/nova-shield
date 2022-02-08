@@ -7,6 +7,7 @@ public class Constants {
     public static final String SHIELD_APP_FOREGROUND = "com.nova.android.shield.main.service.foreground";
     public static final String SHIELD_DEVICE = "shieldDevice";
     public static final String SHIELD_STOP = "com.nova.android.shield.main.service.stop";
+    public static final String PACKAGE_NAME = "com.nova.android.shield";
     public static final String PREFS_NAME = "com.nova.android.shield.app";
     public static final String PREFS_FIRST_DATE = "first_date";
     public static final String PREFS_USERNAME = "username";
@@ -18,4 +19,6 @@ public class Constants {
     public static final String PREFS_CONFIG_PROFILE = "settings_profile";
     public static final String PREFS_LOGS_ENABLED = "settings_logs_enabled";
     public static final int FOREGROUND_SERVICE = 444;
+
+
 }

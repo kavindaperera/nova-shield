@@ -1,22 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="?attr/actionBarSize"
+    android:paddingBottom="?attr/actionBarSize"
+    android:background="@color/colorAccent"
     tools:context=".ui.main.tabs.friends.FriendsFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/friendList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            app:layoutManager="LinearLayoutManager"
+            android:visibility="gone" />
+
+        <TextView
+            android:paddingTop="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_friends_description_1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAlignment="center"/>
+
+        <ImageView
+            android:id="@+id/shieldGroupAvatar"
+            android:layout_width="550sp"
+            android:layout_height="550sp"
+            android:layout_gravity="center"
+            android:padding="20sp"
+            android:visibility="visible"
+            android:src="@drawable/il_shieldanim_avatar_group" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="end">
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fabFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            app:menu_icon="@drawable/fab_add"
+            app:menu_animationDelayPerItem="0"
+            app:menu_colorNormal="@color/colorPrimary"
+            app:menu_colorPressed="@color/colorPrimaryDark"
+            app:menu_colorRipple="@color/colorPrimary"
+            app:menu_labels_maxLines="2"
+            app:menu_labels_ellipsize="end"
+            android:layout_gravity="bottom|right|center_vertical|center_horizontal|center|end"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="11dp">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_label="Display QR Code"
+            android:src="@drawable/ic_baseline_qr_code_24"
+            style="@style/MenuButtonsSmallBlue"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_qr_code_scanner_24"
+            app:fab_label="Scan QR Code"
+            style="@style/MenuButtonsSmallBlue"/>
+
+        </com.github.clans.fab.FloatingActionMenu>
+
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

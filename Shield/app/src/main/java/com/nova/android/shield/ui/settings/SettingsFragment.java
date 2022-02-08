@@ -20,6 +20,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final String TAG = "[Nova][Shield][SettingsFragment]";
     private static final String KEY_RINGTONE_PREFERENCE = "notificationSound";
+    private static final String KEY_NOTIFICATION_SETTINGS_PREFERENCE = "notificationSettings";
+
     private static final int REQUEST_CODE_ALERT_RINGTONE = 83216;
     Preference verification;
 
@@ -67,7 +69,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
             startActivityForResult(intent, REQUEST_CODE_ALERT_RINGTONE);
             return true;
-        } else {
+        } else if (preference.getKey().equals(KEY_NOTIFICATION_SETTINGS_PREFERENCE)){
+
+            Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(Settings.EXTRA_APP_PACKAGE, Constants.PACKAGE_NAME);
+
+            startActivity(intent);
+            return true;
+        }
+        else {
             return super.onPreferenceTreeClick(preference);
         }
     }

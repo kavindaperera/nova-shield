@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.shieldLoaderAnimation)
     ImageView shieldLoaderAnimation;
-    @BindView(R.id.shieldLoaderTextViewRetry)
+    @BindView(R.id.startShieldingBtn)
     Button shieldLoaderTextViewRetry;
     /* ViewModel */
     private MainViewModel mainViewModel;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.shieldLoaderTextViewRetry)
+    @OnClick(R.id.startShieldingBtn)
     public void onShield() {
         if (!this.mainViewModel.isShielding()) {
             this.mainViewModel.setShielding(true);

@@ -1,4 +1,4 @@
-package com.nova.android.shield.ui.main.tabs.notifications;
+package com.nova.android.shield.ui.main.tabs.alerts;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.nova.android.shield.R;
 
-public class NotificationsFragment extends Fragment {
+public class AlertsFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private AlertsViewModel alertsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        alertsViewModel =
+                new ViewModelProvider(this).get(AlertsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_alerts, container, false);
+        final TextView textView = root.findViewById(R.id.text_alerts);
+        alertsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

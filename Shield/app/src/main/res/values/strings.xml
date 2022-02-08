@@ -76,10 +76,12 @@
     <string name="title_activity_bottom_navigation">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_friends">Friends</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_alerts">Alerts</string>
     <string name="title_activity_bottom_navigation_main">MainActivity</string>
     <string name="notification_settings">Notification Settings</string>
-    <string name="action_start_shield">Start Shielding</string>
+    <string name="action_start_shield">Shielding State</string>
     <string name="action_stop_shield">Start Shielding</string>
+    <string name="add_friend_text">Add Friends</string>
+    <string name="add_friends_description_1">Mute alerts by whitelisting  friends who you trust.</string>
 
 </resources>

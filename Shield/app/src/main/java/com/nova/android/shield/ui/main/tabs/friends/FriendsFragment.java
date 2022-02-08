@@ -24,12 +24,12 @@ public class FriendsFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        final TextView textView = root.findViewById(R.id.text_dashboard);
+//        final TextView textView = root.findViewById(R.id.text_dashboard);
 
         friendsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+//                textView.setText(s);
             }
         });
 

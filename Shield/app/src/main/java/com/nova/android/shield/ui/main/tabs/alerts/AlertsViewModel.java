@@ -1,16 +1,16 @@
-package com.nova.android.shield.ui.main.tabs.notifications;
+package com.nova.android.shield.ui.main.tabs.alerts;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class AlertsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public AlertsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is Alerts fragment");
     }
 
     public LiveData<String> getText() {
