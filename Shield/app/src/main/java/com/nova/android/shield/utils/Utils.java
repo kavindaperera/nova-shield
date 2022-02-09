@@ -9,7 +9,7 @@ import com.nova.android.shield.ble.BluetoothUtils;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 
 public class Utils {
-    public static boolean hasBlePermissions(Context context) {
+    public static boolean hasBlePermissions(Context context) { // check for ble permissions
         if (!(context == null || Constants.blePermissions == null)) {
             for (String permission : Constants.blePermissions) {
                 if (ActivityCompat.checkSelfPermission(context, permission) != 0) {

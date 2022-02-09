@@ -72,7 +72,7 @@
         </service>
 
         <meta-data
-            android:name="com.nova.android.shield.APP_KEY"
+            android:name="com.nova.android.ble.APP_KEY"
             android:value="ef583273-f9ab-4261-b5cf-056dbefe0375" />
     </application>
 

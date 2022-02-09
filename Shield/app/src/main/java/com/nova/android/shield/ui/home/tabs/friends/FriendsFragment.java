@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
@@ -21,6 +22,8 @@ public class FriendsFragment extends Fragment {
     private static final String TAG = "[Nova][Shield][FriendsFragment]";
 
     private FriendsViewModel friendsViewModel;
+
+    SwipeRefreshLayout swipeLayout;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -93,4 +96,6 @@ public class FriendsFragment extends Fragment {
         super.onDetach();
         Log.i(TAG, "onCreate(): ");
     }
+
+
 }

@@ -15,10 +15,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.nova.android.ble.api.BleManager;
 import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 import com.nova.android.shield.ui.settings.PermissionUtils;
+import com.nova.android.shield.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,12 +74,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume(): ");
-        boolean shieldingEnabled = ShieldPreferencesHelper.isBluetoothEnabled(getActivity());
-        if (shieldingEnabled) {
-            startAnimation();
-        } else {
-            stopAnimation();
-        }
+        updateHomeUI(true);
     }
 
     @Override
@@ -113,8 +110,8 @@ public class HomeFragment extends Fragment {
     @OnClick(R.id.shieldingSwitch)
     public void onShield() {
         boolean isSwitched = false;
-        boolean shieldingEnabled = ShieldPreferencesHelper.isBluetoothEnabled(getActivity());
-        if (shieldingEnabled) { // check whether already enabled
+        boolean bluetoothEnabled = ShieldPreferencesHelper.isBluetoothEnabled(getActivity());
+        if (bluetoothEnabled) { // check whether already enabled
             isSwitched = true;
         }
         this.shieldingSwitchLogic(isSwitched);
@@ -123,18 +120,32 @@ public class HomeFragment extends Fragment {
     public void shieldingSwitchLogic(Boolean isSwitched) {
         if (isSwitched) {
             ShieldPreferencesHelper.setBluetoothEnabled(getActivity(), false);
-            updateHomeUI(false);
+            updateHomeUI(true);
         } else {
             PermissionUtils.bluetoothSwitchLogic(getActivity());
             updateHomeUI(true);
         }
     }
 
-    public void updateHomeUI(Boolean play) {
-        if (play) {
-            startAnimation();
-        } else {
-            stopAnimation();
+
+
+    public void updateHomeUI(Boolean animate) {
+        boolean hasBlePerms = Utils.hasBlePermissions(getActivity());
+        boolean bluetoothEnabled = ShieldPreferencesHelper.isBluetoothEnabled(getActivity());
+        if (!hasBlePerms) {
+            ShieldPreferencesHelper.setBluetoothEnabled(getActivity(), false);
+        }
+        if (!bluetoothEnabled) {
+            ShieldPreferencesHelper.setBluetoothEnabled(getActivity(), false);
+            if (animate) {
+                stopAnimation();
+                return;
+            }
+        } else if (bluetoothEnabled) {
+            if (animate) {
+                startAnimation();
+                return;
+            }
         }
     }
 

@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.github.clans:fab:1.6.4'
 
     implementation 'com.google.code.gson:gson:2.8.7'
-//    implementation project(path: ':ble')
+    implementation project(path: ':ble')
 
     implementation 'com.jakewharton:butterknife:10.2.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
@@ -59,6 +59,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.firebaseui:firebase-ui-auth:8.0.0'
 //    implementation 'com.google.android.gms:play-services-ads:17.2.1'
+
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     def lifecycle_version = "2.4.0-alpha02"
 

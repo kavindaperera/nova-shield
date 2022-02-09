@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:rlv="http://schemas.android.com/apk/res-auto" xmlns:mcpapp="http://schemas.android.com/apk/com.l4digital.fastscroll" xmlns:aapt="http://schemas.android.com/aapt" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="vertical"
+        android:id="@+id/guidelineV01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        rlv:layout_constraintGuide_begin="20dp"
+        rlv:layout_constraintGuide_percent="0.95"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="vertical"
+        android:id="@+id/guidelineV02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        rlv:layout_constraintGuide_begin="20dp"
+        rlv:layout_constraintGuide_percent="0.05"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="horizontal"
+        android:id="@+id/guidelineH01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        rlv:layout_constraintGuide_begin="20dp"
+        rlv:layout_constraintGuide_percent="0.3"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="1dp"
+        android:foregroundTint="@color/colorPrimaryDark"
+        rlv:layout_constraintBottom_toBottomOf="parent"
+        rlv:layout_constraintEnd_toStartOf="@+id/guidelineV01"
+        rlv:layout_constraintStart_toStartOf="@+id/guidelineV02"
+        rlv:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/warning"
+                android:background="@color/white"
+                android:paddingBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                rlv:layout_constraintStart_toStartOf="parent"
+                rlv:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:orientation="vertical"
+                    android:id="@+id/guidelineV15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    rlv:layout_constraintGuide_begin="20dp"
+                    rlv:layout_constraintGuide_percent="0.05"/>
+
+                <ImageView
+                    android:id="@+id/imageViewIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ic_baseline_warning_24"
+                    android:tint="@color/colorPrimaryDark"
+                    android:adjustViewBounds="true"
+                    rlv:layout_constraintBottom_toBottomOf="@+id/textViewHeader"
+                    rlv:layout_constraintStart_toStartOf="@+id/guidelineV15"
+                    rlv:layout_constraintTop_toTopOf="@+id/textViewHeader"/>
+
+                <TextView
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center_vertical"
+                    android:id="@+id/textViewHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/text_notification_0"
+                    android:layout_marginStart="20dp"
+                    rlv:layout_constraintEnd_toEndOf="parent"
+                    rlv:layout_constraintStart_toEndOf="@+id/imageViewIcon"
+                    rlv:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:orientation="vertical"
+                    android:id="@+id/guidelineV03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    rlv:layout_constraintGuide_begin="20dp"
+                    rlv:layout_constraintGuide_percent="0.9"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/warning2"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                rlv:layout_constraintTop_toBottomOf="@+id/warning">
+
+                <TextView
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"
+                    android:id="@+id/textViewMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_notification_1"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    rlv:layout_constraintEnd_toEndOf="parent"
+                    rlv:layout_constraintStart_toStartOf="parent"
+                    rlv:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:textSize="14sp" android:textStyle="bold"
+                    android:gravity="center_vertical"
+                    android:id="@+id/textView13"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/text_notification_2"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    rlv:layout_constraintEnd_toEndOf="parent"
+                    rlv:layout_constraintStart_toStartOf="parent"
+                    rlv:layout_constraintTop_toBottomOf="@+id/textViewMessage"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/dismiss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dismiss_text"
+                android:layout_marginStart="5dp"
+                rlv:layout_constraintStart_toStartOf="parent"
+                rlv:layout_constraintTop_toBottomOf="@+id/warning2"
+                rlv:rippleColor="@color/colorPrimaryDark"
+                style="@style/Widget.MaterialComponents.Button.TextButton"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

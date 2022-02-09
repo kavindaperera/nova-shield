@@ -1,5 +1,6 @@
 package com.nova.android.shield.ui.home;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -17,9 +18,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.nova.android.ble.api.BleManager;
+import com.nova.android.ble.api.callback.StateListener;
 import com.nova.android.shield.BuildConfig;
 import com.nova.android.shield.R;
 import com.nova.android.shield.auth.ShieldSession;
+import com.nova.android.shield.ble.BluetoothUtils;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldApp;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
@@ -36,6 +40,31 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     private static final String TAG = "[Nova][Shield][TabbedMainActivity]";
 
     Toolbar toolbar;
+
+    StateListener stateListener = new StateListener() {
+        @Override
+        public void onStartError(@NonNull String message, @NonNull int errorCode) {
+            Log.e(TAG, "onStartError(): ");
+
+        }
+
+        @Override
+        public void onStarted() {
+            Log.e(TAG, "onStarted(): ");
+
+        }
+
+        @Override
+        public void onRssiRead(@NonNull BluetoothDevice bluetoothDevice, int rssi) {
+            Log.e(TAG, "onRssiRead(): ");
+
+        }
+    };
+
+    public void startBleManager() {
+        BluetoothUtils.startBle(this);
+        BleManager.start(stateListener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,10 +181,13 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     private void setShieldMenuItem(){
         if (ShieldPreferencesHelper.isBluetoothEnabled(getApplicationContext()) == true) {
             toolbar.getMenu().findItem(R.id.action_shield).setIcon(R.drawable.ic_baseline_pause_circle_filled_24).setTitle(R.string.action_stop_shield);
+            startBleManager();
         } else {
             toolbar.getMenu().findItem(R.id.action_shield).setIcon(R.drawable.ic_baseline_play_circle_filled_24).setTitle(R.string.action_start_shield);
         }
     }
+
+
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
