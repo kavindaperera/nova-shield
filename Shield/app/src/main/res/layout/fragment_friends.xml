@@ -8,7 +8,7 @@
     android:paddingTop="?attr/actionBarSize"
     android:paddingBottom="?attr/actionBarSize"
     android:background="@color/colorAccent"
-    tools:context=".ui.main.tabs.friends.FriendsFragment">
+    tools:context=".ui.home.tabs.friends.FriendsFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout3"

@@ -7,7 +7,7 @@
     android:paddingTop="?attr/actionBarSize"
     android:paddingBottom="?attr/actionBarSize"
     android:background="@color/colorAccent"
-    tools:context=".ui.main.tabs.home.HomeFragment">
+    tools:context=".ui.home.tabs.home.HomeFragment">
 
     <LinearLayout
         app:layout_constraintTop_toTopOf="parent"

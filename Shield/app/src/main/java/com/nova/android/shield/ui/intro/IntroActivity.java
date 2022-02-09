@@ -25,7 +25,7 @@ import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.ui.intro.onboarding.OnboardingAdapter;
 import com.nova.android.shield.ui.intro.onboarding.OnboardingItem;
-import com.nova.android.shield.ui.signup.SignupActivity;
+import com.nova.android.shield.ui.signup.SignUpActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,7 +130,7 @@ public class IntroActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AUTHUI_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+                startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
                 finish();
                 return;
             }

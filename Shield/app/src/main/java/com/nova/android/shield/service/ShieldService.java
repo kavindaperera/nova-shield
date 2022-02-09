@@ -13,8 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.nova.android.shield.main.ShieldConstants;
-import com.nova.android.shield.ui.home.MainActivity;
-import com.nova.android.shield.ui.main.TabbedMainActivity;
+import com.nova.android.shield.ui.home.TabbedMainActivity;
 import com.nova.android.shield.utils.Constants;
 
 import static android.content.Intent.FLAG_RECEIVER_FOREGROUND;

@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_friends"
-        android:name="com.nova.android.shield.ui.main.tabs.friends.FriendsFragment"
+        android:name="com.nova.android.shield.ui.home.tabs.friends.FriendsFragment"
         android:label="@string/title_friends"
         tools:layout="@layout/fragment_friends" />
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.nova.android.shield.ui.main.tabs.home.HomeFragment"
+        android:name="com.nova.android.shield.ui.home.tabs.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_alerts"
-        android:name="com.nova.android.shield.ui.main.tabs.alerts.AlertsFragment"
+        android:name="com.nova.android.shield.ui.home.tabs.alerts.AlertsFragment"
         android:label="@string/title_alerts"
         tools:layout="@layout/fragment_alerts" />
 </navigation>

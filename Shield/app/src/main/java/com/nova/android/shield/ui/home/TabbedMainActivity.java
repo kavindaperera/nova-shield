@@ -1,4 +1,4 @@
-package com.nova.android.shield.ui.main;
+package com.nova.android.shield.ui.home;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

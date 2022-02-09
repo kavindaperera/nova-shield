@@ -1,4 +1,4 @@
-package com.nova.android.shield.ui.main.tabs.alerts;
+package com.nova.android.shield.ui.home.tabs.alerts;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

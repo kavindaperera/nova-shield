@@ -1,4 +1,4 @@
-package com.nova.android.shield.ui.main.tabs.friends;
+package com.nova.android.shield.ui.home.tabs.friends;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

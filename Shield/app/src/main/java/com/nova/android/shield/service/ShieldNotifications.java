@@ -17,8 +17,7 @@ import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldApp;
 import com.nova.android.shield.main.ShieldConstants;
-import com.nova.android.shield.ui.home.MainActivity;
-import com.nova.android.shield.ui.main.TabbedMainActivity;
+import com.nova.android.shield.ui.home.TabbedMainActivity;
 import com.nova.android.shield.utils.Constants;
 
 public class ShieldNotifications extends FirebaseMessagingService {

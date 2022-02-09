@@ -1,4 +1,4 @@
-package com.nova.android.shield.ui.main.tabs.home;
+package com.nova.android.shield.ui.home.tabs.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
