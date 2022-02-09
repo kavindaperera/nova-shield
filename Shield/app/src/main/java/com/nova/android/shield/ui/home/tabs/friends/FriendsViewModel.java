@@ -10,7 +10,7 @@ public class FriendsViewModel extends ViewModel {
 
     public FriendsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Mute alerts for friends.");
+        mText.setValue("Mute alerts by whitelisting  friends who you trust.");
     }
 
     public LiveData<String> getText() {

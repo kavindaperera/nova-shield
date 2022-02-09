@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
@@ -18,37 +20,69 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nova.android.shield.BuildConfig;
 import com.nova.android.shield.R;
 import com.nova.android.shield.auth.ShieldSession;
+import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldApp;
+import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 import com.nova.android.shield.service.ShieldService;
 import com.nova.android.shield.ui.settings.SettingsActivity;
 import com.nova.android.shield.ui.splash.SplashActivity;
 import com.nova.android.shield.utils.Constants;
+import com.nova.android.shield.utils.Utils;
 
 import butterknife.ButterKnife;
 
 public class TabbedMainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String TAG = "[Nova][TabbedMainActivity]";
-
-    SharedPreferences sharedPreferences;
+    private static final String TAG = "[Nova][Shield][TabbedMainActivity]";
 
     Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ShieldApp.debug = BuildConfig.DEBUG; // remove in production
+
+        Log.i(TAG, "onCreate(): ");
 
         if (!ShieldSession.isLoggedIn()) {
             showSplashActivity();
             return;
         }
 
-        this.sharedPreferences = getApplicationContext().getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
+        initView(savedInstanceState);
 
-        initUi(savedInstanceState);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart(): ");
+        ShieldPreferencesHelper.getSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause(): ");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume(): ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop(): ");
+        ShieldPreferencesHelper.getSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy(): ");
     }
 
     private void showSplashActivity() {
@@ -56,7 +90,7 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         finish();
     }
 
-    private void initUi(Bundle bundle) {
+    private void initView(Bundle bundle) {
 
         setContentView(R.layout.activity_tabbed_main);
 
@@ -74,12 +108,6 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-    }
-
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
 
@@ -113,16 +141,16 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         }
 
         if (id == R.id.action_logout) {
-            sharedPreferences.edit().putString(Constants.PREFS_USER_UUID, (String) null).apply();
-            sharedPreferences.edit().putBoolean(Constants.PREFS_SHIELDING_STATE, (Boolean) false).apply();
-            sharedPreferences.edit().putString(Constants.PREFS_USERNAME, (String) null).apply();
+            ShieldPreferencesHelper.setUserUuid(getApplicationContext(),(String) null);
+            ShieldPreferencesHelper.setBluetoothEnabled(getApplicationContext(), false);
+            ShieldPreferencesHelper.setUsername(getApplicationContext(),(String) null);
             showSplashActivity();
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void setShieldMenuItem(){
-        if (sharedPreferences.getBoolean(Constants.PREFS_SHIELDING_STATE, false) == true) {
+        if (ShieldPreferencesHelper.isBluetoothEnabled(getApplicationContext()) == true) {
             toolbar.getMenu().findItem(R.id.action_shield).setIcon(R.drawable.ic_baseline_pause_circle_filled_24).setTitle(R.string.action_stop_shield);
         } else {
             toolbar.getMenu().findItem(R.id.action_shield).setIcon(R.drawable.ic_baseline_play_circle_filled_24).setTitle(R.string.action_start_shield);
@@ -131,20 +159,27 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if (s.equals(Constants.PREFS_SHIELDING_STATE)) {
+        if (s.equals(Constants.PREFS_BLUETOOTH_ENABLED)) {
             setShieldMenuItem();
         }
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "onActivityResult | requestCode: " + requestCode + " | resultCode: " + resultCode);
+        if (requestCode == 0 ){
+            if (resultCode != -1){
+                Utils.updateBluetoothSwitchState(this);
+            } else {
+                ShieldPreferencesHelper.setBluetoothEnabled(this);
+            }
+        }
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.i(TAG, "onRequestPermissionsResult(): ");
     }
 }

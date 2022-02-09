@@ -12,6 +12,7 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.ui.home.TabbedMainActivity;
 import com.nova.android.shield.utils.Constants;
@@ -26,20 +27,24 @@ public class ShieldService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.i(TAG, "onCreate(): ");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "onDestroy(): ");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = intent.getAction();
+
+        Log.i(TAG, "onStartCommand(): " + action);
+
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), ShieldConstants.drawable.shld_launcher);
         switch (action) {
-            case Constants
-                    .SHIELD_APP_FOREGROUND: {
+            case Constants.SHIELD_APP_FOREGROUND: {
                 shieldStopForeground();
             }
             case Constants.SHIELD_APP_BACKGROUND: {

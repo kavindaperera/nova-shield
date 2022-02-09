@@ -10,6 +10,7 @@ import android.view.WindowManager;
 
 import com.nova.android.shield.R;
 import com.nova.android.shield.ui.intro.IntroActivity;
+import com.nova.android.shield.utils.Constants;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -25,6 +26,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, IntroActivity.class));
                 finish();
             }
-        }, 2000);
+        }, Constants.SPLASH_DISPLAY_DURATION);
     }
 }
