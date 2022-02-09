@@ -10,8 +10,10 @@ import androidx.annotation.RequiresApi;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.nova.android.shield.BuildConfig;
 import com.nova.android.shield.auth.ShieldSession;
 import com.nova.android.shield.utils.Constants;
+import com.nova.android.shield.workmanager.periodictasks.PeriodicTasksHandler;
 
 import java.util.Objects;
 
@@ -29,6 +31,9 @@ public class ShieldApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        ShieldApp.debug = BuildConfig.DEBUG; // TODO - remove in production
+
         this.sharedPreferences = getApplicationContext().getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
         shieldApp = this;
         FirebaseApp firebaseApp = FirebaseApp.initializeApp(getApplicationContext());
@@ -44,6 +49,9 @@ public class ShieldApp extends Application {
         }
 
         ShieldSession.loadSession(this);
+
+        new PeriodicTasksHandler(this).initializeAllPeriodicRequests();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

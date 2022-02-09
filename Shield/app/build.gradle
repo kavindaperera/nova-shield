@@ -108,6 +108,11 @@ dependencies {
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
+    def work_version = "2.7.1"
+
+    // Work (Java only)
+    implementation "androidx.work:work-runtime:$work_version"
+
     // Testing
     testImplementation "junit:junit:$rootProject.junitVersion"
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"

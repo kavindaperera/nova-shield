@@ -11,13 +11,6 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <Preference
-        app:iconSpaceReserved="false"
-        app:title="@string/verify_title"
-        app:key="verification"
-        app:summary="@string/verify_hint"
-        />
-
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:title="@string/settings_category_notifications">

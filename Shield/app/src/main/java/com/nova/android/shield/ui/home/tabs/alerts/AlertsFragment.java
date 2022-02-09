@@ -1,21 +1,26 @@
 package com.nova.android.shield.ui.home.tabs.alerts;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
-import com.nova.android.shield.ui.home.tabs.friends.FriendsFragment;
+import com.nova.android.shield.workmanager.workers.PullFromFirebaseWorker;
 
 public class AlertsFragment extends Fragment {
 
@@ -40,6 +45,30 @@ public class AlertsFragment extends Fragment {
 
     public void refreshTask() {
         Log.i(TAG, "refreshTask(): ");
+
+        PullFromFirebaseTask();
+
         this.swipeLayout.setRefreshing(false);
+    }
+
+    public void PullFromFirebaseTask() {
+
+        OneTimeWorkRequest oneTimePullRequest = (OneTimeWorkRequest) ((OneTimeWorkRequest.Builder) new OneTimeWorkRequest.Builder(PullFromFirebaseWorker.class).setConstraints(new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())).build();
+        WorkManager.getInstance((Context) requireActivity()).enqueue((WorkRequest) oneTimePullRequest);
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(oneTimePullRequest.getId()).observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(WorkInfo workInfo) {
+
+                Log.i(TAG, "PullFromFirebaseTask(): state " + workInfo.getState());
+
+                if (workInfo.getState() == WorkInfo.State.FAILED) {
+
+                    Log.e(TAG, "PullFromFirebaseTask(): Failed");
+
+                }
+
+            }
+        });
+
     }
 }

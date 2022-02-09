@@ -23,32 +23,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private static final String KEY_NOTIFICATION_SETTINGS_PREFERENCE = "notificationSettings";
 
     private static final int REQUEST_CODE_ALERT_RINGTONE = 83216;
-    Preference verification;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         PreferenceManager manager = getPreferenceManager();
         manager.setSharedPreferencesName(Constants.PREFS_NAME);
         setPreferencesFromResource(R.xml.preferences, rootKey);
-        if (ShieldSession.isVerified()) {
-            Preference preference = findPreference("verification");
-            this.verification = preference;
-            preference.setSummary("Verified");
-            preference.setOnPreferenceClickListener(preference1 -> {
-                Toast.makeText(getContext(), "Phone Number Already Verified", Toast.LENGTH_SHORT).show();
-                return false;
-            });
-        }
     }
 
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
-
         Log.e(TAG, " " + preference.getKey().equals(KEY_RINGTONE_PREFERENCE));
-
         if (preference.getKey().equals(KEY_RINGTONE_PREFERENCE)) {
-
             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);

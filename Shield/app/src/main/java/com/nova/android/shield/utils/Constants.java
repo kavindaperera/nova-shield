@@ -25,6 +25,7 @@ public class Constants {
     public static final String PREFS_USERNAME = "username";
     public static final String PREFS_USER_PHONE = "user_phone";
     public static final String PREFS_USER_UUID = "user_uuid";
-
+    public static int PULL_FROM_FIREBASE_INTERVAL = (15*60)*1000;
+    public static boolean PullFromFirebaseServiceRunning = false;
 
 }

@@ -69,7 +69,7 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ShieldApp.debug = BuildConfig.DEBUG; // remove in production
+
 
         Log.i(TAG, "onCreate(): ");
 
@@ -192,7 +192,9 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (s.equals(Constants.PREFS_BLUETOOTH_ENABLED)) {
-            setShieldMenuItem();
+            if (toolbar.getMenu().findItem(R.id.action_shield) != null){
+                setShieldMenuItem();
+            }
         }
     }
 
