@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import com.nova.android.shield.utils.Constants;
 
+import java.util.UUID;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class ShieldPreferencesHelper {
@@ -31,6 +33,10 @@ public class ShieldPreferencesHelper {
 
     public static void setUserUuid(Context context, String uuid) {
         getSharedPreferences(context).edit().putString(Constants.PREFS_USER_UUID, uuid).apply();
+    }
+
+    public static UUID getUserUuid(Context context) {
+        return  UUID.fromString(getSharedPreferences(context).getString(Constants.PREFS_USER_UUID, null));
     }
 
 }

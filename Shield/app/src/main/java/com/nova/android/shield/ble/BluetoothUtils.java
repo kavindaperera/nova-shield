@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 
 import com.nova.android.ble.api.BleManager;
+import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 
 public class BluetoothUtils {
     public static boolean isBluetoothOn() { // check whether bluetooth is ON
@@ -15,7 +16,7 @@ public class BluetoothUtils {
     }
 
     public static void startBle(Context context) {
-        BleManager.initialize(context);
+        BleManager.initialize(context, ShieldPreferencesHelper.getUserUuid(context));
     }
 
     public static void haltBle(Context context) {

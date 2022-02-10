@@ -19,6 +19,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nova.android.ble.api.BleManager;
+import com.nova.android.ble.api.Device;
 import com.nova.android.ble.api.callback.StateListener;
 import com.nova.android.shield.BuildConfig;
 import com.nova.android.shield.R;
@@ -55,7 +56,7 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         }
 
         @Override
-        public void onRssiRead(@NonNull BluetoothDevice bluetoothDevice, int rssi) {
+        public void onRssiRead(@NonNull Device device, int rssi) {
             Log.e(TAG, "onRssiRead(): ");
 
         }
@@ -69,7 +70,6 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         Log.i(TAG, "onCreate(): ");
 
