@@ -185,7 +185,8 @@ public class BluetoothController {
             if (this.bluetoothAdapter != null && this.bluetoothAdapter.getBluetoothLeAdvertiser() != null) {
                 BluetoothLeAdvertiser bluetoothLeAdvertiser = this.bluetoothAdapter.getBluetoothLeAdvertiser();
                 if (this.advertiseCallback != null && bluetoothLeAdvertiser != null) {
-                    bluetoothLeAdvertiser.stopAdvertising((AdvertiseCallback)this.advertiseCallback);
+                    Log.i(TAG, "stopAdvertising: ");
+                    bluetoothLeAdvertiser.stopAdvertising(this.advertiseCallback);
                 }
             }
         }
@@ -194,7 +195,7 @@ public class BluetoothController {
         }
     }
 
-    public void stopServer() {
+    public void stopServer() throws ConnectionException {
         Log.i(TAG, "stopServer: ");
         this.stopBluetoothLeServer();
     }
@@ -211,7 +212,6 @@ public class BluetoothController {
             this.threadServerBle = null;
             ServerFactory.setBluetoothLeServer(null);
         }
-        //TODO - clear gatt manager queues
         this.stopAdvertising();
     }
 
@@ -234,5 +234,13 @@ public class BluetoothController {
                 Log.e(TAG, "startBluetoothLeDiscovery: discovery already running");
             }
         }
+    }
+
+    public void stopDiscovery(Context context) {
+
+        if (this.bluetoothLeDiscovery != null ){
+            this.bluetoothLeDiscovery.stopDiscovery(context);
+        }
+
     }
 }

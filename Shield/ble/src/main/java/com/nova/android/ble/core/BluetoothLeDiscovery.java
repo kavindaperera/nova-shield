@@ -96,13 +96,11 @@ public class BluetoothLeDiscovery extends Discovery {
             }
 
             super.startDiscovery(context);
-
             Completable.timer(60L, TimeUnit.SECONDS).subscribe(() -> {
                 Log.i(TAG, "startDiscovery: resetting");
                 this.stopDiscovery(null);
                 this.startDiscovery(null);
             }, throwable -> Log.e(TAG, "error: " + throwable.getMessage()));
-
         }
     }
 

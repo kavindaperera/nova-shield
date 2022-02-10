@@ -6,6 +6,10 @@ import android.content.SharedPreferences;
 import com.nova.android.ble.api.callback.StateListener;
 import com.nova.android.ble.logs.Log;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class BleCore {
 
     /*Shared Preference Keys*/
@@ -37,6 +41,9 @@ public class BleCore {
 
     public void shutdownServices() {
         Log.d(TAG, "shutdownServices():");
+        this.bleReceiver.unregisterReceiver(this.context);
+        this.bleReceiver.stopDiscovery();
+        this.bleReceiver.stopServer();
 
     }
 

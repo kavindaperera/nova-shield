@@ -80,7 +80,25 @@ public class BleReceiver extends BroadcastReceiver {
         }
     }
 
+    public void stopServer() {
+        this.onBluetoothServerStop();
+    }
+
+    private void onBluetoothServerStop() {
+        try {
+            this.bluetoothController.stopServer();
+        }
+        catch (ConnectionException connectionException) {
+            Log.e(TAG, "onBluetoothServerStop: " + connectionException.getMessage());
+        }
+    }
+
     public void startDiscovery() {
         this.bluetoothController.startDiscovery(this.context);
     }
+
+    public void stopDiscovery() {
+        this.bluetoothController.stopDiscovery(this.context);
+    }
+
 }
