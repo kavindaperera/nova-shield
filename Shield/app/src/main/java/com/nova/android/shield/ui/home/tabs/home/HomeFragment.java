@@ -123,15 +123,12 @@ public class HomeFragment extends Fragment implements SharedPreferences.OnShared
 
     public void shieldingSwitchLogic(Boolean isSwitched) {
         if (isSwitched) {
-            ShieldPreferencesHelper.setBluetoothEnabled(getActivity(), false);
-            updateHomeUI(true);
+            Utils.stopShieldingService(getActivity(), (View) null);
         } else {
             PermissionUtils.bluetoothSwitchLogic(getActivity());
-            updateHomeUI(true);
         }
+        updateHomeUI(true);
     }
-
-
 
     public void updateHomeUI(Boolean animate) {
         boolean hasBlePerms = Utils.hasBlePermissions(getActivity());

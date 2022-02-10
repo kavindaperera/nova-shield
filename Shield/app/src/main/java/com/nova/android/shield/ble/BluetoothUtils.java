@@ -5,7 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+
 import com.nova.android.ble.api.BleManager;
+import com.nova.android.ble.api.Device;
+import com.nova.android.ble.api.callback.StateListener;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 
@@ -48,12 +52,33 @@ public class BluetoothUtils {
         }
     };
 
+    public static final StateListener stateListener = new StateListener() {
+        @Override
+        public void onStartError(@NonNull String message, @NonNull int errorCode) {
+            Log.e(TAG, "onStartError(): ");
+
+        }
+
+        @Override
+        public void onStarted() {
+            Log.e(TAG, "onStarted(): ");
+
+        }
+
+        @Override
+        public void onRssiRead(@NonNull Device device, int rssi) {
+            Log.e(TAG, "onRssiRead(): ");
+
+        }
+    };
+
     public static void startBle(Context context) {
         BleManager.initialize(context, ShieldPreferencesHelper.getUserUuid(context));
+        BleManager.start(stateListener);
     }
 
-    public static void haltBle(Context context) {
-
+    public static void stopBle(Context context) {
+        BleManager.stop();
     }
 
 }

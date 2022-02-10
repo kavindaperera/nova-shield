@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 public class Constants {
     public static BluetoothAdapter bluetoothAdapter;
     public static String[] blePermissions = {Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH};
+    public static boolean BLUETOOTH_ENABLED = false;
     public static final int FOREGROUND_SERVICE = 444;
     public static final String NOTIFICATION_CHANNEL = "shield_channel";
     public static final String NOTIFICATION_ID = "notificationId";
@@ -27,5 +28,6 @@ public class Constants {
     public static final String PREFS_USER_UUID = "user_uuid";
     public static int PULL_FROM_FIREBASE_INTERVAL = (15*60)*1000;
     public static boolean PullFromFirebaseServiceRunning = false;
+    public static boolean ShieldingServiceRunning = false;
 
 }

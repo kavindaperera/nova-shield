@@ -1,17 +1,27 @@
 package com.nova.android.shield.ble;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+
+@Entity(tableName = "ble_record_table", primaryKeys = {"uuid", "timestamp"})
 public class BleRecord {
 
+    @NonNull
+    @ColumnInfo(name = "timestamp")
     private long timestamp;
 
+    @NonNull
+    @ColumnInfo(name = "uuid")
     private String uuid;
 
+    @ColumnInfo(name = "rssi")
     private int rssi;
 
-    public BleRecord(String uuid2, long timestamp2, int rssi2) {
-        this.uuid = uuid2;
-        this.timestamp = timestamp2;
-        this.rssi = rssi2;
+    public BleRecord(@NonNull String uuid, @NonNull long timestamp, int rssi) {
+        this.uuid = uuid;
+        this.timestamp = timestamp;
+        this.rssi = rssi;
     }
 
     public long getTimestamp() {

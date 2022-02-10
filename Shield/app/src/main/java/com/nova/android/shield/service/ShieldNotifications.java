@@ -22,7 +22,7 @@ import com.nova.android.shield.utils.Constants;
 
 public class ShieldNotifications extends FirebaseMessagingService {
 
-    private static final String TAG = "[Nova][Shield][ShieldService]";
+    private static final String TAG = "[Nova][Shield][ShieldNotifications]";
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {

@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.nova.android.ble.BuildConfig;
 import com.nova.android.ble.api.callback.StateListener;
 import com.nova.android.ble.core.BleCore;
+import com.nova.android.ble.logs.Log;
 
 import java.util.UUID;
 
@@ -115,6 +116,18 @@ public class BleManager {
                 bleException.printStackTrace();
             }
         }
+    }
+
+    public static boolean stop() {
+        try {
+            BleManager.getInstance().getBleCore().shutdownServices();
+            return true;
+        }
+        catch (NullPointerException nullPointerException) {
+            Log.e(TAG, "stop: BleManager must be started before calling stop()");
+            return false;
+        }
+
     }
 
     public BleClient getBleClient() {

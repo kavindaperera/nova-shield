@@ -23,6 +23,10 @@ public class ShieldPreferencesHelper {
         return getSharedPreferences(context).getBoolean(Constants.PREFS_BLUETOOTH_ENABLED, false);
     }
 
+    public static boolean isBluetoothEnabled(Context context, boolean defaultFlag) {
+        return getSharedPreferences(context).getBoolean(Constants.PREFS_BLUETOOTH_ENABLED, defaultFlag);
+    }
+
     public static void setBluetoothEnabled(Context context, boolean val) {
         getSharedPreferences(context).edit().putBoolean(Constants.PREFS_BLUETOOTH_ENABLED, val).apply();
     }

@@ -45,12 +45,12 @@ public class ShieldApp extends Application {
         }
 
         if (Build.VERSION.SDK_INT >= 26) {
-            createNotificationChannel();
+            createNotificationChannel(); // create notification channel
         }
 
         ShieldSession.loadSession(this);
 
-        new PeriodicTasksHandler(this).initializeAllPeriodicRequests();
+        new PeriodicTasksHandler(this).initializeAllPeriodicRequests(); // create task work manager
 
     }
 

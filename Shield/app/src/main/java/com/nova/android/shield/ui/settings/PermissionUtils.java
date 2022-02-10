@@ -27,9 +27,13 @@ public class PermissionUtils {
             }
             return;
         }
-
         Log.i(TAG, "bluetoothSwitchLogic(): bluetooth_enabled = true");
         ShieldPreferencesHelper.setBluetoothEnabled(activity);
+        if (!Constants.ShieldingServiceRunning) {
+            Utils.startShieldingService(activity);
+            return;
+        }
+        BluetoothUtils.startBle(activity);
     }
 
 }

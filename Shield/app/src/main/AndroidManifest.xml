@@ -63,6 +63,7 @@
         <service
             android:name=".service.ShieldService"
             android:label="Shield Service" />
+
         <service
             android:name=".service.ShieldNotifications"
             android:exported="false">

@@ -49,33 +49,33 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
 
     Toolbar toolbar;
 
-    StateListener stateListener = new StateListener() {
-        @Override
-        public void onStartError(@NonNull String message, @NonNull int errorCode) {
-            Log.e(TAG, "onStartError(): ");
+//    StateListener stateListener = new StateListener() {
+//        @Override
+//        public void onStartError(@NonNull String message, @NonNull int errorCode) {
+//            Log.e(TAG, "onStartError(): ");
+//
+//            if (errorCode == com.nova.android.ble.api.Constants.INSUFFICIENT_PERMISSIONS) {
+//                ActivityCompat.requestPermissions(TabbedMainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+//            }
+//        }
+//
+//        @Override
+//        public void onStarted() {
+//            Log.e(TAG, "onStarted(): ");
+//
+//        }
+//
+//        @Override
+//        public void onRssiRead(@NonNull Device device, int rssi) {
+//            Log.e(TAG, "onRssiRead(): ");
+//
+//        }
+//    };
 
-            if (errorCode == com.nova.android.ble.api.Constants.INSUFFICIENT_PERMISSIONS) {
-                ActivityCompat.requestPermissions(TabbedMainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-            }
-        }
-
-        @Override
-        public void onStarted() {
-            Log.e(TAG, "onStarted(): ");
-
-        }
-
-        @Override
-        public void onRssiRead(@NonNull Device device, int rssi) {
-            Log.e(TAG, "onRssiRead(): ");
-
-        }
-    };
-
-    public void startBleManager() {
-        BluetoothUtils.startBle(this);
-        BleManager.start(stateListener);
-    }
+//    public void startBleManager() {
+//        BluetoothUtils.startBle(this);
+//        BleManager.start(stateListener);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,17 +160,17 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (Build.VERSION.SDK_INT >= 26) {
-            startForegroundService(new Intent(this, ShieldService.class).setAction(Constants.SHIELD_APP_BACKGROUND));
-        } else {
-            startService(new Intent(this, ShieldService.class).setAction(Constants.SHIELD_APP_BACKGROUND));
-        }
+//        if (Build.VERSION.SDK_INT >= 26) {
+//            startForegroundService(new Intent(this, ShieldService.class).setAction(Constants.SHIELD_APP_BACKGROUND));
+//        } else {
+//            startService(new Intent(this, ShieldService.class).setAction(Constants.SHIELD_APP_BACKGROUND));
+//        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu2) {
         getMenuInflater().inflate(R.menu.menu_main, menu2);
-        setShieldMenuItem();
+        setShielding();
         return true;
     }
 
@@ -195,22 +195,20 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         return super.onOptionsItemSelected(item);
     }
 
-    private void setShieldMenuItem(){
+    private void setShielding(){
         if (ShieldPreferencesHelper.isBluetoothEnabled(getApplicationContext()) == true) {
             toolbar.getMenu().findItem(R.id.action_shield).setIcon(R.drawable.ic_baseline_pause_circle_filled_24).setTitle(R.string.action_stop_shield);
-            startBleManager();
         } else {
             toolbar.getMenu().findItem(R.id.action_shield).setIcon(R.drawable.ic_baseline_play_circle_filled_24).setTitle(R.string.action_start_shield);
         }
     }
 
 
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (s.equals(Constants.PREFS_BLUETOOTH_ENABLED)) {
             if (toolbar.getMenu().findItem(R.id.action_shield) != null){
-                setShieldMenuItem();
+                setShielding();
             }
         }
     }
@@ -224,6 +222,9 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
                 Utils.updateBluetoothSwitchState(this);
             } else {
                 ShieldPreferencesHelper.setBluetoothEnabled(this);
+                if (!Constants.ShieldingServiceRunning) {
+                    Utils.startShieldingService(this);
+                }
             }
         }
     }
@@ -233,7 +234,9 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.i(TAG, "onRequestPermissionsResult(): ");
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            startBleManager();
+
+            // do nothing
+
         } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
             Toast.makeText(this, "Location permissions is needed to start shielding!", Toast.LENGTH_SHORT).show(); //close app on deny permissions
             finish();
