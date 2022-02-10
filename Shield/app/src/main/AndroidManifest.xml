@@ -72,6 +72,16 @@
             </intent-filter>
         </service>
 
+        <receiver android:name=".receiver.SystemBootReceiver" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.intent.action.REBOOT"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="com.nova.android.ble.APP_KEY"
             android:value="ef583273-f9ab-4261-b5cf-056dbefe0375" />

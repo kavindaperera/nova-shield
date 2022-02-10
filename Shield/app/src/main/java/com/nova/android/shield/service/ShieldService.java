@@ -1,6 +1,7 @@
 package com.nova.android.shield.service;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,8 +16,10 @@ import com.nova.android.shield.ble.BluetoothUtils;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
+import com.nova.android.shield.ui.home.TabbedMainActivity;
 import com.nova.android.shield.utils.Constants;
 
+import static android.content.Intent.FLAG_RECEIVER_FOREGROUND;
 import static com.nova.android.shield.utils.Constants.NOTIFICATION_CHANNEL;
 
 public class ShieldService extends Service {
@@ -32,12 +35,16 @@ public class ShieldService extends Service {
 
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), ShieldConstants.drawable.shld_launcher);
 
+        Intent clickIntent = new Intent(this, TabbedMainActivity.class);
+        PendingIntent activity = PendingIntent.getActivity(this, 0,clickIntent,0);
+
         Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
                         .setContentTitle(getString(ShieldConstants.string.app_name))
                         .setTicker(getString(ShieldConstants.string.app_name))
                         .setContentText(getString(ShieldConstants.string.foreground_notification_content_title))
                         .setSmallIcon(ShieldConstants.drawable.shld)
                         .setLargeIcon(largeIcon)
+                        .setContentIntent(activity)
                         .setOngoing(true)
                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                         .setPriority(Notification.PRIORITY_MAX)

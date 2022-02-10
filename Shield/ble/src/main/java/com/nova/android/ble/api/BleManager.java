@@ -127,7 +127,10 @@ public class BleManager {
             Log.e(TAG, "stop: BleManager must be started before calling stop()");
             return false;
         }
-
+        catch (IllegalStateException stateException) {
+            Log.e(TAG, stateException.getMessage());
+            return false;
+        }
     }
 
     public BleClient getBleClient() {
