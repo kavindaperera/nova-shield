@@ -1,6 +1,7 @@
 package com.nova.android.shield.ui.home.tabs.home;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 import com.nova.android.shield.ui.settings.PermissionUtils;
+import com.nova.android.shield.utils.Constants;
 import com.nova.android.shield.utils.Utils;
 
 import butterknife.BindView;
@@ -28,7 +30,7 @@ import butterknife.OnClick;
 
 import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     private static final String TAG = "[Nova][Shield][HomeFragment]";
 
@@ -68,6 +70,7 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "onStart(): ");
+        ShieldPreferencesHelper.getSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -87,6 +90,7 @@ public class HomeFragment extends Fragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "onStop(): ");
+        ShieldPreferencesHelper.getSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -162,4 +166,10 @@ public class HomeFragment extends Fragment {
         this.shieldLoaderAnimation.setBackground(null);
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if (s.equals(Constants.PREFS_BLUETOOTH_ENABLED)) {
+            updateHomeUI(true);
+        }
+    }
 }

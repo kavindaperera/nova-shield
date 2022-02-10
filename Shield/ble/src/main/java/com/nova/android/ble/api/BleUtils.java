@@ -10,6 +10,7 @@ import android.os.Build;
 
 public class BleUtils {
 
+
     private static boolean checkHardware(Context context) {
         return context.getPackageManager().hasSystemFeature("android.hardware.bluetooth_le");
     }
@@ -32,6 +33,7 @@ public class BleUtils {
     }
 
     static void initialize(Context context) {
+        BleUtils.checkPermissions(context);
         if (!BleUtils.checkHardware(context)) {
             throw new BleException(Constants.BLE_NOT_SUPPORTED, Constants.BLE_NOT_SUPPORTED_STRING);
         }

@@ -1,17 +1,24 @@
 package com.nova.android.shield.ui.home;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -47,6 +54,9 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         public void onStartError(@NonNull String message, @NonNull int errorCode) {
             Log.e(TAG, "onStartError(): ");
 
+            if (errorCode == com.nova.android.ble.api.Constants.INSUFFICIENT_PERMISSIONS) {
+                ActivityCompat.requestPermissions(TabbedMainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+            }
         }
 
         @Override
@@ -77,6 +87,8 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
             showSplashActivity();
             return;
         }
+
+        registerReceiver(BluetoothUtils.bluetoothReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
         initView(savedInstanceState);
 
@@ -112,6 +124,11 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "onDestroy(): ");
+        try {
+            unregisterReceiver(BluetoothUtils.bluetoothReceiver);
+        } catch (Exception e) {
+            Log.e(NotificationCompat.CATEGORY_ERROR, e.getMessage());
+        }
     }
 
     private void showSplashActivity() {
@@ -215,5 +232,11 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.i(TAG, "onRequestPermissionsResult(): ");
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            startBleManager();
+        } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            Toast.makeText(this, "Location permissions is needed to start shielding!", Toast.LENGTH_SHORT).show(); //close app on deny permissions
+            finish();
+        }
     }
 }
