@@ -8,8 +8,6 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 
-import com.nova.android.ble.exception.BleException;
-
 public class BleUtils {
 
     private static boolean checkHardware(Context context) {

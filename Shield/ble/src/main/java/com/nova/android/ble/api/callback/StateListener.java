@@ -5,6 +5,8 @@ import android.bluetooth.BluetoothDevice;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
+import com.nova.android.ble.api.Device;
+
 public interface StateListener {
 
     /**
@@ -23,9 +25,9 @@ public interface StateListener {
     /**
      * Method called when the RSSI value has been read.
      *
-     * @param bluetoothDevice the target device.
+     * @param device the target device.
      * @param rssi the current RSSI value, in dBm.
      */
-    void onRssiRead(@NonNull final BluetoothDevice bluetoothDevice, @IntRange(from = -128, to = 20) final int rssi);
+    void onRssiRead(@NonNull final Device device, @IntRange(from = -128, to = 20) final int rssi);
 
 }

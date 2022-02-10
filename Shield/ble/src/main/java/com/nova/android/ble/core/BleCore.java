@@ -15,33 +15,29 @@ public class BleCore {
 
     private static final String TAG = "[Nova][Ble][BleCore]";
 
-    private SharedPreferences sharedPreferences;
-
-    private SharedPreferences.Editor editor;
-
-    private Context context;
-
+    private final SharedPreferences sharedPreferences;
+    private final SharedPreferences.Editor editor;
+    private final Context context;
     private StateListener stateListener;
-
+    private BleReceiver bleReceiver;
 
     public BleCore(Context context) {
         this.context = context;
-        this.sharedPreferences = context.getSharedPreferences(BleCore.PREFS_NAME, 0);;
+        this.sharedPreferences = context.getSharedPreferences(BleCore.PREFS_NAME, 0);
         this.editor = sharedPreferences.edit();
+        this.bleReceiver = new BleReceiver(context);
     }
 
     public void initializeServices() {
         Log.d(TAG, "initializeServices(): ");
-
+        this.bleReceiver.registerReceiver(this.context);
+        this.bleReceiver.startServer();
+        this.bleReceiver.startDiscovery();
     }
 
     public void shutdownServices() {
         Log.d(TAG, "shutdownServices():");
 
-    }
-
-    public void setStateListener(StateListener stateListener) {
-        this.stateListener = stateListener;
     }
 
     public SharedPreferences getSharedPreferences() {
@@ -58,6 +54,10 @@ public class BleCore {
 
     public StateListener getStateListener() {
         return this.stateListener;
+    }
+
+    public void setStateListener(StateListener stateListener) {
+        this.stateListener = stateListener;
     }
 
 }

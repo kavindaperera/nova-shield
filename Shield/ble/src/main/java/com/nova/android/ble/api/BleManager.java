@@ -14,10 +14,8 @@ import java.util.UUID;
 
 public class BleManager {
 
-    public static boolean debug = true;
-
     private static final String TAG = "[Nova][Ble][BleManager]";
-
+    public static boolean debug = true;
     static BleManager INSTANCE;
 
     private BleCore bleCore;
@@ -26,6 +24,11 @@ public class BleManager {
 
     private Context context;
 
+    private BleManager(Builder builder) {
+        this.context = builder.context;
+        this.bleClient = builder.bleClient;
+    }
+
     public static BleManager getInstance() {
         if (INSTANCE != null) {
             return INSTANCE;
@@ -33,21 +36,15 @@ public class BleManager {
         throw new IllegalStateException("BleManager must be initialized before trying to reference it.");
     }
 
-
     private static void createInstance(BleManager bleManager) {
         INSTANCE = bleManager;
     }
 
-    private BleManager (Builder builder) {
-        this.context = builder.context;
-        this.bleClient = builder.bleClient;
+    public static void initialize(Context context, UUID uuid) {
+        BleManager.initialize(context, (String) null, (UUID) uuid);
     }
 
-    public static void initialize (Context context) {
-        BleManager.initialize(context, (String) null,  (UUID) null);
-    }
-
-    private static void initialize(Context context, @Nullable String providedApiKey, UUID uuid)  {
+    private static void initialize(Context context, @Nullable String providedApiKey, UUID uuid) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(BleCore.PREFS_NAME, 0);
         String loadApiKey = BleManager.loadAppKey(context, providedApiKey);
         String string = sharedPreferences.getString(BleCore.PREFS_USER_UUID, (String) null);
@@ -59,22 +56,23 @@ public class BleManager {
 
         try {
             String uuid2 = uuid == null ? UUID.randomUUID().toString() : uuid.toString();
-            BleClient meshifyClient = new BleClient.Builder(context).setAppKey(loadApiKey).setUserUuid(uuid2).build();
-            BleManager.create(context, meshifyClient);
+            BleClient bleClient = new BleClient.Builder(context).setAppKey(loadApiKey).setUserUuid(uuid2).build();
+            BleManager.create(context, bleClient);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
 
     }
 
-    public static void create(Context context, BleClient meshifyClient) {
+    public static void create(Context context, BleClient bleClient) {
         synchronized (BleManager.class) {
-            createInstance(new Builder(context, meshifyClient).build());
+            createInstance(new Builder(context, bleClient).build());
         }
     }
 
-    private static String loadAppKey(Context context,@Nullable String providedApiKey) throws IllegalArgumentException {
-        block4: {
+    private static String loadAppKey(Context context, @Nullable String providedApiKey) throws IllegalArgumentException {
+        block4:
+        {
             SharedPreferences sharedPreferences = context.getSharedPreferences(BuildConfig.LIBRARY_PACKAGE_NAME, 0);
             if (providedApiKey == null) {
                 try {
@@ -84,14 +82,39 @@ public class BleManager {
                         throw new IllegalArgumentException("Missing UUID KEY ");
                     }
                     break block4;
-                }
-                catch (Exception exception) {
+                } catch (Exception exception) {
                     throw new IllegalArgumentException("Missing or incorrect UUID KEY");
                 }
             }
             sharedPreferences.edit().putString(BleCore.PREFS_APP_KEY, providedApiKey).apply();
         }
         return providedApiKey;
+    }
+
+    public static void start(@Nullable StateListener stateListener) {
+        try {
+            if (getInstance().getBleCore() == null) {
+                BleUtils.initialize(getInstance().getContext());
+                getInstance().setBleCore(new BleCore(getInstance().getContext()));
+                getInstance().getBleCore().setStateListener(stateListener);
+                getInstance().getBleCore().initializeServices();
+                if (stateListener != null) {
+                    stateListener.onStarted();
+                }
+            }
+        } catch (NullPointerException nullPointerException) {
+            if (stateListener != null) {
+                stateListener.onStartError(Constants.INITIALIZATION_ERROR_STRING, Constants.INITIALIZATION_ERROR);
+            } else {
+                nullPointerException.printStackTrace();
+            }
+        } catch (BleException bleException) {
+            if (stateListener != null) {
+                stateListener.onStartError(bleException.getMessage(), bleException.getErrorCode());
+            } else {
+                bleException.printStackTrace();
+            }
+        }
     }
 
     public BleClient getBleClient() {
@@ -104,18 +127,6 @@ public class BleManager {
 
     public void setBleCore(BleCore bleCore) {
         this.bleCore = bleCore;
-    }
-
-    public static void start(@Nullable StateListener stateListener) {
-        if (getInstance().getBleCore() == null) {
-            BleUtils.initialize(getInstance().getContext());
-            getInstance().setBleCore(new BleCore(getInstance().getContext()));
-            getInstance().getBleCore().setStateListener(stateListener);
-            getInstance().getBleCore().initializeServices();
-            if (stateListener != null) {
-                stateListener.onStarted();
-            }
-        }
     }
 
     public Context getContext() {

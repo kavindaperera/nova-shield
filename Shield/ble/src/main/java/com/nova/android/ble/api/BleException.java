@@ -1,4 +1,4 @@
-package com.nova.android.ble.exception;
+package com.nova.android.ble.api;
 
 public class BleException extends RuntimeException {
 
