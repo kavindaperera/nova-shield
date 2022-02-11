@@ -14,12 +14,15 @@ import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldApp;
 import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
+import com.nova.android.shield.service.TensorFlowService;
 import com.nova.android.shield.utils.Constants;
 import com.nova.android.shield.utils.TimeUtils;
 import com.nova.android.shield.utils.Utils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class BluetoothUtils {
 
@@ -63,7 +66,8 @@ public class BluetoothUtils {
     public static final StateListener stateListener = new StateListener() {
         @Override
         public void onStartError(@NonNull String message, @NonNull int errorCode) {
-            Log.e(TAG, "onStartError(): ");
+            Log.e(TAG, "onStartError(): " + message);
+
 
         }
 
@@ -79,19 +83,28 @@ public class BluetoothUtils {
 
             String contactUuid = device.getUserId();
             int contactRssi = rssi;
+            int notifLevel = 2;
 
-            if (checkRssiThreshold(contactRssi) ){
+            Context mContext = ShieldApp.getInstance();
 
-                Constants.scanResultsUUIDs.add(contactUuid);
-                Constants.scanResultsUUIDsRSSIs.put(contactUuid, contactRssi);
-                Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
+            if (Constants.scanResultsUUIDs != null && BluetoothUtils.checkRssiThreshold(contactRssi) ){
+                if (Constants.scanResultsUUIDs.contains(contactUuid) && (Constants.scanResultsUUIDsRSSIs.get(contactUuid) >= contactRssi)){
+                        notifLevel = 1;
+                        Constants.scanResultsUUIDsRSSIs.put(contactUuid, contactRssi);
+                        Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
+                } else {
+                    Constants.scanResultsUUIDs.add(contactUuid);
+                    Constants.scanResultsUUIDsRSSIs.put(contactUuid, contactRssi);
+                    Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
 
-                Context mContext = ShieldApp.getInstance();
+                    // TODO - write to database
 
-                Utils.sendNotification((Context) mContext, mContext.getString(ShieldConstants.string.distance_text), mContext.getString(ShieldConstants.string.distance_text2), 1);
+                }
+
+                //show notification
+                Utils.sendNotification((Context) mContext, mContext.getString(ShieldConstants.string.distance_text), mContext.getString(ShieldConstants.string.distance_text2), notifLevel);
 
             }
-
         }
     };
 
@@ -116,6 +129,18 @@ public class BluetoothUtils {
             return true;
         }
         return false;
+    }
+
+    public static void writeBleRecords(Context context) {
+        if (Constants.scanResultsUUIDs != null && Constants.scanResultsUUIDsRSSIs != null && Constants.scanResultsUUIDsTimes != null) {
+            Iterator<String> it = Constants.scanResultsUUIDs.iterator();
+            while (it.hasNext()) {
+                String uuid = it.next();
+                if (Constants.scanResultsUUIDsRSSIs.containsKey(uuid) && Constants.scanResultsUUIDsTimes.containsKey(uuid)) {
+                    Utils.bleRecordToDatabase(context, uuid, Constants.scanResultsUUIDsRSSIs.get(uuid).intValue(), Constants.scanResultsUUIDsTimes.get(uuid).longValue());
+                }
+            }
+        }
     }
 
 }

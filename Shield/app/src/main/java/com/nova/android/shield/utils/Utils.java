@@ -15,7 +15,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.nova.android.shield.R;
+import com.nova.android.shield.ble.BleRecordAsyncOperation;
 import com.nova.android.shield.ble.BluetoothUtils;
+import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldApp;
 import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
@@ -90,10 +92,10 @@ public class Utils {
 
             switch (type){
                 case 1:{
-                    notifBuilder.setColor(ContextCompat.getColor(context, R.color.verify_error)); // too close warning
+                    notifBuilder.setColor(ContextCompat.getColor(context, R.color.verify_error)); // red warning
                 }
                 case 2:{
-                    // do nothing
+                    notifBuilder.setColor(ContextCompat.getColor(context, R.color.fui_bgAnonymous)); // yellow warning
                 }
             }
 
@@ -105,7 +107,10 @@ public class Utils {
             ((NotificationManager) ShieldApp.getInstance().getSystemService(Context.NOTIFICATION_SERVICE)).notify(1, notifBuilder.build());
 
         }
+    }
 
+    public static void bleRecordToDatabase(Context context, String uuid, int rssi, long timestamp) {
+        new BleRecordAsyncOperation(context, uuid, rssi, timestamp).execute(new Void[0]);
     }
 
 }
