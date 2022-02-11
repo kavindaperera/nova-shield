@@ -7,6 +7,8 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelUuid;
 
 import com.nova.android.ble.api.BleManager;
@@ -22,15 +24,22 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class BluetoothLeDiscovery extends Discovery {
 
     private static String TAG = "[Nova][Ble][BluetoothLeDiscovery]";
-    private final String bleUuid = BluetoothUtils.getHashedBluetoothLeUuid(false).toString();   // j
-    private final String btUuid = BluetoothUtils.getHashedBluetoothUuid(false).toString();      // k
-    private final String bleUuid2 = BluetoothUtils.getHashedBluetoothLeUuid(BleManager.getInstance().getBleClient().getAppKey());          // l
+
+    private final String bleUuid = BluetoothUtils.getHashedBluetoothLeUuid(false).toString();
+    private final String btUuid = BluetoothUtils.getHashedBluetoothUuid(false).toString();
+    private final String bleUuid2 = BluetoothUtils.getHashedBluetoothLeUuid(BleManager.getInstance().getBleClient().getAppKey());
+
     private BluetoothAdapter bluetoothAdapter;
     private HashMap<String, String> discoveredDevices;
     private HashMap<String, ScheduledFuture> scheduledDiscoveredDevices;
@@ -53,55 +62,61 @@ public class BluetoothLeDiscovery extends Discovery {
     @Override
     public void startDiscovery(Context context) {
         Log.i(TAG, "startDiscovery ");
-        if (BluetoothLeDiscovery.this.bluetoothAdapter != null && BluetoothLeDiscovery.this.bluetoothAdapter.isEnabled()) {
-            if (BluetoothLeDiscovery.this.bluetoothAdapter.getBluetoothLeScanner() == null) {
-                Log.w(TAG, "getBluetoothLeScanner() was null, sleeping for 300 ms.");
-                try {
-                    Thread.sleep(300L);
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
+
+        this.deviceFlowable = Flowable.create(new FlowableOnSubscribe<Device>() {
+            @Override
+            public void subscribe(@NonNull FlowableEmitter<Device> emitter) throws Exception {
+                if (BluetoothLeDiscovery.this.bluetoothAdapter != null && BluetoothLeDiscovery.this.bluetoothAdapter.isEnabled()) {
+                    if (BluetoothLeDiscovery.this.bluetoothAdapter.getBluetoothLeScanner() == null) {
+                        Log.w(TAG, "getBluetoothLeScanner() was null, sleeping for 300 ms.");
+                        try {
+                            Thread.sleep(300L);
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        }
+                    }
+                    try {
+                        BluetoothLeDiscovery.this.bluetoothAdapter.getBluetoothLeScanner().startScan(
+                                BluetoothUtils.getBluetoothLeScanFilter(),
+                                BluetoothUtils.getScanSettings(),
+                                BluetoothLeDiscovery.this.scanCallback = new ScanCallback() {
+                                    @Override
+                                    public void onScanResult(int callbackType, ScanResult result) {
+                                        super.onScanResult(callbackType, result);
+                                        BluetoothLeDiscovery.this.onScanResultAction(result, (FlowableEmitter<Device>) emitter);
+                                    }
+
+                                    @Override
+                                    public void onBatchScanResults(List<ScanResult> results) {
+                                        super.onBatchScanResults(results);
+
+                                    }
+
+                                    @Override
+                                    public void onScanFailed(int errorCode) {
+                                        super.onScanFailed(errorCode);
+                                        BluetoothLeDiscovery.this.scanFailedAction(errorCode);
+                                    }
+                                });
+
+                        BluetoothLeDiscovery.this.setDiscoveryRunning(true);
+
+                    } catch (IllegalStateException illegalStateException) {
+                        Log.e(TAG, "error: " + illegalStateException.getMessage());
+                    }
+
                 }
             }
-            try {
-                BluetoothLeDiscovery.this.bluetoothAdapter.getBluetoothLeScanner().startScan(
-                        BluetoothUtils.getBluetoothLeScanFilter(),
-                        BluetoothUtils.getScanSettings(),
-                        BluetoothLeDiscovery.this.scanCallback = new ScanCallback() {
-                            @Override
-                            public void onScanResult(int callbackType, ScanResult result) {
-                                Log.e(TAG, "onScanResult ");
-                                super.onScanResult(callbackType, result);
-                                BluetoothLeDiscovery.this.onScanResultAction(result);
-                            }
+        }, BackpressureStrategy.BUFFER);
 
-                            @Override
-                            public void onBatchScanResults(List<ScanResult> results) {
-                                Log.e(TAG, "onBatchScanResults: ");
-                                super.onBatchScanResults(results);
+        super.startDiscovery(context);
 
-                            }
+        Completable.timer(60L, TimeUnit.SECONDS).subscribe(() -> {
+            Log.i(TAG, "startDiscovery: resetting");
+            this.stopDiscovery(null);
+            this.startDiscovery(null);
+        }, throwable -> Log.e(TAG, "error: " + throwable.getMessage()));
 
-                            @Override
-                            public void onScanFailed(int errorCode) {
-                                Log.e(TAG, "onScanFailed: ");
-                                super.onScanFailed(errorCode);
-                                BluetoothLeDiscovery.this.scanFailedAction(errorCode);
-                            }
-                        });
-
-                BluetoothLeDiscovery.this.setDiscoveryRunning(true);
-
-            } catch (IllegalStateException illegalStateException) {
-                Log.e(TAG, "error: " + illegalStateException.getMessage());
-            }
-
-            super.startDiscovery(context);
-            Completable.timer(60L, TimeUnit.SECONDS).subscribe(() -> {
-                Log.i(TAG, "startDiscovery: resetting");
-                this.stopDiscovery(null);
-                this.startDiscovery(null);
-            }, throwable -> Log.e(TAG, "error: " + throwable.getMessage()));
-        }
     }
 
     @SuppressLint("MissingPermission")
@@ -111,19 +126,25 @@ public class BluetoothLeDiscovery extends Discovery {
         this.disposable.clear();
         if (this.bluetoothAdapter != null && this.scanCallback != null && this.bluetoothAdapter.isEnabled() && this.bluetoothAdapter.getBluetoothLeScanner() != null) {
             Log.i(TAG, "stopDiscovery: stopping scan");
+            try {
+                this.bluetoothAdapter.getBluetoothLeScanner().stopScan(this.scanCallback);
+            } catch (IllegalStateException illegalStateException) {
+                Log.w(TAG, "stopDiscovery: tried to stop discovery but Bluetooth was already off");
+            }
         } else {
-            // TODO
+            Log.w(TAG, "BluetoothAdapter or scanCallback were null!");
         }
         this.setDiscoveryRunning(false);
     }
 
     @SuppressLint("MissingPermission")
-    private void onScanResultAction(ScanResult scanResult) {
-        Log.e(TAG, "onScanResultAction ");
+    private void onScanResultAction(ScanResult scanResult, FlowableEmitter<Device> flowableEmitter) {
+        Log.i(TAG, "onScanResultAction ");
         String string = this.processScanResult(scanResult);
         if (string != null && this.bluetoothAdapter != null && this.bluetoothAdapter.isEnabled()) {
             Device device = this.processPresenceResult(string, scanResult.getDevice(), scanResult.getRssi());
             this.addToScheduledFuture(device, string);
+//            flowableEmitter.onNext(device);
         }
     }
 
@@ -184,8 +205,11 @@ public class BluetoothLeDiscovery extends Discovery {
     }
 
     private void addToScheduledFuture(Device device, String string) {
-        Log.i(TAG, "Device addToScheduledFuture " + device + " userUuid: " + string);
-        //TODO
+        this.onRssiRead(device, device.getRssi());
+    }
+
+    private void onRssiRead(Device device, int rssi ) {
+        new Handler(Looper.getMainLooper()).post(() -> BleManager.getInstance().getBleCore().getStateListener().onRssiRead(device, rssi));
     }
 
     private void scanFailedAction(int errorCode) {

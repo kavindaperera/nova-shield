@@ -21,6 +21,7 @@ public class BleAdvertiseCallback extends AdvertiseCallback {
         Log.i(TAG, "ADVERTISE_RUNNING | state = 3 \n" + settingsInEffect.toString() );
     }
 
+
     @Override
     public void onStartFailure(int errorCode) {
         super.onStartFailure(errorCode);

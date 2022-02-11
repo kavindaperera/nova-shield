@@ -22,7 +22,6 @@ public class BluetoothController {
     private static final String TAG = "[Nova][Ble][BluetoothController]";
 
     public static int state = 0; // BLE Advertising | state:0 => stopped |  state:1 => failed |  state3 => running
-    private static GattManager gattManager;
     private final Context context;
     private boolean isBLE = true; // BLE support check
     private BluetoothLeDiscovery bluetoothLeDiscovery;
@@ -43,7 +42,7 @@ public class BluetoothController {
             Log.e(TAG, "Bluetooth Low Energy not supported.");
             throw new BleException(0, "Bluetooth Low Energy not supported.");
         } else {
-            gattManager = new GattManager();
+            // do nothing
         }
     }
 
@@ -54,10 +53,6 @@ public class BluetoothController {
 
     public Context getContext() {
         return this.context;
-    }
-
-    public static GattManager getGattManager() {
-        return gattManager;
     }
 
 
@@ -132,7 +127,6 @@ public class BluetoothController {
             }
             String userUuid = BleManager.getInstance().getBleClient().getUserUuid();
             this.startAdvertising(userUuid);
-
         } else {
             //empty
             state = 1;
@@ -237,10 +231,8 @@ public class BluetoothController {
     }
 
     public void stopDiscovery(Context context) {
-
         if (this.bluetoothLeDiscovery != null ){
             this.bluetoothLeDiscovery.stopDiscovery(context);
         }
-
     }
 }

@@ -67,7 +67,7 @@ public class BluetoothUtils {
 
         @Override
         public void onRssiRead(@NonNull Device device, int rssi) {
-            Log.e(TAG, "onRssiRead(): ");
+            Log.e(TAG, "onRssiRead(): " + "| uuid: " + device.getUserId() + " | RSSI: " + rssi);
 
         }
     };

@@ -23,8 +23,8 @@ public abstract class Discovery {
 
     public void startDiscovery(Context context) {
         Log.d(TAG, "startDiscovery:");
-//        this.disposableSubscriber = new ConnectionSubscriber();
-//        this.deviceFlowable.subscribe(this.disposableSubscriber); //subscribe to the connection
+        this.disposableSubscriber = new ConnectionSubscriber();
+        this.deviceFlowable.subscribe(this.disposableSubscriber); //subscribe to the connection
     }
 
     public void stopDiscovery(Context context) {

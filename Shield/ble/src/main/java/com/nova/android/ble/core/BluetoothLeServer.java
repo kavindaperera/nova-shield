@@ -81,7 +81,7 @@ public class BluetoothLeServer extends ThreadServer<BluetoothDevice, BluetoothGa
         BluetoothGattCharacteristic bluetoothGattCharacteristic = this.bluetoothGattService.getCharacteristic(BluetoothUtils.getCharacteristicUuid());
         if (bluetoothGattCharacteristic == null) {
             BluetoothGattCharacteristic bluetoothGattCharacteristic2 = new BluetoothGattCharacteristic(BluetoothUtils.getCharacteristicUuid(), 26, 17);
-            bluetoothGattCharacteristic2.addDescriptor(new BluetoothGattDescriptor(BluetoothUtils.baseUuid, 16));
+            bluetoothGattCharacteristic2.addDescriptor(new BluetoothGattDescriptor(BluetoothUtils.serviceUuid, 16));
             bluetoothGattCharacteristic2.setValue(arrby);
             if (this.bluetoothGattService != null) {
                 this.bluetoothGattService.addCharacteristic(bluetoothGattCharacteristic2);

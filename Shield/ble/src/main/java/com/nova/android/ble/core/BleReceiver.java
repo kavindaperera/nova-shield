@@ -30,15 +30,11 @@ public class BleReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         this.context = context;
         onReceiveAction(context, intent);
-
-
-
     }
+
     private void onReceiveAction(Context context, Intent intent) {
         this.bluetoothController.onReceiveAction(intent, context);
-
     }
-
 
     private void createBluetoothController(Context context) throws BleException {
         this.bluetoothController = new BluetoothController(context);
