@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/qr_contact_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <FrameLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:id="@+id/qr_card"
+            android:background="@drawable/qr_contact_card_background"
+            android:paddingBottom="36dp"
+            android:layout_width="292dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp">
+            <FrameLayout
+                android:id="@+id/qr_code_container"
+                android:background="@drawable/qr_code_scan_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:id="@+id/qrOutput"
+                    android:adjustViewBounds="true"/>
+            </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <TextView
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/prompt"
+        android:text="@string/placeholder_qr_code_prompt"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="312dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:lineSpacingExtra="2dp"/>
+
+</LinearLayout>

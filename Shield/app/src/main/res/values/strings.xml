@@ -91,5 +91,7 @@
     <string name="text_notification_1">Based on your contact history, you might have been exposed to a  COVID-19 patient</string>
     <string name="text_notification_2">Please self-quarantine.</string>
     <string name="dismiss_text">Dismiss</string>
+    <string name="placeholder_qr_code">QR Code</string>
+    <string name="placeholder_qr_code_prompt">Your QR code is private. If you share it with someone they can scan it with their Shield camera to add you as a close friend.</string>
 
 </resources>

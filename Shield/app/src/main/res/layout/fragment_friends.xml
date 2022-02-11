@@ -71,7 +71,7 @@
             android:layout_marginBottom="11dp">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fabGif"
+            android:id="@+id/fabShowBarcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_label="Display QR Code"

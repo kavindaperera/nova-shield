@@ -5,4 +5,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="qr_contact_card_background_corner_radius">8dp</dimen>
 </resources>

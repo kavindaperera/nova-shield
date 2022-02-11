@@ -49,34 +49,6 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
 
     Toolbar toolbar;
 
-//    StateListener stateListener = new StateListener() {
-//        @Override
-//        public void onStartError(@NonNull String message, @NonNull int errorCode) {
-//            Log.e(TAG, "onStartError(): ");
-//
-//            if (errorCode == com.nova.android.ble.api.Constants.INSUFFICIENT_PERMISSIONS) {
-//                ActivityCompat.requestPermissions(TabbedMainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-//            }
-//        }
-//
-//        @Override
-//        public void onStarted() {
-//            Log.e(TAG, "onStarted(): ");
-//
-//        }
-//
-//        @Override
-//        public void onRssiRead(@NonNull Device device, int rssi) {
-//            Log.e(TAG, "onRssiRead(): ");
-//
-//        }
-//    };
-
-//    public void startBleManager() {
-//        BluetoothUtils.startBle(this);
-//        BleManager.start(stateListener);
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,11 +132,6 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        if (Build.VERSION.SDK_INT >= 26) {
-//            startForegroundService(new Intent(this, ShieldService.class).setAction(Constants.SHIELD_APP_BACKGROUND));
-//        } else {
-//            startService(new Intent(this, ShieldService.class).setAction(Constants.SHIELD_APP_BACKGROUND));
-//        }
     }
 
     @Override

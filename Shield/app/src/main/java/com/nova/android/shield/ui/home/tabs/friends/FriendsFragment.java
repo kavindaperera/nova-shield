@@ -1,6 +1,7 @@
 package com.nova.android.shield.ui.home.tabs.friends;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FriendsFragment extends Fragment {
 
@@ -23,7 +29,8 @@ public class FriendsFragment extends Fragment {
 
     private FriendsViewModel friendsViewModel;
 
-    SwipeRefreshLayout swipeLayout;
+    @BindView(R.id.fabShowBarcode)
+    FloatingActionButton fabShowBarcode;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -43,6 +50,8 @@ public class FriendsFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_friends, container, false);
 
+        ButterKnife.bind(this, root);
+
         final TextView textView = root.findViewById(R.id.addFriendsDescription);
 
         friendsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -54,6 +63,12 @@ public class FriendsFragment extends Fragment {
 
         return root;
     }
+
+    @OnClick(R.id.fabShowBarcode)
+    public void showBarcode(View v) {
+        startActivity(new Intent(v.getContext(), ShowBarcodeActivity.class));
+    }
+
 
     @Override
     public void onStart() {

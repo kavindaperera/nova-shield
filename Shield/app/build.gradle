@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'net.danlew:android.joda:2.10.12.2'
     implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
     implementation project(path: ':ble')
 
     implementation 'com.jakewharton:butterknife:10.2.3'
