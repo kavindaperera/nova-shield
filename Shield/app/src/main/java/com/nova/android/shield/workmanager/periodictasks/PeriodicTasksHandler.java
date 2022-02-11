@@ -43,9 +43,7 @@ public class PeriodicTasksHandler {
     }
 
     private void startWork() {
-
         Log.i(TAG, "startWork(): ");
-
         for (Map.Entry<String, PeriodicWorkRequest> entry : this.periodicWorkRequests.entrySet()) {
             WorkManager instance = WorkManager.getInstance(this.context);
             Log.i(TAG, "startWork(): " + entry.getKey() + " " + entry.getValue().getId());

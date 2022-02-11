@@ -13,8 +13,11 @@ public class ShieldConstants {
         public static final int onboarding_title_1 = R.string.onboarding_title_1;
         public static final int onboarding_title_2 = R.string.onboarding_title_2;
         public static final int dummy_text = R.string.dummy_text;
+        public static final int distance_text = R.string.distance_text;
+        public static final int distance_text2 = R.string.distance_text2;
         public static final int onboarding_description_1 = R.string.onboarding_description_1;
         public static final int onboarding_description_2 = R.string.onboarding_description_2;
+        public static final int exposed_text = R.string.exposed_text;
         public static final int url_tos = R.string.url_tos;
         public static final int url_privacy = R.string.url_privacy;
     }

@@ -145,8 +145,8 @@ public class BluetoothUtils {
             builder.setNumOfMatches(1);
         }
 //        builder.setScanMode(0); // ENERGY_SAVER
-        builder.setScanMode(1); // SCAN_MODE_BALANCED
-//        builder.setScanMode(2); // HIGH_PERFORMANCE
+//        builder.setScanMode(1); // SCAN_MODE_BALANCED
+        builder.setScanMode(2); // HIGH_PERFORMANCE
         return builder.build();
     }
 
@@ -171,8 +171,8 @@ public class BluetoothUtils {
     public static AdvertiseSettings getAdvertiseSettings() {
         AdvertiseSettings.Builder builder = new AdvertiseSettings.Builder();
 //        builder.setAdvertiseMode(0); //ENERGY_SAVER
-        builder.setAdvertiseMode(1); // MODE_BALANCED
-//        builder.setAdvertiseMode(2); //HIGH_PERFORMANCE
+//        builder.setAdvertiseMode(1); // MODE_BALANCED
+        builder.setAdvertiseMode(2); //HIGH_PERFORMANCE
         builder.setConnectable(true);
         builder.setTimeout(0);
         return builder.build();

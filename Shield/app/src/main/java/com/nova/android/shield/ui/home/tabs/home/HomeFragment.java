@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.github.clans.fab.FloatingActionButton;
 import com.nova.android.ble.api.BleManager;
 import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;

@@ -11,9 +11,12 @@ import com.nova.android.ble.api.BleManager;
 import com.nova.android.ble.api.Device;
 import com.nova.android.ble.api.callback.StateListener;
 import com.nova.android.shield.logs.Log;
+import com.nova.android.shield.main.ShieldApp;
+import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 import com.nova.android.shield.utils.Constants;
 import com.nova.android.shield.utils.TimeUtils;
+import com.nova.android.shield.utils.Utils;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,9 +79,19 @@ public class BluetoothUtils {
 
             String contactUuid = device.getUserId();
             int contactRssi = rssi;
-            Constants.scanResultsUUIDs.add(contactUuid);
-            Constants.scanResultsUUIDsRSSIs.put(contactUuid, contactRssi);
-            Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
+
+            if (checkRssiThreshold(contactRssi) ){
+
+                Constants.scanResultsUUIDs.add(contactUuid);
+                Constants.scanResultsUUIDsRSSIs.put(contactUuid, contactRssi);
+                Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
+
+                Context mContext = ShieldApp.getInstance();
+
+                Utils.sendNotification((Context) mContext, mContext.getString(ShieldConstants.string.distance_text), mContext.getString(ShieldConstants.string.distance_text2), 1);
+
+            }
+
         }
     };
 
@@ -95,11 +108,14 @@ public class BluetoothUtils {
         BleManager.stop();
     }
 
-    private static boolean checkRssiThreshold() {
+    private static boolean checkRssiThreshold(int rssi) {
 
         //pass to machine learning model
 
-        return true;
+        if (rssi >= -82) {
+            return true;
+        }
+        return false;
     }
 
 }

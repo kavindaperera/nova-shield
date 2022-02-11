@@ -43,4 +43,12 @@ public class ShieldPreferencesHelper {
         return  UUID.fromString(getSharedPreferences(context).getString(Constants.PREFS_USER_UUID, null));
     }
 
+    public static boolean isNotificationEnabled(Context context) {
+        return getSharedPreferences(context).getBoolean(Constants.PREFS_NOTIFICATION_ENABLED, false);
+    }
+
+    public static void setNotificationEnabled(Context context, boolean val) {
+        getSharedPreferences(context).edit().putBoolean(Constants.PREFS_NOTIFICATION_ENABLED, val).apply();
+    }
+
 }

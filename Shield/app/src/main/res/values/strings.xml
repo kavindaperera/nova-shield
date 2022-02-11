@@ -12,10 +12,14 @@
     <string name="disconnect">Disconnect</string>
     <string name="done">Done</string>
     <string name="dummy_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+    <string name="exposed_text">You may have been exposed to a CVOID-19 patient</string>
+    <string name="exposed_text2">Please contact your healthcare professional.</string>
     <string name="foreground_notification_action_stop">Stop</string>
     <string name="foreground_notification_content_title">Shield is now running in the background</string>
     <string name="invite">Invite Friends</string>
     <string name="is_nearby">Nearby</string>
+    <string name="distance_text">Warning</string>
+    <string name="distance_text2">Please maintain your distance.</string>
     <string name="message_date_yesterday">Yesterday</string>
     <string name="notification_sound">Notification sound</string>
     <string name="onboarding_title_1">Welcome to Shield!</string>

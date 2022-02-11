@@ -32,9 +32,5 @@ public class Constants {
     public static HashMap<String, Integer> scanResultsUUIDsRSSIs;
     public static HashMap<String, Long> scanResultsUUIDsTimes;
     public static boolean ShieldingServiceRunning = false;
-    public static final String SHIELD_APP_BACKGROUND = "com.nova.android.shield.main.service.background";
-    public static final String SHIELD_APP_FOREGROUND = "com.nova.android.shield.main.service.foreground";
-    public static final String SHIELD_DEVICE = "shieldDevice";
-    public static final String SHIELD_STOP = "com.nova.android.shield.main.service.stop";
     public static int SPLASH_DISPLAY_DURATION = 1500;
 }
