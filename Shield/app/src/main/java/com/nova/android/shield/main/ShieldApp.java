@@ -12,9 +12,11 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nova.android.shield.BuildConfig;
 import com.nova.android.shield.auth.ShieldSession;
+import com.nova.android.shield.service.TensorFlowService;
 import com.nova.android.shield.utils.Constants;
 import com.nova.android.shield.workmanager.periodictasks.PeriodicTasksHandler;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class ShieldApp extends Application {
@@ -51,6 +53,12 @@ public class ShieldApp extends Application {
         ShieldSession.loadSession(this);
 
         new PeriodicTasksHandler(this).initializeAllPeriodicRequests(); // create task work manager
+
+        try {
+            TensorFlowService.initialize(this);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
 
     }
 
