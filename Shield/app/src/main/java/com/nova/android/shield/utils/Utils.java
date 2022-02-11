@@ -14,8 +14,8 @@ import com.nova.android.shield.service.ShieldService;
 
 public class Utils {
     public static boolean hasBlePermissions(Context context) { // check for ble permissions
-        if (!(context == null || Constants.blePermissions == null)) {
-            for (String permission : Constants.blePermissions) {
+        if (!(context == null || Constants.BLE_PERMISSIONS == null)) {
+            for (String permission : Constants.BLE_PERMISSIONS) {
                 if (ActivityCompat.checkSelfPermission(context, permission) != 0) {
                     return false;
                 }
@@ -56,5 +56,6 @@ public class Utils {
         BluetoothUtils.stopBle(activity);
         ShieldPreferencesHelper.setBluetoothEnabled(activity, false);
     }
+
 
 }

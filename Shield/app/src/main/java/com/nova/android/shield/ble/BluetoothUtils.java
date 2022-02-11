@@ -12,6 +12,11 @@ import com.nova.android.ble.api.Device;
 import com.nova.android.ble.api.callback.StateListener;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
+import com.nova.android.shield.utils.Constants;
+import com.nova.android.shield.utils.TimeUtils;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class BluetoothUtils {
 
@@ -69,16 +74,32 @@ public class BluetoothUtils {
         public void onRssiRead(@NonNull Device device, int rssi) {
             Log.e(TAG, "onRssiRead(): " + "| uuid: " + device.getUserId() + " | RSSI: " + rssi);
 
+            String contactUuid = device.getUserId();
+            int contactRssi = rssi;
+            Constants.scanResultsUUIDs.add(contactUuid);
+            Constants.scanResultsUUIDsRSSIs.put(contactUuid, contactRssi);
+            Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
         }
     };
 
     public static void startBle(Context context) {
+        Constants.scanResultsUUIDs = new HashSet<>();
+        Constants.scanResultsUUIDsRSSIs = new HashMap<>();
+        Constants.scanResultsUUIDsTimes = new HashMap<>();
+
         BleManager.initialize(context, ShieldPreferencesHelper.getUserUuid(context));
         BleManager.start(stateListener);
     }
 
     public static void stopBle(Context context) {
         BleManager.stop();
+    }
+
+    private static boolean checkRssiThreshold() {
+
+        //pass to machine learning model
+
+        return true;
     }
 
 }
