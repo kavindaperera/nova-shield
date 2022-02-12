@@ -93,5 +93,6 @@
     <string name="dismiss_text">Dismiss</string>
     <string name="placeholder_qr_code">QR Code</string>
     <string name="placeholder_qr_code_prompt">Your QR code is private. If you share it with someone they can scan it with their Shield camera to add you as a close friend.</string>
+    <string name="action_share_barcode">Share</string>
 
 </resources>

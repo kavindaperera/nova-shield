@@ -22,6 +22,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
     <style name="Theme.Shield.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Shield.PopupOverlay" parent="ThemeOverlay.AppCompat.DayNight" />

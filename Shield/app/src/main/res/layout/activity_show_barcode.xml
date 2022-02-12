@@ -17,6 +17,7 @@
             android:id="@+id/show_qr_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
             app:popupTheme="@style/Theme.Shield.PopupOverlay"
             app:title="@string/placeholder_qr_code" />
     </com.google.android.material.appbar.AppBarLayout>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:gravity="center"
-    android:orientation="vertical"
     android:background="@drawable/gradient_background"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,15 +15,13 @@
         android:scaleType="centerCrop" />
 
     <ImageView
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:outlineAmbientShadowColor="@color/colorPrimaryDark"
         android:forceDarkAllowed="false"
-        android:layout_width="250sp"
-        android:layout_height="match_parent"
-        android:src="@drawable/shield"
-        android:elevation="2dp"
-        android:tint="@color/colorAccent"
-       />
-
+        android:layout_width="120sp"
+        android:layout_height="120sp"
+        android:src="@drawable/splash_from_nova"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:elevation="2dp" />
 
 </RelativeLayout>

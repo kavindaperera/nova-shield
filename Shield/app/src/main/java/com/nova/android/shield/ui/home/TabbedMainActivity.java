@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -41,7 +42,11 @@ import com.nova.android.shield.ui.splash.SplashActivity;
 import com.nova.android.shield.utils.Constants;
 import com.nova.android.shield.utils.Utils;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
+
+import static com.nova.android.shield.utils.Constants.DEEP_LINK_QR;
 
 public class TabbedMainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -63,6 +68,7 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         registerReceiver(BluetoothUtils.bluetoothReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
         initView(savedInstanceState);
+
 
     }
 
@@ -125,6 +131,28 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+
+        // listen to deep links
+        Uri uri = getIntent().getData();
+        if (uri != null){
+            List<String> params = uri.getPathSegments();
+            String intent = params.get(0);
+            switch (intent) {
+                case DEEP_LINK_QR: {
+                    String encryptedUuid = params.get(params.size() - 1); // extract uuid
+
+                    //TODO - decrypt UUID @JudeRanidu
+
+                    navController.navigate(R.id.navigation_friends); //move to friends fragment
+
+                    //TODO - Check and add uuid to shared preferences @JudeRanidu
+
+                    Toast.makeText(this, "New Friend Added!!", Toast.LENGTH_LONG).show();
+                    break;
+                }
+            }
+        }
 
     }
 

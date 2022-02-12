@@ -39,6 +39,7 @@
         android:textSize="14sp"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorPrimaryDark"
         android:id="@+id/prompt"
         android:text="@string/placeholder_qr_code_prompt"
         android:paddingLeft="10dp"
