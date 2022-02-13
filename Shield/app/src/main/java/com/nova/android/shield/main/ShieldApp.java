@@ -24,7 +24,6 @@ public class ShieldApp extends Application {
     private static ShieldApp shieldApp;
     SharedPreferences sharedPreferences;
     ShieldFirebaseAuth shieldFirebaseAuth;
-    public static boolean debug = false;
 
     public static ShieldApp getInstance() {
         return shieldApp;
@@ -33,8 +32,6 @@ public class ShieldApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        ShieldApp.debug = BuildConfig.DEBUG; // TODO - remove in production
 
         this.sharedPreferences = getApplicationContext().getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
         shieldApp = this;

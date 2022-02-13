@@ -20,6 +20,8 @@ import androidx.work.WorkRequest;
 
 import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
+import com.nova.android.shield.utils.Constants;
+import com.nova.android.shield.workmanager.demo.PullFromFirebaseTaskDemo;
 import com.nova.android.shield.workmanager.workers.PullFromFirebaseWorker;
 
 public class AlertsFragment extends Fragment {
@@ -46,7 +48,11 @@ public class AlertsFragment extends Fragment {
     public void refreshTask() {
         Log.i(TAG, "refreshTask(): ");
 
-        PullFromFirebaseTask();
+        if (Constants.DEBUG) {
+            new PullFromFirebaseTaskDemo(getContext()).execute(new Void[0]);
+        } else {
+            PullFromFirebaseTask();
+        }
 
         this.swipeLayout.setRefreshing(false);
     }
