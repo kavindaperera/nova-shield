@@ -13,7 +13,10 @@ import android.os.ParcelUuid;
 
 import com.nova.android.ble.api.BleManager;
 import com.nova.android.ble.api.Device;
+import com.nova.android.ble.logs.BleLogger;
 import com.nova.android.ble.logs.Log;
+import com.nova.android.ble.logs.LogFactory;
+import com.nova.android.ble.logs.logentities.RssiLog;
 
 import java.util.HashMap;
 import java.util.List;
@@ -194,6 +197,7 @@ public class BluetoothLeDiscovery extends Discovery {
                         "\nCustom UUID: " + this.bleUuid2 +
                         "\nBT UUID: " + this.btUuid +
                         "\nBLE UUID: " + this.bleUuid);
+
                 if (!uuid.toString().equalsIgnoreCase(this.bleUuid) && !uuid.toString().equalsIgnoreCase(this.btUuid) && !uuid.toString().equalsIgnoreCase(this.bleUuid2))
                     continue;
                 string = BluetoothUtils.getUuidFromDataString(string3);
@@ -210,6 +214,7 @@ public class BluetoothLeDiscovery extends Discovery {
 
     private void onRssiRead(Device device, int rssi ) {
         new Handler(Looper.getMainLooper()).post(() -> BleManager.getInstance().getBleCore().getStateListener().onRssiRead(device, rssi));
+        BleLogger.log(LogFactory.build(device.getUserId(), rssi, RssiLog.Event.RssiRead)); //logger
     }
 
     private void scanFailedAction(int errorCode) {

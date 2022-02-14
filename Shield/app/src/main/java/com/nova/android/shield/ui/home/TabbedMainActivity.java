@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -29,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nova.android.ble.api.BleManager;
 import com.nova.android.ble.api.Device;
 import com.nova.android.ble.api.callback.StateListener;
+import com.nova.android.ble.logs.BleLogger;
 import com.nova.android.shield.BuildConfig;
 import com.nova.android.shield.R;
 import com.nova.android.shield.auth.ShieldSession;
@@ -42,6 +44,7 @@ import com.nova.android.shield.ui.splash.SplashActivity;
 import com.nova.android.shield.utils.Constants;
 import com.nova.android.shield.utils.Utils;
 
+import java.security.Permission;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -69,6 +72,10 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
 
         initView(savedInstanceState);
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != 0) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            return;
+        }
 
     }
 
@@ -181,12 +188,22 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
             startActivity(new Intent(this, SettingsActivity.class));
         }
 
-        if (id == R.id.action_logout) {
-            ShieldPreferencesHelper.setUserUuid(getApplicationContext(),(String) null);
-            ShieldPreferencesHelper.setBluetoothEnabled(getApplicationContext(), false);
-            ShieldPreferencesHelper.setUsername(getApplicationContext(),(String) null);
-            showSplashActivity();
+        if (id == R.id.action_clear_logs) {
+            if (ShieldPreferencesHelper.getLogPermission(this)) {
+                try {
+                    BleLogger.getInstance();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Error occurred while clearing logs, try restarting the app", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    return true;
+                }
+                Toast.makeText(this, "Logs Cleared", Toast.LENGTH_SHORT).show();
+                BleLogger.clearLogs();
+            } else {
+                Toast.makeText(this, "Logs are not enabled", Toast.LENGTH_SHORT).show();
+            }
         }
+
         return super.onOptionsItemSelected(item);
     }
 

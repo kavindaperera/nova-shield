@@ -14,11 +14,14 @@ import androidx.preference.PreferenceManager;
 import com.nova.android.shield.R;
 import com.nova.android.shield.auth.ShieldSession;
 import com.nova.android.shield.logs.Log;
+import com.nova.android.shield.preferences.ShieldPreferencesHelper;
+import com.nova.android.shield.ui.splash.SplashActivity;
 import com.nova.android.shield.utils.Constants;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final String TAG = "[Nova][Shield][SettingsFragment]";
+    private static final String KEY_DELETE_ACCOUNT_PREFERENCE = "deleteAccount";
     private static final String KEY_RINGTONE_PREFERENCE = "notificationSound";
     private static final String KEY_NOTIFICATION_SETTINGS_PREFERENCE = "notificationSettings";
 
@@ -64,8 +67,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
             startActivity(intent);
             return true;
-        }
-        else {
+        } else if (preference.getKey().equals(KEY_DELETE_ACCOUNT_PREFERENCE)) {
+            Toast.makeText(getContext(), "You can't delete the account at this moment", Toast.LENGTH_LONG).show();
+            return true;
+        } else {
             return super.onPreferenceTreeClick(preference);
         }
     }

@@ -7,11 +7,15 @@ import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.nova.android.ble.logs.BleLogger;
 import com.nova.android.shield.BuildConfig;
 import com.nova.android.shield.auth.ShieldSession;
+import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 import com.nova.android.shield.service.TensorFlowService;
 import com.nova.android.shield.utils.Constants;
 import com.nova.android.shield.workmanager.periodictasks.PeriodicTasksHandler;
@@ -55,6 +59,11 @@ public class ShieldApp extends Application {
             TensorFlowService.initialize(this);
         } catch (IOException ioException) {
             ioException.printStackTrace();
+        }
+
+        if (ShieldPreferencesHelper.getLogPermission(this)){
+            BleLogger.init(this.getBaseContext(), true);
+            BleLogger.startLogs();
         }
 
     }

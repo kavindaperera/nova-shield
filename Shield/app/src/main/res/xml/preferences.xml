@@ -9,6 +9,11 @@
             app:key="username"
             app:title="@string/settings_category_user_name"
             app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="deleteAccount"
+            app:title="@string/settings_delete_account"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory

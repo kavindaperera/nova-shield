@@ -51,4 +51,8 @@ public class ShieldPreferencesHelper {
         getSharedPreferences(context).edit().putBoolean(Constants.PREFS_NOTIFICATION_ENABLED, val).apply();
     }
 
+    public static Boolean getLogPermission(Context context) {
+        return  getSharedPreferences(context).getBoolean(Constants.PREFS_LOGS_ENABLED, false);
+    }
+
 }
