@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelUuid;
@@ -169,6 +170,8 @@ public class BluetoothLeDiscovery extends Discovery {
     private String processScanResult(ScanResult scanResult) {
         String string;
         int rssi;
+        boolean isLegacy = false;
+        int txPower = -1;
 
         blockX:
         {
@@ -180,7 +183,14 @@ public class BluetoothLeDiscovery extends Discovery {
                 map = scanResult.getScanRecord().getServiceData();
                 bluetoothDevice = scanResult.getDevice();
                 rssi = scanResult.getRssi();
-                Log.i(TAG, "scanResult: " + map.toString() + " | Rssi: " + rssi);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    isLegacy = scanResult.isLegacy();
+                    txPower = scanResult.getTxPower();
+                }
+
+                Log.i(TAG, "scanResult: " + map.toString() + " | Rssi: " + rssi + " | isLegacy: " + isLegacy + " | txPower: " + txPower);
+
                 string = null;
                 if (list == null || list.isEmpty()) break blockY;
                 break blockX;
@@ -213,8 +223,8 @@ public class BluetoothLeDiscovery extends Discovery {
     }
 
     private void onRssiRead(Device device, int rssi ) {
-        new Handler(Looper.getMainLooper()).post(() -> BleManager.getInstance().getBleCore().getStateListener().onRssiRead(device, rssi));
         BleLogger.log(LogFactory.build(device.getUserId(), rssi, RssiLog.Event.RssiRead)); //logger
+        new Handler(Looper.getMainLooper()).post(() -> BleManager.getInstance().getBleCore().getStateListener().onRssiRead(device, rssi));
     }
 
     private void scanFailedAction(int errorCode) {
