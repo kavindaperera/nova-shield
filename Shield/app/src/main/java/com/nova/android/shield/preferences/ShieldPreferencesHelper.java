@@ -3,8 +3,17 @@ package com.nova.android.shield.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.nova.android.shield.utils.Constants;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.UUID;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -55,4 +64,17 @@ public class ShieldPreferencesHelper {
         return  getSharedPreferences(context).getBoolean(Constants.PREFS_LOGS_ENABLED, false);
     }
 
+    public static Boolean addToWhitelist(Context context, String scannedUUID) {
+        Set<String> whitelistedSet = getSharedPreferences(context).getStringSet(Constants.PREFS_WHITELIST, new HashSet<>());
+        if (whitelistedSet.contains(scannedUUID)){
+            return true;
+        }
+        whitelistedSet.add(scannedUUID);
+        getSharedPreferences(context).edit().putStringSet(Constants.PREFS_WHITELIST, whitelistedSet).apply();
+        return false;
+    }
+
+    public static Set<String> getWhitelist(Context context) {
+        return getSharedPreferences(context).getStringSet(Constants.PREFS_WHITELIST, new HashSet<>());
+    }
 }

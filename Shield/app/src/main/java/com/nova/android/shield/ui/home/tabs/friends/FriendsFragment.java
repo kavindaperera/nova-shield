@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,8 +18,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
+import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +36,9 @@ public class FriendsFragment extends Fragment {
 
     @BindView(R.id.fabShowBarcode)
     FloatingActionButton fabShowBarcode;
+
+    @BindView(R.id.fabImage)
+    FloatingActionButton scanBarcode;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -67,6 +75,36 @@ public class FriendsFragment extends Fragment {
     @OnClick(R.id.fabShowBarcode)
     public void showBarcode(View v) {
         startActivity(new Intent(v.getContext(), ShowBarcodeActivity.class));
+    }
+
+    private void saveScannedResult(String scannedUUID) {
+        if (ShieldPreferencesHelper.addToWhitelist(getContext(), scannedUUID)) {
+            Toast.makeText(this.getActivity(), "Already Whitelisted this Friend!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this.getActivity(), "Added Friend to Whitelist!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private final ActivityResultLauncher<ScanOptions> qrcodeLauncher = registerForActivityResult(new ScanContract(),
+                result -> {
+                    if(result.getContents() == null) {
+                        Toast.makeText(this.getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+                    } else {
+                        //Toast.makeText(this.getActivity(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                        saveScannedResult(result.getContents());
+                    }
+                });
+
+    @OnClick(R.id.fabImage)
+    public void scanBarcode(View v) {
+
+        ScanOptions options = new ScanOptions();
+        //options.setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES);
+        options.setPrompt("Scan QR Code of Your Friend");
+        options.setCameraId(0);  // Use a specific camera of the device
+        options.setBeepEnabled(true);
+        options.setBarcodeImageEnabled(true);
+        qrcodeLauncher.launch(options);
     }
 
 
@@ -111,6 +149,8 @@ public class FriendsFragment extends Fragment {
         super.onDetach();
         Log.i(TAG, "onCreate(): ");
     }
+
+
 
 
 }
