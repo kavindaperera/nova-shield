@@ -29,6 +29,7 @@ public class Constants {
     public static final String PREFS_USER_PHONE = "user_phone";
     public static final String PREFS_USER_UUID = "user_uuid";
     public static final String PREFS_WHITELIST = "whitelisted_devices";
+    public static final String PREFS_LAST_CHECKED = "last_checked_time";
     public static int PULL_FROM_FIREBASE_INTERVAL = (15*60)*1000;
     public static boolean PullFromFirebaseServiceRunning = false;
     public static HashSet<String> scanResultsUUIDs;

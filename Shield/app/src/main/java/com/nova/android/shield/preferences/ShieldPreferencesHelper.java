@@ -77,4 +77,12 @@ public class ShieldPreferencesHelper {
     public static Set<String> getWhitelist(Context context) {
         return getSharedPreferences(context).getStringSet(Constants.PREFS_WHITELIST, new HashSet<>());
     }
+
+    public static void setLastCheckedTime(Context context, long seconds) {
+        getSharedPreferences(context).edit().putLong(Constants.PREFS_LAST_CHECKED, seconds).apply();
+    }
+
+    public static long getLastCheckedTime(Context context) {
+        return  getSharedPreferences(context).getLong(Constants.PREFS_LAST_CHECKED, 0L);
+    }
 }
