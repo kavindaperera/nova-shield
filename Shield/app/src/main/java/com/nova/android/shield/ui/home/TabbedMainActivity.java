@@ -153,9 +153,12 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
 
                     navController.navigate(R.id.navigation_friends); //move to friends fragment
 
-                    //TODO - Check and add uuid to shared preferences @JudeRanidu
+                    if (ShieldPreferencesHelper.addToWhitelist(getApplicationContext(), encryptedUuid)) {
+                        Toast.makeText(this, "Already Whitelisted this Friend!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(this, "Added Friend to Whitelist!", Toast.LENGTH_LONG).show();
+                    }
 
-                    Toast.makeText(this, "New Friend Added!!", Toast.LENGTH_LONG).show();
                     break;
                 }
             }
