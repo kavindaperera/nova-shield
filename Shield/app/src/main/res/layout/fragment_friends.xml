@@ -44,7 +44,6 @@
             android:visibility="visible"
             android:src="@drawable/il_shieldanim_avatar_group" />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -53,8 +52,10 @@
         android:layout_height="match_parent"
         android:gravity="end">
 
+
+
         <com.github.clans.fab.FloatingActionMenu
-            android:id="@+id/fabFile"
+            android:id="@+id/fabAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -88,8 +89,20 @@
 
         </com.github.clans.fab.FloatingActionMenu>
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabRemove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right|center_vertical|center_horizontal|center|end"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="11dp"
+            android:src="@drawable/ic_baseline_delete_forever_24"
+            android:visibility="visible"
+            app:fab_hideAnimation="@anim/fab_slide_out_to_right"
+            app:fab_showAnimation="@anim/fab_slide_in_from_right"
+            app:fab_colorNormal="@color/verify_error"
+            app:fab_colorPressed="@color/colorPrimaryDark"/>
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
