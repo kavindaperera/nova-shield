@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -37,7 +36,7 @@ public class FriendsFragment extends Fragment {
     @BindView(R.id.fabShowBarcode)
     FloatingActionButton fabShowBarcode;
 
-    @BindView(R.id.fabImage)
+    @BindView(R.id.fabScanBarcode)
     FloatingActionButton scanBarcode;
 
     @Override
@@ -95,7 +94,7 @@ public class FriendsFragment extends Fragment {
                     }
                 });
 
-    @OnClick(R.id.fabImage)
+    @OnClick(R.id.fabScanBarcode)
     public void scanBarcode(View v) {
 
         ScanOptions options = new ScanOptions();
