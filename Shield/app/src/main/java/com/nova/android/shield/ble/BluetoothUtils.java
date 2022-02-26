@@ -134,16 +134,26 @@ public class BluetoothUtils {
         return false;
     }
 
-    public static void writeBleRecords(Context context) {
+    private static void resetScanResults(){
         if (Constants.scanResultsUUIDs != null && Constants.scanResultsUUIDsRSSIs != null && Constants.scanResultsUUIDsTimes != null) {
-            Iterator<String> it = Constants.scanResultsUUIDs.iterator();
-            while (it.hasNext()) {
-                String uuid = it.next();
+            Constants.scanResultsUUIDs.clear();
+            Constants.scanResultsUUIDsRSSIs.clear();
+            Constants.scanResultsUUIDsTimes.clear();
+        }
+    }
+
+    public static void saveScanResults(Context context) {
+        if (Constants.scanResultsUUIDs != null && Constants.scanResultsUUIDsRSSIs != null && Constants.scanResultsUUIDsTimes != null) {
+            Log.e(TAG, "Records: " + Constants.scanResultsUUIDs.size() + "," + Constants.scanResultsUUIDsRSSIs.keySet().size() + "," + Constants.scanResultsUUIDsTimes.keySet().size());
+            for (String uuid : Constants.scanResultsUUIDs) {
                 if (Constants.scanResultsUUIDsRSSIs.containsKey(uuid) && Constants.scanResultsUUIDsTimes.containsKey(uuid)) {
                     Utils.bleRecordToDatabase(context, uuid, Constants.scanResultsUUIDsRSSIs.get(uuid).intValue(), Constants.scanResultsUUIDsTimes.get(uuid).longValue());
                 }
             }
         }
+        resetScanResults();
     }
+
+
 
 }
