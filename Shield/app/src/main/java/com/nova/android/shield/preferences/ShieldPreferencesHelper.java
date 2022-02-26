@@ -65,7 +65,7 @@ public class ShieldPreferencesHelper {
     }
 
     public static Boolean addToWhitelist(Context context, String scannedUUID) {
-        Set<String> whitelistedSet = getSharedPreferences(context).getStringSet(Constants.PREFS_WHITELIST, new HashSet<>());
+        Set<String> whitelistedSet = new HashSet<>(getWhitelist(context));
         if (whitelistedSet.contains(scannedUUID)){
             return true;
         }
