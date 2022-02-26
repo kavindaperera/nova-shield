@@ -1,11 +1,15 @@
 package com.nova.android.shield.ble;
 
+import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.nova.android.ble.api.BleManager;
 import com.nova.android.ble.api.Device;
@@ -21,6 +25,8 @@ import com.nova.android.shield.utils.Utils;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+
+import static com.nova.android.ble.api.Constants.INSUFFICIENT_PERMISSIONS;
 
 public class BluetoothUtils {
 
@@ -66,6 +72,11 @@ public class BluetoothUtils {
         public void onStartError(@NonNull String message, @NonNull int errorCode) {
             Log.e(TAG, "onStartError(): " + message);
 
+            Context mContext = ShieldApp.getInstance();
+
+            if (errorCode == INSUFFICIENT_PERMISSIONS) {
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent().setAction(Constants.LOCATION_PERMISSION));
+            }
 
         }
 
@@ -91,7 +102,6 @@ public class BluetoothUtils {
                 Constants.scanResultsUUIDs.add(contactUuid);
                 Constants.scanResultsUUIDsRSSIs.put(contactUuid, Integer.valueOf(contactRssi));
                 Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
-
 
                 if (!ShieldPreferencesHelper.getWhitelist(mContext).contains(contactUuid)){
                     Utils.sendNotification((Context) mContext, mContext.getString(ShieldConstants.string.distance_text), mContext.getString(ShieldConstants.string.distance_text2), notifLevel);

@@ -20,6 +20,7 @@ public class Constants {
     public static final String NOTIFICATION_CHANNEL = "shield_channel";
     public static final String NOTIFICATION_ID = "notificationId";
     public static final String PACKAGE_NAME = "com.nova.android.shield";
+    public static final String LOCATION_PERMISSION = "locationPermission";
     public static final String PREFS_CONFIG_PROFILE = "settings_profile";
     public static final String PREFS_FIRST_DATE = "first_date";
     public static final String PREFS_NAME = "com.nova.android.shield.app";
