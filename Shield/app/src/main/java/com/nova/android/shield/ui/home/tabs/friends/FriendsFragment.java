@@ -78,18 +78,17 @@ public class FriendsFragment extends Fragment {
 
     private void saveScannedResult(String scannedUUID) {
         if (ShieldPreferencesHelper.addToWhitelist(getContext(), scannedUUID)) {
-            Toast.makeText(this.getActivity(), "Already Whitelisted this Friend!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity(), "Already Whitelisted this Friend!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this.getActivity(), "Added Friend to Whitelist!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity(), "Added Friend to Whitelist!", Toast.LENGTH_SHORT).show();
         }
     }
 
     private final ActivityResultLauncher<ScanOptions> qrcodeLauncher = registerForActivityResult(new ScanContract(),
                 result -> {
                     if(result.getContents() == null) {
-                        Toast.makeText(this.getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this.getActivity(), "Scanning cancelled", Toast.LENGTH_SHORT).show();
                     } else {
-                        //Toast.makeText(this.getActivity(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                         saveScannedResult(result.getContents());
                     }
                 });
@@ -117,6 +116,8 @@ public class FriendsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume(): ");
+        int size = ShieldPreferencesHelper.getWhitelist(getActivity()).size();
+        Log.e(TAG, "whitelist size: " + size);
     }
 
     @Override

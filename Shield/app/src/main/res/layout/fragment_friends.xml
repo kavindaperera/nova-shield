@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="?attr/actionBarSize"
@@ -34,6 +35,15 @@
             android:text="@string/add_friends_description_1"
             android:textColor="@color/colorPrimaryDark"
             android:textAlignment="center"/>
+        <TextView
+            android:id="@+id/whiteListSize"
+            android:paddingTop="1sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_friends_description_2"
+            android:textColor="@color/colorPrimaryDark"
+            android:visibility="invisible"
+            android:textAlignment="center"/>
 
         <ImageView
             android:id="@+id/shieldGroupAvatar"
@@ -46,13 +56,29 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="end">
 
-
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabRemove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="80dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_baseline_delete_forever_24"
+            app:fab_showAnimation="@anim/fab_scale_up"
+            app:fab_hideAnimation="@anim/fab_scale_down"
+            android:visibility="invisible"
+            fab:fab_colorNormal="@color/notif_lvl_1"
+            fab:fab_colorPressed="@color/notif_lvl_2"
+            fab:fab_colorRipple="@color/notif_lvl_3"/>
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/fabAdd"
@@ -60,6 +86,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
             app:menu_icon="@drawable/fab_add"
             app:menu_animationDelayPerItem="0"
             app:menu_colorNormal="@color/colorPrimary"
@@ -67,9 +96,7 @@
             app:menu_colorRipple="@color/colorPrimary"
             app:menu_labels_maxLines="2"
             app:menu_labels_ellipsize="end"
-            android:layout_gravity="bottom|right|center_vertical|center_horizontal|center|end"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="11dp">
+            android:layout_gravity="bottom|right|center_vertical|center_horizontal|center|end">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabShowBarcode"
@@ -89,20 +116,8 @@
 
         </com.github.clans.fab.FloatingActionMenu>
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fabRemove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right|center_vertical|center_horizontal|center|end"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="11dp"
-            android:src="@drawable/ic_baseline_delete_forever_24"
-            android:visibility="visible"
-            app:fab_hideAnimation="@anim/fab_slide_out_to_right"
-            app:fab_showAnimation="@anim/fab_slide_in_from_right"
-            app:fab_colorNormal="@color/verify_error"
-            app:fab_colorPressed="@color/colorPrimaryDark"/>
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

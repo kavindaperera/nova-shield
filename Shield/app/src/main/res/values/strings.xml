@@ -87,6 +87,7 @@
     <string name="action_stop_shield">Start Shielding</string>
     <string name="add_friend_text">Add Friends</string>
     <string name="add_friends_description_1">Mute alerts by whitelisting  friends who you trust.</string>
+    <string name="add_friends_description_2">You have no whitelisted friends</string>
     <string name="text_notification_0">Warning!</string>
     <string name="text_notification_1">Based on your contact history, you might have been exposed to a  COVID-19 patient</string>
     <string name="text_notification_2">Please self-quarantine.</string>

@@ -97,7 +97,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     Toast.makeText(getActivity(), "Marked yourself as Covid-19 infected", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                            Log.w(TAG, "Error adding document " + e);
+                            Log.e(TAG, "Error adding document " + e);
                             Toast.makeText(getContext(), "Error whole marking infected", Toast.LENGTH_SHORT).show();
                         }
                 );

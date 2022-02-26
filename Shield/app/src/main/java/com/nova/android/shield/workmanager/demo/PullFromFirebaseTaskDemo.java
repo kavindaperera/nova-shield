@@ -23,7 +23,7 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
 
     public PullFromFirebaseTaskDemo(Context context) {
         Constants.PullFromFirebaseServiceRunning = true;
-        Log.e(TAG, "PullFromFirebaseServiceRunning: " + "true");
+        Log.i(TAG, "PullFromFirebaseServiceRunning: " + "true");
         this.context = context;
     }
 
@@ -54,7 +54,7 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
                             Log.d(TAG, document.getId() + " => " + document.getData());
                         }
                     } else {
-                        Log.d(TAG, "Error getting documents: "+ task.getException());
+                        Log.e(TAG, "Error getting documents: "+ task.getException());
                     }
                 });
 
@@ -65,6 +65,6 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         Constants.PullFromFirebaseServiceRunning = false;
-        Log.e(TAG, "PullFromFirebaseServiceRunning: " + "false");
+        Log.i(TAG, "PullFromFirebaseServiceRunning: " + "false");
     }
 }
