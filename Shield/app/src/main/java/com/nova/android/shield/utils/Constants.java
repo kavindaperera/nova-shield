@@ -5,6 +5,8 @@ import android.bluetooth.BluetoothAdapter;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class Constants {
     public static BluetoothAdapter bluetoothAdapter;
@@ -32,9 +34,9 @@ public class Constants {
     public static final String PREFS_LAST_CHECKED = "last_checked_time";
     public static int PULL_FROM_FIREBASE_INTERVAL = (15*60)*1000;
     public static boolean PullFromFirebaseServiceRunning = false;
-    public static HashSet<String> scanResultsUUIDs;
-    public static HashMap<String, Integer> scanResultsUUIDsRSSIs;
-    public static HashMap<String, Long> scanResultsUUIDsTimes;
+    public static ConcurrentSkipListSet<String> scanResultsUUIDs;
+    public static ConcurrentHashMap<String, Integer> scanResultsUUIDsRSSIs;
+    public static ConcurrentHashMap<String, Long> scanResultsUUIDsTimes;
     public static boolean ShieldingServiceRunning = false;
     public static int SPLASH_DISPLAY_DURATION = 1500;
 }

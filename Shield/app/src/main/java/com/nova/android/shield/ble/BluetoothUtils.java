@@ -14,15 +14,13 @@ import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldApp;
 import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
-import com.nova.android.shield.service.TensorFlowService;
 import com.nova.android.shield.utils.Constants;
 import com.nova.android.shield.utils.TimeUtils;
 import com.nova.android.shield.utils.Utils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class BluetoothUtils {
 
@@ -83,35 +81,30 @@ public class BluetoothUtils {
 
             String contactUuid = device.getUserId();
             int contactRssi = rssi;
-            int notifLevel = 2;
+            int notifLevel = 1;
 
             Context mContext = ShieldApp.getInstance();
 
-            if (Constants.scanResultsUUIDs != null && BluetoothUtils.checkRssiThreshold(contactRssi) ){
-                if (Constants.scanResultsUUIDs.contains(contactUuid) && (Constants.scanResultsUUIDsRSSIs.get(contactUuid) >= contactRssi)){
-                        notifLevel = 1;
-                        Constants.scanResultsUUIDsRSSIs.put(contactUuid, contactRssi);
-                        Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
-                } else {
-                    Constants.scanResultsUUIDs.add(contactUuid);
-                    Constants.scanResultsUUIDsRSSIs.put(contactUuid, contactRssi);
-                    Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
+            if (Constants.scanResultsUUIDs != null && !Constants.scanResultsUUIDs.contains(contactUuid) && BluetoothUtils.checkRssiThreshold(contactRssi) ){
+                Log.e(TAG, "Found contact with UUID: " + contactUuid );
 
-                    // TODO - write to database
+                Constants.scanResultsUUIDs.add(contactUuid);
+                Constants.scanResultsUUIDsRSSIs.put(contactUuid, Integer.valueOf(contactRssi));
+                Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
 
+
+                if (!ShieldPreferencesHelper.getWhitelist(mContext).contains(contactUuid)){
+                    Utils.sendNotification((Context) mContext, mContext.getString(ShieldConstants.string.distance_text), mContext.getString(ShieldConstants.string.distance_text2), notifLevel);
                 }
-
-                //show notification
-                Utils.sendNotification((Context) mContext, mContext.getString(ShieldConstants.string.distance_text), mContext.getString(ShieldConstants.string.distance_text2), notifLevel);
 
             }
         }
     };
 
     public static void startBle(Context context) {
-        Constants.scanResultsUUIDs = new HashSet<>();
-        Constants.scanResultsUUIDsRSSIs = new HashMap<>();
-        Constants.scanResultsUUIDsTimes = new HashMap<>();
+        Constants.scanResultsUUIDs = new ConcurrentSkipListSet<>();
+        Constants.scanResultsUUIDsRSSIs = new ConcurrentHashMap<>();
+        Constants.scanResultsUUIDsTimes = new ConcurrentHashMap<>();
 
         BleManager.initialize(context, ShieldPreferencesHelper.getUserUuid(context));
         BleManager.start(stateListener);
