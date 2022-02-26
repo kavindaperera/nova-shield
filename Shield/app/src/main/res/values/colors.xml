@@ -29,5 +29,9 @@
     <color name="fui_bgYahoo">#720E9E</color>
     <color name="fui_bgApple">#000000</color>
 
+    <color name="notif_lvl_1">#E53935</color>
+    <color name="notif_lvl_2">#FB8C00</color>
+    <color name="notif_lvl_3">#FDD835</color>
+
 
 </resources>

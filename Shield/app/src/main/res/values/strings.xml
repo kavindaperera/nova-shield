@@ -96,5 +96,7 @@
     <string name="action_share_barcode">Share</string>
     <string name="action_clear_logs">Clear Logs</string>
     <string name="settings_delete_account">Delete My Account</string>
+    <string name="settings_mark_infected">Mark as Covid-19 Infected</string>
+    <string name="confirm_infected_dialog_text">I confirm that I have been officially diagnosed with COVID-19</string>
 
 </resources>

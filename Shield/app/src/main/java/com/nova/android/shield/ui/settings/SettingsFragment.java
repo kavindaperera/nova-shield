@@ -7,21 +7,27 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.nova.android.shield.R;
-import com.nova.android.shield.auth.ShieldSession;
 import com.nova.android.shield.logs.Log;
+import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
-import com.nova.android.shield.ui.splash.SplashActivity;
 import com.nova.android.shield.utils.Constants;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final String TAG = "[Nova][Shield][SettingsFragment]";
     private static final String KEY_DELETE_ACCOUNT_PREFERENCE = "deleteAccount";
+    private static final String KEY_MARK_INFECTED_PREFERENCE = "markInfected";
     private static final String KEY_RINGTONE_PREFERENCE = "notificationSound";
     private static final String KEY_NOTIFICATION_SETTINGS_PREFERENCE = "notificationSettings";
 
@@ -37,7 +43,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
-        Log.e(TAG, " " + preference.getKey().equals(KEY_RINGTONE_PREFERENCE));
         if (preference.getKey().equals(KEY_RINGTONE_PREFERENCE)) {
             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
@@ -59,7 +64,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
             startActivityForResult(intent, REQUEST_CODE_ALERT_RINGTONE);
             return true;
-        } else if (preference.getKey().equals(KEY_NOTIFICATION_SETTINGS_PREFERENCE)){
+        } else if (preference.getKey().equals(KEY_NOTIFICATION_SETTINGS_PREFERENCE)) {
 
             Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -70,9 +75,42 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         } else if (preference.getKey().equals(KEY_DELETE_ACCOUNT_PREFERENCE)) {
             Toast.makeText(getContext(), "You can't delete the account at this moment", Toast.LENGTH_LONG).show();
             return true;
+        } else if (preference.getKey().equals(KEY_MARK_INFECTED_PREFERENCE)) {
+            this.showConfirmationInfectedDialog();
+            return true;
         } else {
             return super.onPreferenceTreeClick(preference);
         }
+    }
+
+    private void markAsInfected() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("uuid", ShieldPreferencesHelper.getUserUuid(getContext()).toString());
+        data.put("date", FieldValue.serverTimestamp());
+
+        db.collection("infected-users")
+                .add(data)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                    Toast.makeText(getActivity(), "Marked yourself as Covid-19 infected", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                            Log.w(TAG, "Error adding document " + e);
+                            Toast.makeText(getContext(), "Error whole marking infected", Toast.LENGTH_SHORT).show();
+                        }
+                );
+    }
+
+    private void showConfirmationInfectedDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(getString(ShieldConstants.string.confirm_infected_dialog_text))
+                .setCancelable(false)
+                .setPositiveButton("Confirm", (dialog, which) -> this.markAsInfected())
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 
     private String getRingtonePreferenceValue() {

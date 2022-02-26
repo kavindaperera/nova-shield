@@ -11,6 +11,11 @@
             app:useSimpleSummaryProvider="true" />
         <Preference
             app:iconSpaceReserved="false"
+            app:key="markInfected"
+            app:title="@string/settings_mark_infected"
+            app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:iconSpaceReserved="false"
             app:key="deleteAccount"
             app:title="@string/settings_delete_account"
             app:useSimpleSummaryProvider="true" />

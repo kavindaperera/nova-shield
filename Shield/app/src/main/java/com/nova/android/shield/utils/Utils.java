@@ -91,11 +91,17 @@ public class Utils {
             notifBuilder.setStyle(bigText);
 
             switch (type){
+                case 0:{
+                    notifBuilder.setColor(ContextCompat.getColor(context, R.color.colorPrimary)); // default
+                }
                 case 1:{
-                    notifBuilder.setColor(ContextCompat.getColor(context, R.color.verify_error)); // red warning
+                    notifBuilder.setColor(ContextCompat.getColor(context, R.color.notif_lvl_1)); // red warning
                 }
                 case 2:{
-                    notifBuilder.setColor(ContextCompat.getColor(context, R.color.fui_bgAnonymous)); // yellow warning
+                    notifBuilder.setColor(ContextCompat.getColor(context, R.color.notif_lvl_2)); // orange warning
+                }
+                case 3:{
+                    notifBuilder.setColor(ContextCompat.getColor(context, R.color.notif_lvl_3)); // yellow warning
                 }
             }
 
