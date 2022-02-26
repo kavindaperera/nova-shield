@@ -21,6 +21,7 @@ public class ShieldConstants {
         public static final int exposed_text = R.string.exposed_text;
         public static final int url_tos = R.string.url_tos;
         public static final int url_privacy = R.string.url_privacy;
+        public static final int whitelist_description = R.string.whitelist_description;
     }
 
     public static final class drawable {

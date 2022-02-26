@@ -1,5 +1,6 @@
 package com.nova.android.shield.ui.home.tabs.friends;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
+import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 
 import butterknife.BindView;
@@ -31,13 +33,18 @@ public class FriendsFragment extends Fragment {
 
     private static final String TAG = "[Nova][Shield][FriendsFragment]";
 
-    private FriendsViewModel friendsViewModel;
-
     @BindView(R.id.fabShowBarcode)
     FloatingActionButton fabShowBarcode;
 
     @BindView(R.id.fabScanBarcode)
     FloatingActionButton scanBarcode;
+
+    @BindView(R.id.fabRemove)
+    FloatingActionButton resetWhitelist;
+
+    @BindView(R.id.whiteListSize)
+    TextView whiteListSizeText;
+    private FriendsViewModel friendsViewModel;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -71,6 +78,15 @@ public class FriendsFragment extends Fragment {
         return root;
     }
 
+    private final ActivityResultLauncher<ScanOptions> qrcodeLauncher = registerForActivityResult(new ScanContract(),
+            result -> {
+                if (result.getContents() == null) {
+                    Toast.makeText(this.getActivity(), "Scanning cancelled", Toast.LENGTH_SHORT).show();
+                } else {
+                    saveScannedResult(result.getContents());
+                }
+            });
+
     @OnClick(R.id.fabShowBarcode)
     public void showBarcode(View v) {
         startActivity(new Intent(v.getContext(), ShowBarcodeActivity.class));
@@ -84,15 +100,6 @@ public class FriendsFragment extends Fragment {
         }
     }
 
-    private final ActivityResultLauncher<ScanOptions> qrcodeLauncher = registerForActivityResult(new ScanContract(),
-                result -> {
-                    if(result.getContents() == null) {
-                        Toast.makeText(this.getActivity(), "Scanning cancelled", Toast.LENGTH_SHORT).show();
-                    } else {
-                        saveScannedResult(result.getContents());
-                    }
-                });
-
     @OnClick(R.id.fabScanBarcode)
     public void scanBarcode(View v) {
 
@@ -105,6 +112,12 @@ public class FriendsFragment extends Fragment {
         qrcodeLauncher.launch(options);
     }
 
+    @OnClick(R.id.fabRemove)
+    public void ResetWhitelist() {
+        ShieldPreferencesHelper.resetWhitelist(getContext());
+        hideResetWhitelistFab();
+    }
+
 
     @Override
     public void onStart() {
@@ -112,12 +125,32 @@ public class FriendsFragment extends Fragment {
         Log.i(TAG, "onStart(): ");
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume(): ");
         int size = ShieldPreferencesHelper.getWhitelist(getActivity()).size();
         Log.e(TAG, "whitelist size: " + size);
+        if (size > 0) {
+            showResetWhitelistFab(size);
+        } else {
+            hideResetWhitelistFab();
+        }
+    }
+
+    private void showResetWhitelistFab(int size) {
+        this.resetWhitelist.show(true);
+        if (size == 1) {
+            this.whiteListSizeText.setText("You have 1 whitelisted friend.");
+            return;
+        }
+        this.whiteListSizeText.setText("You have " + size + " whitelisted friends.");
+    }
+
+    private void hideResetWhitelistFab() {
+        this.resetWhitelist.hide(true);
+        this.whiteListSizeText.setText(ShieldConstants.string.whitelist_description);
     }
 
     @Override
@@ -149,8 +182,6 @@ public class FriendsFragment extends Fragment {
         super.onDetach();
         Log.i(TAG, "onCreate(): ");
     }
-
-
 
 
 }

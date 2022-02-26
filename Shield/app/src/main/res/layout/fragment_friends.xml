@@ -40,9 +40,9 @@
             android:paddingTop="1sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_friends_description_2"
+            android:text="@string/whitelist_description"
             android:textColor="@color/colorPrimaryDark"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:textAlignment="center"/>
 
         <ImageView

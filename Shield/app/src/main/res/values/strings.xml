@@ -87,9 +87,9 @@
     <string name="action_stop_shield">Start Shielding</string>
     <string name="add_friend_text">Add Friends</string>
     <string name="add_friends_description_1">Mute alerts by whitelisting  friends who you trust.</string>
-    <string name="add_friends_description_2">You have no whitelisted friends</string>
+    <string name="whitelist_description">You have no whitelisted friends.</string>
     <string name="text_notification_0">Warning!</string>
-    <string name="text_notification_1">Based on your contact history, you might have been exposed to a  COVID-19 patient</string>
+    <string name="text_notification_1">Based on your contact history, you might have been exposed to a  COVID-19 patient.</string>
     <string name="text_notification_2">Please self-quarantine.</string>
     <string name="dismiss_text">Dismiss</string>
     <string name="placeholder_qr_code">QR Code</string>
@@ -97,7 +97,7 @@
     <string name="action_share_barcode">Share</string>
     <string name="action_clear_logs">Clear Logs</string>
     <string name="settings_delete_account">Delete My Account</string>
-    <string name="settings_mark_infected">Mark as Covid-19 Infected</string>
-    <string name="confirm_infected_dialog_text">I confirm that I have been officially diagnosed with COVID-19</string>
+    <string name="settings_mark_infected">Mark as COVID-19 Infected</string>
+    <string name="confirm_infected_dialog_text">I confirm that I have been officially diagnosed with COVID-19.</string>
 
 </resources>
