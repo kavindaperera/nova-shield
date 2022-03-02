@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
+import com.google.gson.Gson;
+
 @Entity(tableName = "ble_record_table", primaryKeys = {"uuid", "timestamp"})
 public class BleRecord {
 
@@ -46,6 +48,11 @@ public class BleRecord {
 
     public void setRssi(int rssi) {
         this.rssi = rssi;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 
 }

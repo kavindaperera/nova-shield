@@ -38,6 +38,8 @@ dependencies {
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'net.danlew:android.joda:2.10.12.2'
     implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0' // Barcode
     implementation 'org.tensorflow:tensorflow-lite-support:0.3.0' // TensorFlow Lite
     implementation project(path: ':ble')

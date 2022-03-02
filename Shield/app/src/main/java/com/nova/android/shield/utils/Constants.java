@@ -40,4 +40,5 @@ public class Constants {
     public static ConcurrentHashMap<String, Long> scanResultsUUIDsTimes;
     public static boolean ShieldingServiceRunning = false;
     public static int SPLASH_DISPLAY_DURATION = 1500;
+    public static long SCAN_RESULTS_RESET_INTERVAL = 5000L;
 }

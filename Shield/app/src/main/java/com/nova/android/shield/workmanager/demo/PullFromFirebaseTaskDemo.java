@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -11,9 +12,13 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.nova.android.shield.ble.BleRecord;
+import com.nova.android.shield.ble.BleRecordRepository;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 import com.nova.android.shield.utils.Constants;
+
+import java.util.List;
 
 public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
 
@@ -21,10 +26,13 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
 
     Context context;
 
+    BleRecordRepository recordRepository;
+
     public PullFromFirebaseTaskDemo(Context context) {
         Constants.PullFromFirebaseServiceRunning = true;
         Log.i(TAG, "PullFromFirebaseServiceRunning: " + "true");
         this.context = context;
+        this.recordRepository = new BleRecordRepository(context);
     }
 
 
@@ -58,7 +66,17 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
                     }
                 });
 
+
+        // get all ble records
+        for (BleRecord record : getAllBleRecords()) {
+            Log.d(TAG, record.toString() );
+        }
+
         return null;
+    }
+
+    private List<BleRecord> getAllBleRecords(){
+        return this.recordRepository.getAllRecords();
     }
 
     @Override
