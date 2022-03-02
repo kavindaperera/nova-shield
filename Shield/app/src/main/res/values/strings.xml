@@ -99,5 +99,6 @@
     <string name="settings_delete_account">Delete My Account</string>
     <string name="settings_mark_infected">Mark as COVID-19 Infected</string>
     <string name="confirm_infected_dialog_text">I confirm that I have been officially diagnosed with COVID-19.</string>
+    <string name="action_clear_database">Clear DB Records </string>
 
 </resources>

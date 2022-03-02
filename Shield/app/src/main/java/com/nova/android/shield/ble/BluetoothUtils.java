@@ -130,12 +130,19 @@ public class BluetoothUtils {
 
     private static boolean checkRssiThreshold(int rssi) {
 
-        //pass to machine learning model
+        // TODO - pass to machine learning model
 
-        if (rssi >= -82) {
+        if (Constants.deviceID == 0) {
+            if (rssi >= Constants.defaultRssiThreshold) {
+                return true;
+            }
+            return false;
+        } else if (rssi >= Constants.bleThresholds.get(Integer.valueOf(Constants.deviceID)).intValue()){
             return true;
+        } else {
+            return false;
         }
-        return false;
+
     }
 
     private static void resetScanResults() {

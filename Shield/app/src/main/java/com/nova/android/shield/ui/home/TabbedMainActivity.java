@@ -37,6 +37,7 @@ import com.nova.android.ble.logs.BleLogger;
 import com.nova.android.shield.BuildConfig;
 import com.nova.android.shield.R;
 import com.nova.android.shield.auth.ShieldSession;
+import com.nova.android.shield.ble.BleRecordRepository;
 import com.nova.android.shield.ble.BluetoothUtils;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldApp;
@@ -85,6 +86,8 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
             showSplashActivity();
             return;
         }
+
+        Constants.init(getApplicationContext());
 
         registerReceiver(BluetoothUtils.bluetoothReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
@@ -227,6 +230,12 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
             } else {
                 Toast.makeText(this, "Logs are not enabled", Toast.LENGTH_SHORT).show();
             }
+        }
+
+        if (id == R.id.action_clear_database) {
+            BleRecordRepository recordRepository = new BleRecordRepository(getApplicationContext());
+            recordRepository.deleteAll();
+            Toast.makeText(this, "Database Records Cleared", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
