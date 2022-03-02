@@ -18,6 +18,7 @@ import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 import com.nova.android.shield.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
@@ -70,13 +71,43 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
         // get all ble records
         for (BleRecord record : getAllBleRecords()) {
             Log.d(TAG, record.toString() );
+
+            // group records by uuid using a hashmap <uuid, timestamp list>
+
         }
+
+
+        List<String> exposedMsgs = new ArrayList<>();
+        List<Long> startTimes = new ArrayList<>();
+        List<Long> endTimes = new ArrayList<>();
+
+        // check isExposed() - return expose start time and end time
+
+        // add message to exposedMsgs array
+
+        // add start time to startTimes array
+
+        // add end time to endTimes array
+
+        notifyBulk(Constants.NotifType.EXPOSURE, exposedMsgs, startTimes, endTimes);
 
         return null;
     }
 
     private List<BleRecord> getAllBleRecords(){
         return this.recordRepository.getAllRecords();
+    }
+
+    public void notifyBulk(Constants.NotifType notifType, List<String> msgs, List<Long> timeStart, List<Long> timeEnd) {
+
+        // TODO - For each msg
+        // - write  to database asynchronously
+        // - send notification
+
+    }
+
+    public static long[] isExposed(){
+        return null;
     }
 
     @Override
