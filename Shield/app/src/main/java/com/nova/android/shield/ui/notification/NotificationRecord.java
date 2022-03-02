@@ -1,5 +1,7 @@
 package com.nova.android.shield.ui.notification;
 
+import com.google.gson.Gson;
+
 //notification_record_table
 public class NotificationRecord {
 
@@ -50,13 +52,7 @@ public class NotificationRecord {
 
     @Override
     public String toString() {
-        return "NotificationRecord{" +
-                "id=" + id +
-                ", is_new=" + is_new +
-                ", msg='" + msg + '\'' +
-                ", notif_type=" + notif_type +
-                ", timestamp_start=" + timestamp_start +
-                ", timestamp_end=" + timestamp_end +
-                '}';
+        return new Gson().toJson(this);
     }
+
 }

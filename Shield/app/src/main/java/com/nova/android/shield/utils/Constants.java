@@ -41,4 +41,17 @@ public class Constants {
     public static boolean ShieldingServiceRunning = false;
     public static int SPLASH_DISPLAY_DURATION = 1500;
     public static long SCAN_RESULTS_RESET_INTERVAL = 5000L;
+
+    public enum NotifType {
+        EXPOSURE,
+        DISTANCE_REMINDER
+    }
+
+    public enum DatabaseOps {
+        INSERT,
+        VIEW_ALL,
+        DELETE,
+        DELETE_ALL
+    }
+
 }
