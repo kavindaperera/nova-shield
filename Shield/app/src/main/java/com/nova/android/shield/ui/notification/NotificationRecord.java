@@ -1,8 +1,10 @@
 package com.nova.android.shield.ui.notification;
 
+import androidx.room.Entity;
+
 import com.google.gson.Gson;
 
-//notification_record_table
+@Entity(tableName = "notification_record_table", primaryKeys = {"id", "timestamp_start"})
 public class NotificationRecord {
 
     private int id; // auto-generated id
