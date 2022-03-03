@@ -17,7 +17,15 @@ import com.nova.android.shield.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<NotificationRecyclerViewAdapter.NotificationViewHolder> {
+
+    private final List<NotificationRecord> notificationRecords;
+
+    public NotificationRecyclerViewAdapter(List<NotificationRecord> notificationRecords) {
+        this.notificationRecords = notificationRecords;
+    }
 
     @NonNull
     @Override
@@ -29,7 +37,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull NotificationViewHolder notificationViewHolder, int position) {
-
+        notificationViewHolder.setNotificationRecord(notificationRecords.get(position));
     }
 
     @Override
