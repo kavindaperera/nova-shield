@@ -35,4 +35,8 @@ public interface NotificationRecordDao {
     @Query("DELETE FROM notification_record_table WHERE timestamp_start < :timestamp")
     void deleteEarlierThan(long timestamp);
 
+    // delete by id
+    @Query("DELETE FROM notification_record_table WHERE id = :id")
+    void deleteById(int id);
+
 }

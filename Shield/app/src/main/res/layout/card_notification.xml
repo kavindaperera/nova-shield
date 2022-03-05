@@ -120,7 +120,7 @@
                 <TextView
                     android:textSize="14sp" android:textStyle="bold"
                     android:gravity="center_vertical"
-                    android:id="@+id/textView13"
+                    android:id="@+id/textViewMessage2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

@@ -43,6 +43,7 @@ import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldApp;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
 import com.nova.android.shield.service.ShieldService;
+import com.nova.android.shield.ui.notification.NotificationRecyclerViewAdapter;
 import com.nova.android.shield.ui.settings.PermissionUtils;
 import com.nova.android.shield.ui.settings.SettingsActivity;
 import com.nova.android.shield.ui.splash.SplashActivity;
@@ -156,6 +157,8 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Constants.NotificationAdapter = new NotificationRecyclerViewAdapter(this, this);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

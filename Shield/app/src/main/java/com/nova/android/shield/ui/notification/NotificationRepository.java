@@ -22,15 +22,7 @@ public class NotificationRepository {
     }
 
     public List<NotificationRecord> getAllRecords() {
-        //for testing
-        List<NotificationRecord> notificationRecords = new ArrayList<>();
-
-        notificationRecords.add(new NotificationRecord(1646303800000L, 1646303821567L, "Testing message 1",  1, true));
-        notificationRecords.add(new NotificationRecord(1646303821000L, 1646303821680L, "Testing message 2",  1, true));
-        notificationRecords.add(new NotificationRecord(1646303825500L, 1646303825900L, "Testing message 3",  1, true));
-
-        return notificationRecords;
-        //return this.notificationRecordDao.getAllNotificationRecords();
+        return this.notificationRecordDao.getAllNotificationRecords();
     }
 
     public LiveData<List<NotificationRecord>> getAllSortedRecords() {
@@ -50,6 +42,12 @@ public class NotificationRepository {
     public void deleteAll() {
         NotificationRecordRoomDatabase.databaseWriteExecutor.execute(() -> {
             notificationRecordDao.deleteAll();
+        });
+    }
+
+    public void deleteById(int id) {
+        NotificationRecordRoomDatabase.databaseWriteExecutor.execute(() -> {
+            notificationRecordDao.deleteById(id);
         });
     }
 }

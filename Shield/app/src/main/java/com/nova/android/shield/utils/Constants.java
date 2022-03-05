@@ -7,6 +7,7 @@ import android.os.Build;
 
 import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
+import com.nova.android.shield.ui.notification.NotificationRecyclerViewAdapter;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,6 +33,7 @@ public class Constants {
     public static List<String> manufacturerNames = new LinkedList();
     public static final String MSG_DATE_YESTERDAY = "Yesterday";
     public static final String NOTIFICATION_CHANNEL = "shield_channel";
+    public static NotificationRecyclerViewAdapter NotificationAdapter;
     public static final String NOTIFICATION_ID = "notificationId";
     public static final String PACKAGE_NAME = "com.nova.android.shield";
     public static final String PREFS_CONFIG_PROFILE = "settings_profile";
