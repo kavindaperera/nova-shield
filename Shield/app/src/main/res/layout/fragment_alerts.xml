@@ -2,6 +2,7 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:rlv="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
@@ -23,13 +24,14 @@
                 android:id="@+id/rel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                rlv:layout_constraintTop_toBottomOf="parent">
+                rlv:layout_constraintTop_toTopOf="parent">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewNotifications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="true"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="LinearLayoutManager"
                     tools:listitem="@layout/card_notification"
                     android:visibility="visible"
                     rlv:layout_behavior="@string/appbar_scrolling_view_behavior"/>
