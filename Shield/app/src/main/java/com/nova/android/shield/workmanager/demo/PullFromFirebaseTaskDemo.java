@@ -104,7 +104,7 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
             if (exposedTimes != null) {
                 startTime = new Date(exposedTimes[0]);
                 endTime = new Date(exposedTimes[1]);
-                exposedMsg = "You were exposed during the period => " + startTime.toString() + " to " + endTime.toString();
+                exposedMsg = "You were exposed" ;
 
                 exposedMsgs.add(exposedMsg);
                 startTimes.add(exposedTimes[0]);
