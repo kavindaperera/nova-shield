@@ -24,7 +24,7 @@ public interface NotificationRecordDao {
     List<NotificationRecord> getNotificationRecordsBetweenTimestamp(long timestamp1, long timestamp2);
 
     // get sorted records
-    @Query("SELECT * FROM notification_record_table ORDER BY timestamp_start DESC")
+    @Query("SELECT * FROM notification_record_table ORDER BY id DESC")
     LiveData<List<NotificationRecord>> getSortedNotificationRecords();
 
     // delete all

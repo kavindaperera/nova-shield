@@ -28,7 +28,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
     private Activity activity;
     private Context context;
     private List<NotificationRecord> notificationRecords = new ArrayList();
-    int notifId = -1;
+
     NotificationRepository notificationRepository;
 
     public NotificationRecyclerViewAdapter(Context context, Activity activity) {
@@ -60,13 +60,13 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         SimpleDateFormat dateFormat = new SimpleDateFormat("M/d");
         switch (record.notif_type) {
             case 1:{
-                notifId = record.getId();
+                holder.notifId = record.getId();
                 holder.headerText.setText(this.context.getResources().getString(R.string.exposed_text));
                 holder.messageText.setText(Html.fromHtml(record.msg + " " + this.context.getString(R.string.exposed_text2) + " <b>" + dateFormat.format(Long.valueOf(record.getTimestampStart())) + "."));
                 break;
             }
             case 2:{
-                notifId = record.getId();
+                holder.notifId = record.getId();
                 holder.headerText.setText(this.context.getResources().getString(R.string.distance_text));
                 holder.messageText.setText(record.msg + ".");
                 holder.secondMessageText.setText("");
@@ -76,7 +76,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         }
 
         holder.dismissButton.setOnClickListener(view -> {
-            notificationRepository.deleteById(notifId);
+            notificationRepository.deleteById(holder.notifId);
         });
 
 
@@ -92,6 +92,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         TextView messageText;
         TextView secondMessageText;
         Button dismissButton;
+        int notifId = -1;
 
         public NotificationViewHolder(View view) {
             super(view);
