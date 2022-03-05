@@ -63,9 +63,15 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
                 notifId = record.getId();
                 holder.headerText.setText(this.context.getResources().getString(R.string.exposed_text));
                 holder.messageText.setText(Html.fromHtml(record.msg + " " + this.context.getString(R.string.exposed_text2) + " <b>" + dateFormat.format(Long.valueOf(record.getTimestampStart())) + "."));
+                break;
             }
             case 2:{
-                // TODO
+                notifId = record.getId();
+                holder.headerText.setText(this.context.getResources().getString(R.string.distance_text));
+                holder.messageText.setText(record.msg + ".");
+                holder.secondMessageText.setText("");
+                holder.secondMessageText.setVisibility(View.GONE);
+                break;
             }
         }
 
