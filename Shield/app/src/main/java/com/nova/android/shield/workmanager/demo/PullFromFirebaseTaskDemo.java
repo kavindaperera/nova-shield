@@ -16,9 +16,14 @@ import com.nova.android.shield.ble.BleRecord;
 import com.nova.android.shield.ble.BleRecordRepository;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
+import com.nova.android.shield.ui.notification.NotificationRecord;
+import com.nova.android.shield.ui.notification.NotificationRepository;
 import com.nova.android.shield.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
@@ -28,12 +33,14 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
     Context context;
 
     BleRecordRepository recordRepository;
+    NotificationRepository notificationRepository;
 
     public PullFromFirebaseTaskDemo(Context context) {
         Constants.PullFromFirebaseServiceRunning = true;
         Log.i(TAG, "PullFromFirebaseServiceRunning: " + "true");
         this.context = context;
         this.recordRepository = new BleRecordRepository(context);
+        this.notificationRepository = new NotificationRepository(context);
     }
 
 
@@ -68,11 +75,17 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
                 });
 
 
-        // get all ble records
+        HashMap<String, ArrayList<Long>> groupedRecords = new HashMap<>();
         for (BleRecord record : getAllBleRecords()) {
             Log.d(TAG, record.toString() );
 
-            // group records by uuid using a hashmap <uuid, timestamp list>
+            if (groupedRecords.containsKey(record.getUuid())) {
+                groupedRecords.get(record.getUuid()).add(record.getTimestamp());
+            } else {
+                ArrayList<Long> timestamps = new ArrayList<>();
+                timestamps.add(record.getTimestamp());
+                groupedRecords.put(record.getUuid(), timestamps);
+            }
 
         }
 
@@ -81,13 +94,23 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
         List<Long> startTimes = new ArrayList<>();
         List<Long> endTimes = new ArrayList<>();
 
-        // check isExposed() - return expose start time and end time
+        Iterator<String> uuids = groupedRecords.keySet().iterator();
+        String uuid;
+        String exposedMsg;
+        Date startTime, endTime;
+        while (uuids.hasNext()) {
+            uuid = uuids.next();
+            long[] exposedTimes = isExposed(groupedRecords.get(uuid));
+            if (exposedTimes != null) {
+                startTime = new Date(exposedTimes[0]);
+                endTime = new Date(exposedTimes[1]);
+                exposedMsg = "You were exposed during the period => " + startTime.toString() + " to " + endTime.toString();
 
-        // add message to exposedMsgs array
-
-        // add start time to startTimes array
-
-        // add end time to endTimes array
+                exposedMsgs.add(exposedMsg);
+                startTimes.add(exposedTimes[0]);
+                endTimes.add(exposedTimes[1]);
+            }
+        }
 
         notifyBulk(Constants.NotifType.EXPOSURE, exposedMsgs, startTimes, endTimes);
 
@@ -100,13 +123,23 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
 
     public void notifyBulk(Constants.NotifType notifType, List<String> msgs, List<Long> timeStart, List<Long> timeEnd) {
 
-        // TODO - For each msg
-        // - write  to database asynchronously
-        // - send notification
+        NotificationRecord notificationRecord;
+        String msg;
+        long start;
+        long end;
+        for (int i = 0; i < msgs.size(); i++) {
+            msg = msgs.get(i);
+            start = timeStart.get(i);
+            end = timeEnd.get(i);
 
+            notificationRecord = new NotificationRecord(start, end, msg, notifType.ordinal(), true);
+            this.notificationRepository.insert(notificationRecord);
+
+            // - send notification
+        }
     }
 
-    public static long[] isExposed(){
+    public static long[] isExposed(List<Long> timestamps){
         return null;
     }
 
