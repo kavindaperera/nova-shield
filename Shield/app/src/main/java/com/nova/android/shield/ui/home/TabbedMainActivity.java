@@ -205,9 +205,12 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
             badgeDrawable.setVisible(false);
             return;
         }
-
+        badgeDrawable.setBadgeTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+        badgeDrawable.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.verify_error));
+        badgeDrawable.setHorizontalOffsetWithText(10);
         badgeDrawable.setVisible(true);
         badgeDrawable.setNumber(count);
+
     }
 
 
