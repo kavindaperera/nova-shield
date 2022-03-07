@@ -33,6 +33,10 @@ public class NotificationRepository {
         return this.notificationRecordDao.getNotificationRecordsBetweenTimestamp(timestamp1, timestamp2);
     }
 
+    public LiveData<Integer> getNewNotificationCount() {
+        return this.notificationRecordDao.getNewNotificationCount();
+    }
+
     public void deleteOldRecords(long timestamp) {
         NotificationRecordRoomDatabase.databaseWriteExecutor.execute(() -> {
             notificationRecordDao.deleteEarlierThan(timestamp);

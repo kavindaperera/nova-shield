@@ -27,6 +27,10 @@ public interface NotificationRecordDao {
     @Query("SELECT * FROM notification_record_table ORDER BY id DESC")
     LiveData<List<NotificationRecord>> getSortedNotificationRecords();
 
+    // get new record count
+    @Query("SELECT COUNT(*) FROM notification_record_table WHERE is_new == 1")
+    LiveData<Integer> getNewNotificationCount();
+
     // delete all
     @Query("DELETE FROM notification_record_table")
     void deleteAll();

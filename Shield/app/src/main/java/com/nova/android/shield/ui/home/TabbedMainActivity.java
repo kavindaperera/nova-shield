@@ -23,34 +23,29 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.nova.android.ble.api.BleManager;
-import com.nova.android.ble.api.Device;
-import com.nova.android.ble.api.callback.StateListener;
 import com.nova.android.ble.logs.BleLogger;
-import com.nova.android.shield.BuildConfig;
 import com.nova.android.shield.R;
 import com.nova.android.shield.auth.ShieldSession;
 import com.nova.android.shield.ble.BleRecordRepository;
 import com.nova.android.shield.ble.BluetoothUtils;
 import com.nova.android.shield.logs.Log;
-import com.nova.android.shield.main.ShieldApp;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
-import com.nova.android.shield.service.ShieldService;
 import com.nova.android.shield.ui.notification.NotificationRecyclerViewAdapter;
-import com.nova.android.shield.ui.settings.PermissionUtils;
+import com.nova.android.shield.ui.notification.NotificationViewModel;
 import com.nova.android.shield.ui.settings.SettingsActivity;
 import com.nova.android.shield.ui.splash.SplashActivity;
 import com.nova.android.shield.utils.Constants;
 import com.nova.android.shield.utils.Utils;
 
-import java.security.Permission;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -62,6 +57,10 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     private static final String TAG = "[Nova][Shield][TabbedMainActivity]";
 
     Toolbar toolbar;
+
+    private NotificationViewModel notifViewModel;
+
+    BottomNavigationView navView;
 
     private final BroadcastReceiver permissionBroadcastReceiver = new PermissionBroadcastReceiver();
 
@@ -91,6 +90,8 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         Constants.init(getApplicationContext());
 
         registerReceiver(BluetoothUtils.bluetoothReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+
+        notifViewModel = new ViewModelProvider(this).get(NotificationViewModel.class);
 
         initView(savedInstanceState);
 
@@ -153,7 +154,7 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
 
         ButterKnife.bind(this);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -192,6 +193,15 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
             }
         }
 
+        // update notification badge
+        notifViewModel.getNewNotifCount().observe(this, count -> setNotificationBadge(count));
+
+    }
+
+    private void setNotificationBadge(Integer count) {
+        BadgeDrawable badgeDrawable = navView.getOrCreateBadge(R.id.navigation_alerts);
+        badgeDrawable.setVisible(true);
+        badgeDrawable.setNumber(count);
     }
 
 

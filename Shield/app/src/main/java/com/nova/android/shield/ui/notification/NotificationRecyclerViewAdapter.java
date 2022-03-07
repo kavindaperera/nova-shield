@@ -59,13 +59,13 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         final NotificationRecord record = this.notificationRecords.get(position);
         SimpleDateFormat dateFormat = new SimpleDateFormat("M/d");
         switch (record.notif_type) {
-            case 1:{
+            case 0:{
                 holder.notifId = record.getId();
                 holder.headerText.setText(this.context.getResources().getString(R.string.exposed_text));
                 holder.messageText.setText(Html.fromHtml(record.msg + " " + this.context.getString(R.string.exposed_text2) + " <b>" + dateFormat.format(Long.valueOf(record.getTimestampStart())) + "."));
                 break;
             }
-            case 2:{
+            case 1:{
                 holder.notifId = record.getId();
                 holder.headerText.setText(this.context.getResources().getString(R.string.distance_text));
                 holder.messageText.setText(record.msg + ".");

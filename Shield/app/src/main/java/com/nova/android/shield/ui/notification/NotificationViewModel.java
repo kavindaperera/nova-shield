@@ -12,6 +12,7 @@ public class NotificationViewModel extends AndroidViewModel {
 
     private NotificationRepository mRepository;
     private LiveData<List<NotificationRecord>> mRecords;
+    private LiveData<Integer> mNewRecordCount;
 
     public NotificationViewModel(@NonNull Application application) {
         super(application);
@@ -20,10 +21,15 @@ public class NotificationViewModel extends AndroidViewModel {
         }
         this.mRepository = new NotificationRepository(application);
         this.mRecords = mRepository.getAllSortedRecords();
+        this.mNewRecordCount = mRepository.getNewNotificationCount();
     }
 
     public LiveData<List<NotificationRecord>> getAllSorted() {
         return this.mRecords;
+    }
+
+    public LiveData<Integer> getNewNotifCount() {
+        return this.mNewRecordCount;
     }
 
     public void deleteAll() {
