@@ -200,6 +200,12 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
 
     private void setNotificationBadge(Integer count) {
         BadgeDrawable badgeDrawable = navView.getOrCreateBadge(R.id.navigation_alerts);
+
+        if (count==0) {
+            badgeDrawable.setVisible(false);
+            return;
+        }
+
         badgeDrawable.setVisible(true);
         badgeDrawable.setNumber(count);
     }
