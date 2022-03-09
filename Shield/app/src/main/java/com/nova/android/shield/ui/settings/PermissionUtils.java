@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 
 
+import androidx.core.app.ActivityCompat;
+
 import com.nova.android.shield.ble.BluetoothUtils;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
@@ -25,9 +27,14 @@ public class PermissionUtils {
             if (Constants.bluetoothAdapter != null && !Constants.bluetoothAdapter.isEnabled()) {
                 activity.startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), 0);
             }
+            if (!Utils.hasBlePermissions(activity)){
+                Log.e(TAG, "no ble permissions");
+                ActivityCompat.requestPermissions(activity, Utils.getBlePermissions(), 1);
+                return;
+            }
             return;
         }
-        Log.i(TAG, "bluetoothSwitchLogic(): bluetooth_enabled = true");
+        Log.i(TAG, "hasBlePermissions: " + Utils.hasBlePermissions(activity) + " | isBluetoothOn: " + BluetoothUtils.isBluetoothOn());
         ShieldPreferencesHelper.setBluetoothEnabled(activity);
         if (!Constants.ShieldingServiceRunning) {
             Utils.startShieldingService(activity);

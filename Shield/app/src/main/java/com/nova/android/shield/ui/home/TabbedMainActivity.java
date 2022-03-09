@@ -2,15 +2,10 @@ package com.nova.android.shield.ui.home;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +19,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -44,6 +38,7 @@ import com.nova.android.shield.ui.notification.NotificationViewModel;
 import com.nova.android.shield.ui.settings.SettingsActivity;
 import com.nova.android.shield.ui.splash.SplashActivity;
 import com.nova.android.shield.utils.Constants;
+import com.nova.android.shield.utils.PermissionLogic;
 import com.nova.android.shield.utils.Utils;
 
 import java.util.List;
@@ -61,20 +56,6 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     private NotificationViewModel notifViewModel;
 
     BottomNavigationView navView;
-
-    private final BroadcastReceiver permissionBroadcastReceiver = new PermissionBroadcastReceiver();
-
-    class PermissionBroadcastReceiver extends BroadcastReceiver {
-        PermissionBroadcastReceiver() {
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Constants.LOCATION_PERMISSION)) {
-                ActivityCompat.requestPermissions(TabbedMainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-            }
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +92,6 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(this.permissionBroadcastReceiver);
         super.onPause();
         Log.i(TAG, "onPause(): ");
     }
@@ -120,9 +100,6 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "onResume(): ");
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constants.LOCATION_PERMISSION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(this.permissionBroadcastReceiver, intentFilter);
     }
 
     @Override
@@ -300,12 +277,6 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.i(TAG, "onRequestPermissionsResult(): ");
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Please restart the app", Toast.LENGTH_LONG).show(); // implement this
-        } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            Toast.makeText(this, "Location permissions is needed to start shielding!", Toast.LENGTH_SHORT).show(); //close app on deny permissions
-            finish();
-        }
+        PermissionLogic.permissionLogic(requestCode, permissions, grantResults, this);
     }
 }

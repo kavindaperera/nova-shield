@@ -101,5 +101,10 @@
     <string name="settings_mark_infected">Mark as COVID-19 Infected</string>
     <string name="confirm_infected_dialog_text">I confirm that I have been officially diagnosed with COVID-19.</string>
     <string name="action_clear_database">Clear DB Records </string>
+    <string name="sure">I\'m Sure</string>
+    <string name="permission_location_rationale">Without location permission, Shield is unable to capture information of people around you. Are you sure you want to deny this permission?</string>
+    <string name="permission_location_ask">Shield requires access to location information. Would you like to open app settings to enable this?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 
 </resources>

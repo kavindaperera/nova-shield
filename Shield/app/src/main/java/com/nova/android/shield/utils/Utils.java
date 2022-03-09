@@ -25,15 +25,49 @@ import com.nova.android.shield.service.ShieldService;
 import com.nova.android.shield.ui.home.TabbedMainActivity;
 
 public class Utils {
+
+    private static final String TAG = "[Nova][Shield][Utils]";
+
     public static boolean hasBlePermissions(Context context) { // check for ble permissions
+        Log.i(TAG, "check for ble permission");
         if (!(context == null || Constants.BLE_PERMISSIONS == null)) {
             for (String permission : Constants.BLE_PERMISSIONS) {
                 if (ActivityCompat.checkSelfPermission(context, permission) != 0) {
+                    Log.e(TAG, "return false on " + permission);
                     return false;
                 }
             }
         }
-        return true;
+        Log.i(TAG, "check for location also");
+        return hasLocationPermissions(context);
+    }
+
+    public static boolean hasLocationPermissions(Context context) {
+        Log.i(TAG, "check for location permission");
+        if (Build.VERSION.SDK_INT >= 29) {
+            if (context == null || Constants.LOCATION_PERMISSIONS == null) {
+                return true;
+            }
+            for (String permission : Constants.LOCATION_PERMISSIONS) {
+                int result = ActivityCompat.checkSelfPermission(context, permission);
+                if (result != 0) {
+                    Log.e(TAG, "return false on " + permission);
+                    return false;
+                }
+            }
+            return true;
+        } else if (context == null || Constants.LOCATION_PERMISSIONS_LOWER == null) {
+            return true;
+        } else {
+            for (String permission2 : Constants.LOCATION_PERMISSIONS_LOWER) {
+                int result2 = ActivityCompat.checkSelfPermission(context, permission2);
+                if (result2 != 0) {
+                    Log.e(TAG, "return false on " + permission2);
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     public static void updateBluetoothSwitchState(Activity activity) {
@@ -117,6 +151,27 @@ public class Utils {
 
     public static void bleRecordToDatabase(Context context, String uuid, int rssi, long timestamp) {
         new BleRecordAsyncOperation(context, uuid, rssi, timestamp).execute(new Void[0]);
+    }
+
+    public static String[] getBlePermissions() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            return Constants.BLE_PERMISSIONS;
+        }
+        String[] out = new String[(Constants.BLE_PERMISSIONS.length + Constants.LOCATION_PERMISSIONS.length)];
+        int counter = 0;
+        int i = 0;
+        while (i < Constants.LOCATION_PERMISSIONS.length) {
+            out[counter] = Constants.LOCATION_PERMISSIONS[i];
+            i++;
+            counter++;
+        }
+        int i2 = 0;
+        while (i2 < Constants.LOCATION_PERMISSIONS.length) {
+            out[counter] = Constants.LOCATION_PERMISSIONS[i2];
+            i2++;
+            counter++;
+        }
+        return out;
     }
 
 }

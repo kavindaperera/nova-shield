@@ -61,13 +61,6 @@ public class BluetoothUtils {
         @Override
         public void onStartError(@NonNull String message, @NonNull int errorCode) {
             Log.e(TAG, "onStartError(): " + message);
-
-            Context mContext = ShieldApp.getInstance();
-
-            if (errorCode == INSUFFICIENT_PERMISSIONS) {
-                LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent().setAction(Constants.LOCATION_PERMISSION));
-            }
-
         }
 
         @Override

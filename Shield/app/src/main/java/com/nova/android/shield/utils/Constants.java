@@ -29,7 +29,8 @@ public class Constants {
     public static int deviceID;
     public static List<String> deviceNames = new LinkedList();
     public static final int FOREGROUND_SERVICE = 444;
-    public static final String LOCATION_PERMISSION = "locationPermission";
+    public static String[] LOCATION_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    public static String[] LOCATION_PERMISSIONS_LOWER = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     public static List<String> manufacturerNames = new LinkedList();
     public static final String MSG_DATE_YESTERDAY = "Yesterday";
     public static final String NOTIFICATION_CHANNEL = "shield_channel";

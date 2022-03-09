@@ -11,7 +11,9 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
+import com.nova.android.shield.R;
 import com.nova.android.shield.ble.BluetoothUtils;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldConstants;
@@ -47,6 +49,7 @@ public class ShieldService extends Service {
                         .setContentIntent(activity)
                         .setOngoing(true)
                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                        .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary))
                         .setPriority(Notification.PRIORITY_MAX)
                         .setCategory(NotificationCompat.CATEGORY_SERVICE)
                         .build();
