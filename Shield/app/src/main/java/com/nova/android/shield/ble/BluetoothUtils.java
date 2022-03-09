@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.nova.android.ble.api.BleManager;
 import com.nova.android.ble.api.Device;
@@ -26,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
 
-import static com.nova.android.ble.api.Constants.INSUFFICIENT_PERMISSIONS;
 
 public class BluetoothUtils {
 
@@ -130,7 +128,7 @@ public class BluetoothUtils {
                 return true;
             }
             return false;
-        } else if (rssi >= Constants.bleThresholds.get(Integer.valueOf(Constants.deviceID)).intValue()){
+        } else if (rssi >= Constants.bleThresholds.get(Integer.valueOf(Constants.deviceID)).intValue()) {
             return true;
         } else {
             return false;

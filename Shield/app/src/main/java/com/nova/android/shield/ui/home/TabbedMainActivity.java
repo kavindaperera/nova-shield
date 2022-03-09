@@ -33,6 +33,7 @@ import com.nova.android.shield.ble.BleRecordRepository;
 import com.nova.android.shield.ble.BluetoothUtils;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
+import com.nova.android.shield.ui.about.AboutActivity;
 import com.nova.android.shield.ui.notification.NotificationRecyclerViewAdapter;
 import com.nova.android.shield.ui.notification.NotificationViewModel;
 import com.nova.android.shield.ui.settings.SettingsActivity;
@@ -235,6 +236,10 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
             BleRecordRepository recordRepository = new BleRecordRepository(getApplicationContext());
             recordRepository.deleteAll();
             Toast.makeText(this, "Database Records Cleared", Toast.LENGTH_SHORT).show();
+        }
+
+        if (id == R.id. action_about){
+            startActivity(new Intent(getBaseContext(), AboutActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

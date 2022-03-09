@@ -33,17 +33,24 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:largeHeap="true"
         android:theme="@style/Theme.Shield">
-        <activity android:name=".ui.home.tabs.friends.ShowBarcodeActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".ui.home.TabbedMainActivity">
+        <activity
+            android:name=".ui.about.AboutActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.home.TabbedMainActivity" />
-
+        </activity>
+        <activity
+            android:name=".ui.home.tabs.friends.ShowBarcodeActivity"
+            android:parentActivityName=".ui.home.TabbedMainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.home.TabbedMainActivity" />
         </activity>
         <activity
             android:name=".ui.signup.SignUpActivity"
@@ -63,15 +70,14 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https"
-                    android:host="shield.novalabs.lk"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="shield.novalabs.lk"
+                    android:scheme="https" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.settings.SettingsActivity"
@@ -81,7 +87,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.home.TabbedMainActivity" />
         </activity>
-
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"

@@ -1,6 +1,7 @@
 package com.nova.android.shield.ui.settings;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,13 +24,14 @@ import com.nova.android.shield.utils.Constants;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat{
 
     private static final String TAG = "[Nova][Shield][SettingsFragment]";
     private static final String KEY_DELETE_ACCOUNT_PREFERENCE = "deleteAccount";
     private static final String KEY_MARK_INFECTED_PREFERENCE = "markInfected";
     private static final String KEY_RINGTONE_PREFERENCE = "notificationSound";
     private static final String KEY_NOTIFICATION_SETTINGS_PREFERENCE = "notificationSettings";
+    private static final String KEY_FEEDBACK = "feedback";
 
     private static final int REQUEST_CODE_ALERT_RINGTONE = 83216;
 
@@ -40,7 +42,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.preferences, rootKey);
     }
 
-
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
         if (preference.getKey().equals(KEY_RINGTONE_PREFERENCE)) {
@@ -50,7 +51,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
 
-            String existingValue = getRingtonePreferenceValue(); // TODO
+            String existingValue = getRingtonePreferenceValue();
             if (existingValue != null) {
                 if (existingValue.length() == 0) {
                     // Select "Silent"
@@ -64,7 +65,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
             startActivityForResult(intent, REQUEST_CODE_ALERT_RINGTONE);
             return true;
-        } else if (preference.getKey().equals(KEY_NOTIFICATION_SETTINGS_PREFERENCE)) {
+        }
+        else if (preference.getKey().equals(KEY_NOTIFICATION_SETTINGS_PREFERENCE)) {
 
             Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -72,13 +74,25 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
             startActivity(intent);
             return true;
-        } else if (preference.getKey().equals(KEY_DELETE_ACCOUNT_PREFERENCE)) {
+        }
+        else if (preference.getKey().equals(KEY_DELETE_ACCOUNT_PREFERENCE)) {
             Toast.makeText(getContext(), "You can't delete the account at this moment", Toast.LENGTH_LONG).show();
             return true;
-        } else if (preference.getKey().equals(KEY_MARK_INFECTED_PREFERENCE)) {
+        }
+        else if (preference.getKey().equals(KEY_MARK_INFECTED_PREFERENCE)) {
             this.showConfirmationInfectedDialog();
             return true;
-        } else {
+        }
+        else if (preference.getKey().equals(KEY_FEEDBACK)){
+            Intent Email = new Intent(Intent.ACTION_SENDTO);
+            Email.setType("text/email");
+            Email.setData(Uri.parse("mailto:")); // only email apps should handle this
+            Email.putExtra(Intent.EXTRA_EMAIL, new String[] { "admin@novalabs.lk" });
+            Email.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
+            startActivity(Intent.createChooser(Email, "Send Feedback"));
+            return true;
+        }
+        else {
             return super.onPreferenceTreeClick(preference);
         }
     }
@@ -114,10 +128,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private String getRingtonePreferenceValue() {
-        return null;
+        return ShieldPreferencesHelper.getNotificationSound(getContext());
     }
 
-    private void setRingtonePreferenceValue(String ringtonePreferenceValue) {
+    private void setRingtonePreferenceValue(Uri ringtonePreferenceValue) {
+        if (ringtonePreferenceValue!=null){
+            ShieldPreferencesHelper.setNotificationSound(getContext(), ringtonePreferenceValue.toString());
+        }
     }
 
     @Override
@@ -125,10 +142,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (requestCode == REQUEST_CODE_ALERT_RINGTONE && data != null) {
             Uri ringtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             if (ringtone != null) {
-                setRingtonePreferenceValue(ringtone.toString()); // TODO
+                setRingtonePreferenceValue(ringtone);
+                Toast.makeText(getContext(), "Notification Sound Changed", Toast.LENGTH_SHORT).show();
             } else {
                 // "Silent" was selected
-                setRingtonePreferenceValue(""); // TODO
+                setRingtonePreferenceValue(null);
+                Toast.makeText(getContext(), "Notification Sound Silenced", Toast.LENGTH_SHORT).show();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

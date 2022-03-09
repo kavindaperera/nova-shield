@@ -89,4 +89,12 @@ public class ShieldPreferencesHelper {
     public static long getLastCheckedTime(Context context) {
         return  getSharedPreferences(context).getLong(Constants.PREFS_LAST_CHECKED, 0L);
     }
+
+    public static void setNotificationSound(Context context, String uri) {
+        getSharedPreferences(context).edit().putString(Constants.PREFS_NOTIFICATION_SOUND, uri).apply();
+    }
+
+    public static String getNotificationSound(Context context) {
+        return  getSharedPreferences(context).getString(Constants.PREFS_NOTIFICATION_SOUND, "");
+    }
 }

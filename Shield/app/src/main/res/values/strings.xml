@@ -22,7 +22,7 @@
     <string name="distance_text">Warning</string>
     <string name="distance_text2">Please maintain your distance.</string>
     <string name="message_date_yesterday">Yesterday</string>
-    <string name="notification_sound">Notification sound</string>
+    <string name="notification_sound">Notification Sound</string>
     <string name="onboarding_title_1">Welcome to Shield!</string>
     <string name="onboarding_description_1">Help stop the spread by turning Bluetooth on. When outside the home, stay at least six feet away from other people, and avoid groups</string>
     <string name="onboarding_title_2">How does it work?</string>
@@ -37,8 +37,8 @@
     <string name="settings_category_notifications">ALERTS</string>
     <string name="settings_category_user_name">Username</string>
     <string name="settings_feedback_summary">Report technical issues or suggest new features</string>
-    <string name="settings_feedback_title">Send feedback</string>
-    <string name="settings_alerts_notifications_title">Enable Alert notifications</string>
+    <string name="settings_feedback_title">Send Feedback</string>
+    <string name="settings_alerts_notifications_title">Enable Alert Notifications</string>
     <string name="sign_up_text">Welcome to Shield!</string>
     <string name="terms">By registering your account, you accept our Terms and Conditions.</string>
     <string name="user_entry">Type Here...</string>
@@ -55,8 +55,8 @@
     <string name="Permissions_continue">Continue</string>
     <string name="Permissions_not_now">Not Now</string>
     <string name="build_number">Version 1.0</string>
-    <string name="url_tos">https://www.novalabssl.lk/tos</string>
-    <string name="url_privacy">https://www.novalabssl.lk/privacy-policy</string>
+    <string name="url_tos">https://www.novalabs.lk/tos</string>
+    <string name="url_privacy">https://www.novalabs.lk/privacy-policy</string>
     <string name="connectivity_dialog_text">Shield requires an active internet connection in the first time it is used.</string>
     <string name="remove_from_contacts">Remove from Contacts</string>
     <string name="user_avatar_description">User Avater</string>
@@ -106,5 +106,6 @@
     <string name="permission_location_ask">Shield requires access to location information. Would you like to open app settings to enable this?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="action_about">About</string>
 
 </resources>
