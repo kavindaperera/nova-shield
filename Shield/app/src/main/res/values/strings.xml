@@ -107,5 +107,6 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="action_about">About</string>
+    <string name="connectivity_dialog_text_settings">Shield requires an active internet connection for this functionality.</string>
 
 </resources>

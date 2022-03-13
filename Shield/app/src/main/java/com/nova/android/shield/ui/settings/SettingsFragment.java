@@ -19,7 +19,10 @@ import com.nova.android.shield.R;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
+import com.nova.android.shield.ui.intro.IntroActivity;
+import com.nova.android.shield.ui.signup.SignUpActivity;
 import com.nova.android.shield.utils.Constants;
+import com.nova.android.shield.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,6 +83,12 @@ public class SettingsFragment extends PreferenceFragmentCompat{
             return true;
         }
         else if (preference.getKey().equals(KEY_MARK_INFECTED_PREFERENCE)) {
+
+            if (!Utils.hasNetworkConnection(getActivity())){
+                this.showConnectivityDialog();
+                return false;
+            }
+
             this.showConfirmationInfectedDialog();
             return true;
         }
@@ -122,6 +131,16 @@ public class SettingsFragment extends PreferenceFragmentCompat{
         builder.setMessage(getString(ShieldConstants.string.confirm_infected_dialog_text))
                 .setCancelable(false)
                 .setPositiveButton("Confirm", (dialog, which) -> this.markAsInfected())
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    private void showConnectivityDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(getString(ShieldConstants.string.connectivity_dialog_text_settings))
+                .setCancelable(false)
+                .setPositiveButton("Connect", (dialog, which) -> startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)))
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
         builder.show();

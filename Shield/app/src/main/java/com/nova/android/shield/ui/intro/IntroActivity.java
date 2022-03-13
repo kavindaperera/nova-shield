@@ -26,6 +26,7 @@ import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.ui.intro.onboarding.OnboardingAdapter;
 import com.nova.android.shield.ui.intro.onboarding.OnboardingItem;
 import com.nova.android.shield.ui.signup.SignUpActivity;
+import com.nova.android.shield.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -144,33 +145,20 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isConnected() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo wifiConn = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        NetworkInfo mobileConn = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
-        if ((wifiConn != null && wifiConn.isConnected()) || (mobileConn != null && mobileConn.isConnected())) {
-            return true;
-        }
-
-        return false;
-    }
-
     @OnClick({R.id.btn_verify})
     public void startVerification(View v) {
         if (mViewPager.getCurrentItem() + 1 < onboardingAdapter.getItemCount()) {
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
         } else {
 
-            if (!isConnected()) {
+            if (!Utils.hasNetworkConnection(this)) {
                 showConnectivityDialog();
                 return;
             }
 
             List<AuthUI.IdpConfig> provider = Arrays.asList(
                     new AuthUI.IdpConfig.GoogleBuilder().build(),
-                    //                    new AuthUI.IdpConfig.PhoneBuilder().build(),
+//                    new AuthUI.IdpConfig.PhoneBuilder().build(),
                     new AuthUI.IdpConfig.EmailBuilder().build()
             );
 
@@ -192,8 +180,7 @@ public class IntroActivity extends AppCompatActivity {
         builder.setMessage(getString(ShieldConstants.string.connectivity_dialog_text))
                 .setCancelable(false)
                 .setPositiveButton("Connect", (dialog, which) -> startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)))
-//                .setNegativeButton("Skip", (dialog, which) -> startActivity(new Intent(getApplicationContext(), SignupActivity.class)));
-                .setNegativeButton("Cancel", (dialog, which) -> finish());
+                .setNegativeButton("Skip", (dialog, which) -> startActivity(new Intent(getApplicationContext(), SignUpActivity.class)));
 
         builder.show();
     }

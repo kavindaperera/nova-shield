@@ -8,6 +8,7 @@ public class ShieldConstants {
         public static final int channel_description = R.string.channel_description;
         public static final int channel_name = R.string.channel_name;
         public static final int connectivity_dialog_text = R.string.connectivity_dialog_text;
+        public static final int connectivity_dialog_text_settings = R.string.connectivity_dialog_text_settings;
         public static final int confirm_infected_dialog_text = R.string.confirm_infected_dialog_text;
         public static final int foreground_notification_action_stop = R.string.foreground_notification_action_stop;
         public static final int foreground_notification_content_title = R.string.foreground_notification_content_title;

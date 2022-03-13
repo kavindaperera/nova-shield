@@ -1,6 +1,7 @@
 package com.nova.android.shield.ui.signup;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +39,14 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        String username;
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        } else{
+            username = Build.MANUFACTURER + " " + Build.MODEL;
+        }
+
         this.mUserName.setText((String)username);
         this.mUserName.setEnabled(true);
         this.mRegisterButton.setEnabled(true);
