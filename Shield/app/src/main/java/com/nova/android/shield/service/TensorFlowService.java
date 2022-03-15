@@ -61,7 +61,7 @@ public class TensorFlowService {
 
 
     private MappedByteBuffer loadModelFile() throws IOException {
-        AssetFileDescriptor assetFileDescriptor = this.context.getAssets().openFd("linear.tflite");
+        AssetFileDescriptor assetFileDescriptor = this.context.getAssets().openFd("model_1_64.tflite");
         FileInputStream fileInputStream = new FileInputStream(assetFileDescriptor.getFileDescriptor());
         FileChannel fileChannel = fileInputStream.getChannel();
         long startOffset = assetFileDescriptor.getStartOffset();

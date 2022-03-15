@@ -15,6 +15,7 @@ import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.main.ShieldApp;
 import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
+import com.nova.android.shield.service.TensorFlowService;
 import com.nova.android.shield.utils.Constants;
 import com.nova.android.shield.utils.TimeUtils;
 import com.nova.android.shield.utils.Utils;
@@ -111,6 +112,7 @@ public class BluetoothUtils {
         Constants.scanResultsUUIDsRSSIs = new ConcurrentHashMap<>();
         Constants.scanResultsUUIDsTimes = new ConcurrentHashMap<>();
 
+        BleManager.debug = Constants.DEBUG;
         BleManager.initialize(context, ShieldPreferencesHelper.getUserUuid(context));
         BleManager.start(stateListener);
     }
@@ -121,18 +123,24 @@ public class BluetoothUtils {
 
     private static boolean checkRssiThreshold(int rssi) {
 
-        // TODO - pass to machine learning model
+        float f[] = TensorFlowService.getInstance().doInference(Integer.toString(rssi));
+        int prediction = Utils.argmax(f);
 
-        if (Constants.deviceID == 0) {
-            if (rssi >= Constants.defaultRssiThreshold) {
-                return true;
-            }
-            return false;
-        } else if (rssi >= Constants.bleThresholds.get(Integer.valueOf(Constants.deviceID)).intValue()) {
+        if (prediction == 1){
             return true;
-        } else {
-            return false;
         }
+        return false;
+
+//        if (Constants.deviceID == 0) {
+//            if (rssi >= Constants.defaultRssiThreshold) {
+//                return true;
+//            }
+//            return false;
+//        } else if (rssi >= Constants.bleThresholds.get(Integer.valueOf(Constants.deviceID)).intValue()) {
+//            return true;
+//        } else {
+//            return false;
+//        }
 
     }
 

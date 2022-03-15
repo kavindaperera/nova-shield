@@ -25,6 +25,7 @@ public class Constants {
     public static HashMap<Integer, Integer> bleThresholds = new HashMap<>();
     public static final String[] DAYS_OF_WEEK = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     public static boolean DEBUG = true; // TODO - set to false in production
+    public static boolean DEMO = true; // TODO - set to false in production
     public static final String DEEP_LINK_QR = "qr";
     public static int deviceID;
     public static List<String> deviceNames = new LinkedList();
@@ -51,7 +52,7 @@ public class Constants {
     public static final String PREFS_WHITELIST = "whitelisted_devices";
     public static int PULL_FROM_FIREBASE_INTERVAL = (15 * 60) * 1000;
     public static boolean PullFromFirebaseServiceRunning = false;
-    public static long SCAN_RESULTS_RESET_INTERVAL = 5000L;
+    public static long SCAN_RESULTS_RESET_INTERVAL = 1500L;
     public static ConcurrentSkipListSet<String> scanResultsUUIDs;
     public static ConcurrentHashMap<String, Integer> scanResultsUUIDsRSSIs;
     public static ConcurrentHashMap<String, Long> scanResultsUUIDsTimes;
@@ -68,7 +69,8 @@ public class Constants {
 
     public enum NotifType {
         EXPOSURE,
-        DISTANCE_REMINDER
+        DISTANCE_REMINDER,
+        INFO
     }
 
     public static void init(Context ctx) {

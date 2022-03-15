@@ -189,4 +189,16 @@ public class Utils {
         return false;
     }
 
+    public static int argmax(float[] array) {
+        float max = array[0];
+        int re = 0;
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
+                max = array[i];
+                re = i;
+            }
+        }
+        return re;
+    }
+
 }

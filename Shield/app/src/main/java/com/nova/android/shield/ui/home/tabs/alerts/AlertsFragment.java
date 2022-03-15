@@ -72,7 +72,7 @@ public class AlertsFragment extends Fragment {
     public void refreshTask() {
         Log.i(TAG, "refreshTask(): ");
 
-        if (Constants.DEBUG) {
+        if (Constants.DEMO) {
             new PullFromFirebaseTaskDemo(getContext()).execute(new Void[0]);
         } else {
             PullFromFirebaseTask();

@@ -1,7 +1,6 @@
 package com.nova.android.shield.logs;
 
 
-import com.nova.android.shield.main.ShieldApp;
 import com.nova.android.shield.utils.Constants;
 
 public class Log {
