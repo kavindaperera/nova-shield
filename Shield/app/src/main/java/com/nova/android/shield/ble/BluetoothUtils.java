@@ -79,16 +79,16 @@ public class BluetoothUtils {
 
             Context mContext = ShieldApp.getInstance();
 
-            if (Constants.scanResultsUUIDs != null && !Constants.scanResultsUUIDs.contains(contactUuid) && BluetoothUtils.checkRssiThreshold(contactRssi)) {
-                Log.e(TAG, "Found contact with UUID: " + contactUuid);
+            if (Constants.scanResultsUUIDs != null && !Constants.scanResultsUUIDs.contains(contactUuid)
+                    && !ShieldPreferencesHelper.getWhitelist(mContext).contains(contactUuid) && BluetoothUtils.checkRssiThreshold(contactRssi)) {
+
+                Log.e(TAG, "found new contact with UUID: " + contactUuid);
 
                 Constants.scanResultsUUIDs.add(contactUuid);
                 Constants.scanResultsUUIDsRSSIs.put(contactUuid, Integer.valueOf(contactRssi));
                 Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
 
-                if (!ShieldPreferencesHelper.getWhitelist(mContext).contains(contactUuid)) {
-                    Utils.sendNotification(mContext, mContext.getString(ShieldConstants.string.distance_text), mContext.getString(ShieldConstants.string.distance_text2), notifLevel);
-                }
+                Utils.sendNotification(mContext, mContext.getString(ShieldConstants.string.distance_text), mContext.getString(ShieldConstants.string.distance_text2), notifLevel);
 
                 Completable.timer(Constants.SCAN_RESULTS_RESET_INTERVAL, TimeUnit.MILLISECONDS).subscribe(() -> {
                     Log.e(TAG, "scanResults: saving");
@@ -126,7 +126,7 @@ public class BluetoothUtils {
         float f[] = TensorFlowService.getInstance().doInference(Integer.toString(rssi));
         int prediction = Utils.argmax(f);
 
-        if (prediction == 1){
+        if (prediction == 1) {
             return true;
         }
         return false;
@@ -154,7 +154,7 @@ public class BluetoothUtils {
 
     public static void saveScanResults(Context context) {
         if (Constants.scanResultsUUIDs != null && Constants.scanResultsUUIDsRSSIs != null && Constants.scanResultsUUIDsTimes != null) {
-            Log.e(TAG, "Records: " + Constants.scanResultsUUIDs.size() + ", " + Constants.scanResultsUUIDsRSSIs.keySet().size() + ", " + Constants.scanResultsUUIDsTimes.keySet().size());
+            Log.e(TAG, "no of records: " + Constants.scanResultsUUIDs.size() + ", " + Constants.scanResultsUUIDsRSSIs.keySet().size() + ", " + Constants.scanResultsUUIDsTimes.keySet().size());
             for (String uuid : Constants.scanResultsUUIDs) {
                 if (Constants.scanResultsUUIDsRSSIs.containsKey(uuid) && Constants.scanResultsUUIDsTimes.containsKey(uuid)) {
                     Utils.bleRecordToDatabase(context, uuid, Constants.scanResultsUUIDsRSSIs.get(uuid).intValue(), Constants.scanResultsUUIDsTimes.get(uuid).longValue());

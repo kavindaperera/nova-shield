@@ -209,7 +209,7 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
         int id = item.getItemId();
 
         if (id == R.id.action_shield) {
-            // TODO
+            // do nothing
         }
 
         if (id == R.id.action_settings) {
