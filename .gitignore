@@ -6,3 +6,4 @@ docs/res/avatars/source_files/
 docs/uml/old/
 Shield/.idea/gradle.xml
 tf-model/
+*.jks

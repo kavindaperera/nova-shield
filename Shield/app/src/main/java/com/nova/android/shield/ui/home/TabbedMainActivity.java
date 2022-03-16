@@ -156,8 +156,6 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
                 case DEEP_LINK_QR: {
                     String encryptedUuid = params.get(params.size() - 1); // extract uuid
 
-                    //TODO - decrypt UUID @JudeRanidu
-
                     navController.navigate(R.id.navigation_friends); //move to friends fragment
 
                     if (ShieldPreferencesHelper.addToWhitelist(getApplicationContext(), encryptedUuid)) {

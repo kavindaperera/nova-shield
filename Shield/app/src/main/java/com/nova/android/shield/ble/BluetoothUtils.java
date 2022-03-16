@@ -80,7 +80,7 @@ public class BluetoothUtils {
             Context mContext = ShieldApp.getInstance();
 
             if (Constants.scanResultsUUIDs != null && !Constants.scanResultsUUIDs.contains(contactUuid)
-                    && !ShieldPreferencesHelper.getWhitelist(mContext).contains(contactUuid) && BluetoothUtils.checkRssiThreshold(contactRssi)) {
+                     && BluetoothUtils.checkRssiThreshold(contactRssi)) {
 
                 Log.e(TAG, "found new contact with UUID: " + contactUuid);
 
@@ -88,7 +88,9 @@ public class BluetoothUtils {
                 Constants.scanResultsUUIDsRSSIs.put(contactUuid, Integer.valueOf(contactRssi));
                 Constants.scanResultsUUIDsTimes.put(contactUuid, Long.valueOf(TimeUtils.getTime()));
 
-                Utils.sendNotification(mContext, mContext.getString(ShieldConstants.string.distance_text), mContext.getString(ShieldConstants.string.distance_text2), notifLevel);
+                if(!ShieldPreferencesHelper.getWhitelist(mContext).contains(contactUuid)){
+                    Utils.sendNotification(mContext, mContext.getString(ShieldConstants.string.distance_text), mContext.getString(ShieldConstants.string.distance_text2), notifLevel);
+                }
 
                 Completable.timer(Constants.SCAN_RESULTS_RESET_INTERVAL, TimeUnit.MILLISECONDS).subscribe(() -> {
                     Log.e(TAG, "scanResults: saving");
