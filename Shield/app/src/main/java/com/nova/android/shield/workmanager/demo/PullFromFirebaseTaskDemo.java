@@ -16,6 +16,7 @@ import com.nova.android.shield.ble.BleRecord;
 import com.nova.android.shield.ble.BleRecordRepository;
 import com.nova.android.shield.logs.Log;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
+import com.nova.android.shield.ui.notification.NotifAsyncOperation;
 import com.nova.android.shield.ui.notification.NotificationRecord;
 import com.nova.android.shield.ui.notification.NotificationRepository;
 import com.nova.android.shield.utils.Constants;
@@ -37,7 +38,7 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
 
     public PullFromFirebaseTaskDemo(Context context) {
         Constants.PullFromFirebaseServiceRunning = true;
-        Log.i(TAG, "PullFromFirebaseServiceRunning: " + "true");
+        Log.i(TAG, "PullFromFirebaseServiceRunning: " + "started");
         this.context = context;
         this.recordRepository = new BleRecordRepository(context);
         this.notificationRepository = new NotificationRepository(context);
@@ -77,8 +78,6 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
 
         HashMap<String, ArrayList<Long>> groupedRecords = new HashMap<>();
         for (BleRecord record : getAllBleRecords()) {
-            Log.d(TAG, record.toString() );
-
             if (groupedRecords.containsKey(record.getUuid())) {
                 groupedRecords.get(record.getUuid()).add(record.getTimestamp());
             } else {
@@ -86,9 +85,9 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
                 timestamps.add(record.getTimestamp());
                 groupedRecords.put(record.getUuid(), timestamps);
             }
-
         }
 
+        Log.d(TAG, groupedRecords.toString());
 
         List<String> exposedMsgs = new ArrayList<>();
         List<Long> startTimes = new ArrayList<>();
@@ -135,11 +134,14 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
             notificationRecord = new NotificationRecord(start, end, msg, notifType.ordinal(), true);
             this.notificationRepository.insert(notificationRecord);
 
-            // - send notification
+            // TODO  - send red warning @JudeRanidu
         }
     }
 
     public static long[] isExposed(List<Long> timestamps){
+
+        // TODO @JudeRanidu
+
         return null;
     }
 
@@ -147,6 +149,6 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         Constants.PullFromFirebaseServiceRunning = false;
-        Log.i(TAG, "PullFromFirebaseServiceRunning: " + "false");
+        Log.i(TAG, "PullFromFirebaseServiceRunning: " + "completed");
     }
 }
