@@ -26,10 +26,19 @@
 </div>
 
 
+
 <!-- ABOUT THE PROJECT -->
 ## About the Project
 
 [![Shield Banner][product-banner]](https://github.com/kavindaperera/nova-shield)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+<!-- HOW DOES IT WORK-->
+## How does it work?
+
+[![How][how-banner]](https://github.com/kavindaperera/nova-shield)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -104,3 +113,4 @@ Radio Signal Strength Indication (RSSI) obtained by Bluetooth Low Energy Signals
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [product-banner]: /docs/res/repository-open-graph-template.png
+[how-banner]: docs/res/avatars/4x/UG1%404x.png
