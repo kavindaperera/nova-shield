@@ -12,6 +12,7 @@
     <string name="disconnect">Disconnect</string>
     <string name="done">Done</string>
     <string name="dummy_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+    <string name="exposed">You may have been exposed</string>
     <string name="exposed_text">You may have been exposed to a COVID-19 patient</string>
     <string name="exposed_text2">during </string>
     <string name="you_were_exposed">You were exposed</string>

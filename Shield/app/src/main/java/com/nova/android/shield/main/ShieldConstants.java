@@ -10,6 +10,7 @@ public class ShieldConstants {
         public static final int connectivity_dialog_text = R.string.connectivity_dialog_text;
         public static final int connectivity_dialog_text_settings = R.string.connectivity_dialog_text_settings;
         public static final int confirm_infected_dialog_text = R.string.confirm_infected_dialog_text;
+        public static final int exposed = R.string.exposed;
         public static final int foreground_notification_action_stop = R.string.foreground_notification_action_stop;
         public static final int foreground_notification_content_title = R.string.foreground_notification_content_title;
         public static final int onboarding_title_1 = R.string.onboarding_title_1;

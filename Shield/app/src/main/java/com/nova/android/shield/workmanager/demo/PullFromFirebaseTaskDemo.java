@@ -3,28 +3,23 @@ package com.nova.android.shield.workmanager.demo;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import androidx.annotation.NonNull;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.nova.android.shield.R;
 import com.nova.android.shield.ble.BleRecord;
 import com.nova.android.shield.ble.BleRecordRepository;
 import com.nova.android.shield.logs.Log;
+import com.nova.android.shield.main.ShieldConstants;
 import com.nova.android.shield.preferences.ShieldPreferencesHelper;
-import com.nova.android.shield.ui.notification.NotifAsyncOperation;
 import com.nova.android.shield.ui.notification.NotificationRecord;
 import com.nova.android.shield.ui.notification.NotificationRepository;
 import com.nova.android.shield.utils.Constants;
+import com.nova.android.shield.utils.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
@@ -44,39 +39,10 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
         this.notificationRepository = new NotificationRepository(context);
     }
 
-
     @Override
     protected Void doInBackground(Void... voids) {
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        Timestamp lastCheckedTime;
-        Timestamp currentTime = Timestamp.now();
-        long seconds = ShieldPreferencesHelper.getLastCheckedTime(context);
-
-        if(seconds != 0L) {
-            lastCheckedTime = new Timestamp(seconds,0);
-        } else {
-            lastCheckedTime = currentTime;
-        }
-
-        ShieldPreferencesHelper.setLastCheckedTime(context, currentTime.getSeconds());
-
-        db.collection("infected-users")
-                .whereGreaterThan("date", lastCheckedTime)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getId() + " => " + document.getData());
-                        }
-                    } else {
-                        Log.e(TAG, "Error getting documents: "+ task.getException());
-                    }
-                });
-
-
-        HashMap<String, ArrayList<Long>> groupedRecords = new HashMap<>();
+        HashMap<String, List<Long>> groupedRecords = new HashMap<>();
         for (BleRecord record : getAllBleRecords()) {
             if (groupedRecords.containsKey(record.getUuid())) {
                 groupedRecords.get(record.getUuid()).add(record.getTimestamp());
@@ -87,36 +53,80 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
             }
         }
 
-        Log.d(TAG, groupedRecords.toString());
 
-        List<String> exposedMsgs = new ArrayList<>();
-        List<Long> startTimes = new ArrayList<>();
-        List<Long> endTimes = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Iterator<String> uuids = groupedRecords.keySet().iterator();
-        String uuid;
-        String exposedMsg;
-        Date startTime, endTime;
-        while (uuids.hasNext()) {
-            uuid = uuids.next();
-            long[] exposedTimes = isExposed(groupedRecords.get(uuid));
-            if (exposedTimes != null) {
-                startTime = new Date(exposedTimes[0]);
-                endTime = new Date(exposedTimes[1]);
-                exposedMsg = "You were exposed" ;
+        Timestamp lastCheckedTime;
+        Timestamp currentTime = Timestamp.now();
+        long seconds = ShieldPreferencesHelper.getLastCheckedTime(context);
 
-                exposedMsgs.add(exposedMsg);
-                startTimes.add(exposedTimes[0]);
-                endTimes.add(exposedTimes[1]);
-            }
+        if (seconds != 0L) {
+            lastCheckedTime = new Timestamp(seconds, 0);
+        } else {
+            lastCheckedTime = currentTime;
         }
 
-        notifyBulk(Constants.NotifType.EXPOSURE, exposedMsgs, startTimes, endTimes);
+        ShieldPreferencesHelper.setLastCheckedTime(context, currentTime.getSeconds());
+
+        List<String> receivedUUIDs = new ArrayList<>();
+
+        db.collection("infected-users")
+                .whereGreaterThan("date", lastCheckedTime)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (document.getData().containsKey("uuid")) {
+                                receivedUUIDs.add((String) document.getData().get("uuid"));
+                            }
+                        }
+
+                        if (receivedUUIDs.isEmpty()) return;
+
+                        List<String> exposedMsgs = new ArrayList<>();
+                        List<Long> startTimes = new ArrayList<>();
+                        List<Long> endTimes = new ArrayList<>();
+
+                        for (String receivedUUID : receivedUUIDs) {
+
+                            long[] exposedTimes = isExposed(receivedUUID, groupedRecords);
+
+                            if (exposedTimes != null) {
+                                exposedMsgs.add("You were exposed");
+                                startTimes.add(exposedTimes[0]);
+                                endTimes.add(exposedTimes[1]);
+                            }
+
+                        }
+
+                        notifyBulk(Constants.NotifType.EXPOSURE, exposedMsgs, startTimes, endTimes);
+
+                    } else {
+                        Log.e(TAG, "Error retrieving infected user UUIDs: " + task.getException());
+                    }
+                });
+
 
         return null;
     }
 
-    private List<BleRecord> getAllBleRecords(){
+    private long[] isExposed(String receivedUUID, HashMap<String, List<Long>> groupedRecords) {
+
+        Long contactTimesStart;
+        Long contactTimesEnd;
+
+        if (groupedRecords.containsKey(receivedUUID)) {
+            List<Long> matches = groupedRecords.get(receivedUUID);
+            contactTimesStart = (matches.get(0));
+            contactTimesEnd = (matches.get(matches.size() - 1));
+            return new long[]{contactTimesStart, contactTimesEnd};
+        } else {
+            return null;
+        }
+
+    }
+
+    private List<BleRecord> getAllBleRecords() {
         return this.recordRepository.getAllRecords();
     }
 
@@ -126,6 +136,8 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
         String msg;
         long start;
         long end;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
         for (int i = 0; i < msgs.size(); i++) {
             msg = msgs.get(i);
             start = timeStart.get(i);
@@ -134,15 +146,9 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
             notificationRecord = new NotificationRecord(start, end, msg, notifType.ordinal(), true);
             this.notificationRepository.insert(notificationRecord);
 
-            // TODO  - send red warning @JudeRanidu
+            msg = msg + this.context.getString(R.string.exposed_text2) + " " + dateFormat.format(Long.valueOf(start)) + ".";
+            Utils.sendNotification(context, context.getString(ShieldConstants.string.exposed), msg, 1);
         }
-    }
-
-    public static long[] isExposed(List<Long> timestamps){
-
-        // TODO @JudeRanidu
-
-        return null;
     }
 
     @Override
