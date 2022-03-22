@@ -146,8 +146,9 @@ public class PullFromFirebaseTaskDemo extends AsyncTask<Void, Void, Void> {
             notificationRecord = new NotificationRecord(start, end, msg, notifType.ordinal(), true);
             this.notificationRepository.insert(notificationRecord);
 
-            msg = msg + this.context.getString(R.string.exposed_text2) + " " + dateFormat.format(Long.valueOf(start)) + ".";
+            msg = msg + " " + this.context.getString(R.string.exposed_text2) + " " + dateFormat.format(Long.valueOf(start)) + ".";
             Utils.sendNotification(context, context.getString(ShieldConstants.string.exposed), msg, 1);
+
         }
     }
 

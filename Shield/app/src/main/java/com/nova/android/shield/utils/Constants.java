@@ -43,6 +43,7 @@ public class Constants {
     public static final String PREFS_NAME = "com.nova.android.shield.app";
     public static final String PREFS_LOGS_ENABLED = "settings_logs_enabled";
     public static final String PREFS_NOTIFICATION_ENABLED = "settings_notifications_enabled";
+    public static final String PREFS_NOTIFICATION_ID= "notification_id";
     public static final String PREFS_NOTIFICATION_SOUND = "notificationSound";
     public static final String PREFS_BLUETOOTH_ENABLED = "bluetooth_enabled";
     public static final String PREFS_LAST_CHECKED = "last_checked_time";

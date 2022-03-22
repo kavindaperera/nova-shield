@@ -75,7 +75,7 @@ public class BluetoothUtils {
 
             String contactUuid = device.getUserId();
             int contactRssi = rssi;
-            int notifLevel = 1;
+            int notifLevel = 3;
 
             Context mContext = ShieldApp.getInstance();
 

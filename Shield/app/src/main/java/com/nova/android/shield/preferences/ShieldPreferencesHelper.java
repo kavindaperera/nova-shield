@@ -97,4 +97,12 @@ public class ShieldPreferencesHelper {
     public static String getNotificationSound(Context context) {
         return  getSharedPreferences(context).getString(Constants.PREFS_NOTIFICATION_SOUND, "");
     }
+
+    public static void setNotifId(Context context, Integer notifId) {
+        getSharedPreferences(context).edit().putInt(Constants.PREFS_NOTIFICATION_ID, notifId + 1).apply();
+    }
+
+    public static Integer getNotifId(Context context) {
+        return  getSharedPreferences(context).getInt(Constants.PREFS_NOTIFICATION_ID, 0);
+    }
 }

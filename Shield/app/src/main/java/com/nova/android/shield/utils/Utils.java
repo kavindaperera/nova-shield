@@ -1,6 +1,7 @@
 package com.nova.android.shield.utils;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -105,7 +106,7 @@ public class Utils {
         ShieldPreferencesHelper.setBluetoothEnabled(activity, false);
     }
 
-    public static void sendNotification(Context context, String title, String text, int type) {
+    public static void sendNotification(Context context, String title, String msg, int type) {
 
         if (ShieldPreferencesHelper.isNotificationEnabled(context)){
 
@@ -116,37 +117,50 @@ public class Utils {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, 0);
 
             NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-            bigText.bigText(text);
+            bigText.bigText(msg);
             bigText.setBigContentTitle(title);
-
             notifBuilder.setContentIntent(pendingIntent);
             notifBuilder.setSmallIcon(ShieldConstants.drawable.shld);
             notifBuilder.setContentTitle(title);
-            notifBuilder.setContentText(text);
+            notifBuilder.setContentText(msg);
             notifBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
             notifBuilder.setStyle(bigText);
 
             switch (type){
                 case 0:{
                     notifBuilder.setColor(ContextCompat.getColor(context, R.color.colorPrimary)); // default
+                    break;
                 }
                 case 1:{
                     notifBuilder.setColor(ContextCompat.getColor(context, R.color.notif_lvl_1)); // red warning
+                    break;
                 }
                 case 2:{
                     notifBuilder.setColor(ContextCompat.getColor(context, R.color.notif_lvl_2)); // orange warning
+                    break;
                 }
                 case 3:{
                     notifBuilder.setColor(ContextCompat.getColor(context, R.color.notif_lvl_3)); // yellow warning
+                    break;
                 }
             }
 
+            NotificationManager mNotificationManager = (NotificationManager) ShieldApp.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (Build.VERSION.SDK_INT >= 26) {
+                NotificationChannel channel = new NotificationChannel("shield_channel_id", "Shield Notifications Channel",  NotificationManager.IMPORTANCE_HIGH);
+                mNotificationManager.createNotificationChannel(channel);
+                channel.setShowBadge(true);
+                notifBuilder.setChannelId("shield_channel_id");
+            }
 
             if (Build.VERSION.SDK_INT >= 21) {
                 notifBuilder.setLargeIcon(largeIcon);
             }
 
-            ((NotificationManager) ShieldApp.getInstance().getSystemService(Context.NOTIFICATION_SERVICE)).notify(1, notifBuilder.build());
+            int notifId = ShieldPreferencesHelper.getNotifId(context);
+            mNotificationManager.notify(notifId, notifBuilder.build());
+            ShieldPreferencesHelper.setNotifId(context, notifId);
 
         }
     }
