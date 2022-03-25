@@ -158,9 +158,14 @@ public class Utils {
                 notifBuilder.setLargeIcon(largeIcon);
             }
 
-            int notifId = ShieldPreferencesHelper.getNotifId(context);
+            int notifId = 1; // create only one proximity warning
+
+            if (type!=3){
+                notifId = ShieldPreferencesHelper.getNotifId(context);
+                ShieldPreferencesHelper.setNotifId(context, notifId);
+            }
+
             mNotificationManager.notify(notifId, notifBuilder.build());
-            ShieldPreferencesHelper.setNotifId(context, notifId);
 
         }
     }
