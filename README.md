@@ -75,8 +75,9 @@ Shield app requires the users to grant location access permission. When the user
 
 ### Home
 <p align="">
-  <img src="./docs/ui/home_0.jpg" alt="home" width="150"/>
-  <img src="./docs/ui/home_1.jpg" alt="home" width="150"/>
+  <img src="./docs/ui/home_0.jpg" alt="home start" width="150"/>
+  <img src="./docs/ui/home_1.jpg" alt="home pause" width="150"/>
+  <img src="./docs/ui/home_0.gif" alt="home animation" width="150"/>
 </p>
 
 <p align="justify">

@@ -1,7 +1,6 @@
 package com.nova.android.shield.workmanager.workers;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.work.ListenableWorker;
@@ -38,8 +37,6 @@ public class PullFromFirebaseWorker extends Worker {
 
     public PullFromFirebaseWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        Constants.PullFromFirebaseServiceRunning = true;
-        Log.i(TAG, "PullFromFirebaseServiceRunning: " + "started");
         this.context = context;
         this.recordRepository = new BleRecordRepository(context);
         this.notificationRepository = new NotificationRepository(context);
@@ -48,9 +45,7 @@ public class PullFromFirebaseWorker extends Worker {
     @NonNull
     @Override
     public ListenableWorker.Result doWork() {
-
         Log.i(TAG, "doWork(): started");
-
         Constants.PullFromFirebaseServiceRunning = true;
 
         HashMap<String, List<Long>> groupedRecords = new HashMap<>();
@@ -63,7 +58,6 @@ public class PullFromFirebaseWorker extends Worker {
                 groupedRecords.put(record.getUuid(), timestamps);
             }
         }
-
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
