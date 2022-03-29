@@ -24,8 +24,8 @@ public class Constants {
     public static String[] BLE_PERMISSIONS = {Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH};
     public static HashMap<Integer, Integer> bleThresholds = new HashMap<>();
     public static final String[] DAYS_OF_WEEK = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-    public static boolean DEBUG = true; // TODO - set to false in production
-    public static boolean DEMO = true; // TODO - set to false in production
+    public static boolean DEBUG = false; // TODO - set to false in production
+    public static boolean DEMO = false; // TODO - set to false in production
     public static final String DEEP_LINK_QR = "qr";
     public static int deviceID;
     public static List<String> deviceNames = new LinkedList();

@@ -198,6 +198,12 @@ public class TabbedMainActivity extends AppCompatActivity implements SharedPrefe
     @Override
     public boolean onCreateOptionsMenu(Menu menu2) {
         getMenuInflater().inflate(R.menu.menu_main, menu2);
+
+        if (Constants.DEBUG == false){
+            menu2.findItem(R.id.action_clear_logs).setVisible(false);
+            menu2.findItem(R.id.action_clear_database).setVisible(false);
+        }
+
         setShielding();
         return true;
     }

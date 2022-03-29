@@ -55,7 +55,7 @@
     <string name="verify_skip">Skip</string>
     <string name="Permissions_continue">Continue</string>
     <string name="Permissions_not_now">Not Now</string>
-    <string name="build_number">Version 1.0.0-alpha</string>
+    <string name="build_number">Version 1.0.0-beta</string>
     <string name="url_tos">https://www.novalabs.lk/tos</string>
     <string name="url_privacy">https://www.novalabs.lk/privacy-policy</string>
     <string name="connectivity_dialog_text">Shield requires an active internet connection in the first time it is used.</string>
